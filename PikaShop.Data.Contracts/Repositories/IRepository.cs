@@ -21,7 +21,7 @@ namespace PikaShop.Data.Contracts.Repositories
         // Delete... => Delete...
         // DeleteRange
         IQueryable<TEntity> GetAll();
-        IQueryable<TEntity> GetById(TKey id);
+        TEntity GetById(TKey id);
 
         int Update(TKey id,TEntity other);
         int Update(TEntity target,TEntity other);
