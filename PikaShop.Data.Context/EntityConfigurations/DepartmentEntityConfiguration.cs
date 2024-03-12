@@ -16,8 +16,8 @@ namespace PikaShop.Data.Context.EntityConfigurations
             builder.ToTable("Departments");
             builder.HasKey(d => d.Id);
             builder.HasMany(d => d.Categories).WithOne(c=>c.Department).HasForeignKey(c => c.DepartmentId).HasPrincipalKey(d=>d.Id);
-            builder.Property(d=>d.Name).HasColumnType("Nvarchar50").IsRequired();
-            builder.Property(d=>d.Description).HasColumnType("Nvarchar200").IsRequired();
+            builder.Property(d=>d.Name).HasColumnType("nvarchar(200)").IsRequired();
+            builder.Property(d=>d.Description).HasColumnType("nvarchar(200)").IsRequired();
         }
     }
 }

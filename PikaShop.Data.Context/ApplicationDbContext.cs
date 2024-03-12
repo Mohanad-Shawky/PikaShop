@@ -10,7 +10,8 @@ namespace PikaShop.Data.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new DepartmentEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryEntityConfiguration()); 
+            modelBuilder.ApplyConfiguration(new CategoryEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,6 +20,7 @@ namespace PikaShop.Data.Context
 
         public virtual DbSet<DepartmentEntity> Departments { get; set; }
         public virtual DbSet<CategoryEntity> Categories { get; set; }
+        public virtual DbSet<ProductEntity> Products { get; set; }
     }
   
 }

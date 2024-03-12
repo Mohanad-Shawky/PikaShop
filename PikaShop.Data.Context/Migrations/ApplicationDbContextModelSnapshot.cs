@@ -35,11 +35,11 @@ namespace PikaShop.Data.Context.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar200");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar50");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -58,15 +58,51 @@ namespace PikaShop.Data.Context.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("Nvarchar200");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("Nvarchar50");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Departments", (string)null);
+                });
+
+            modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.ProductEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("money");
+
+                    b.Property<string>("Specifications")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("UnitsInStock")
+                        .HasColumnType("decimal");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.CategoryEntity", b =>
@@ -76,6 +112,20 @@ namespace PikaShop.Data.Context.Migrations
                         .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.ProductEntity", b =>
+                {
+                    b.HasOne("PikaShop.Data.Context.ContextEntities.Core.CategoryEntity", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.CategoryEntity", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.DepartmentEntity", b =>
