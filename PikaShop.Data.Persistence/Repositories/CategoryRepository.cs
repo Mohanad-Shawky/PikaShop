@@ -14,12 +14,12 @@ namespace PikaShop.Data.Persistence.Repositories
     public class CategoryRepository : ICategoryRepository
     {
 
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext context = new();
 
-        public CategoryRepository(ApplicationDbContext _context)
-        {
-            context = _context;
-        }
+        //public CategoryRepository(ApplicationDbContext _context)
+        //{
+        //    context = _context;
+        //}
         public IQueryable<CategoryEntity> GetAll()
         {
             return context.Categories.Where(c=>c.IsDeleted==false).AsNoTracking();

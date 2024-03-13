@@ -12,12 +12,12 @@ namespace PikaShop.Data.Persistence.Repositories
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext context = new();
 
-        public DepartmentRepository(ApplicationDbContext _context)
-        {
-            context = _context;
-        }
+        //public DepartmentRepository(ApplicationDbContext _context)
+        //{
+        //    context = _context;
+        //}
         
 
         public IQueryable<DepartmentEntity> GetAll()

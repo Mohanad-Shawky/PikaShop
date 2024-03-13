@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    internal class ProductRepository:IProductRepository
+    public class ProductRepository:IProductRepository
     {
-        internal readonly ApplicationDbContext context;
+        internal readonly ApplicationDbContext context = new();
         public IQueryable<ProductEntity> GetAll()
         {
             return context.Products.AsNoTracking();
