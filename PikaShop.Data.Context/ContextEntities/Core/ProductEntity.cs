@@ -12,7 +12,7 @@ namespace PikaShop.Data.Context.ContextEntities.Core
     public class ProductEntity:Product,IEntityCreatedAt,IEntitySoftDelete
     {
         public int? CategoryId { get; set; }
-        public CategoryEntity? Category { get; set; }
+        public virtual CategoryEntity? Category { get; set; }
         public DateTime CreatedAt { get; set ; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }

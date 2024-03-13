@@ -11,58 +11,46 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : Repository<CategoryEntity, int>, ICategoryRepository
     {
 
-        private readonly ApplicationDbContext context = new();
+        public CategoryRepository(ApplicationDbContext _context) : base(_context)
+        {
+        }
 
-        //public CategoryRepository(ApplicationDbContext _context)
-        //{
-        //    context = _context;
-        //}
-        public IQueryable<CategoryEntity> GetAll()
+        public override IQueryable<CategoryEntity> GetAll()
         {
             return context.Categories.Where(c=>c.IsDeleted==false).AsNoTracking();
         }
 
-        public CategoryEntity GetById(int id)
+        public void UpdateById(int id, CategoryEntity other)
         {
-            return context.Categories.FirstOrDefault(c => c.Id == id);
-        }
-
-
-        public int Create(CategoryEntity entity)
-        {
-            if (entity != null)
-            {
-                context.Add(entity);
-                return context.SaveChanges();
-            }
-            return -1;
-        }
-
-        public int Update(int id, CategoryEntity other)
-        {
-            CategoryEntity oldCategory =GetById(id);
+            CategoryEntity? oldCategory = GetById(id);
             if(oldCategory != null)
             {
                 oldCategory.Name=other.Name;
                 oldCategory.Description=other.Description;
-                return context.SaveChanges();
             }
-            return -1;
         }
-        public int Delete(int id)
+        public void Update(CategoryEntity entity, CategoryEntity other)
         {
-            CategoryEntity oldCat = GetById(id);
-            if (oldCat == null || oldCat.IsDeleted == true) return -1;
-
-            oldCat.IsDeleted=true;
-            oldCat.DeletedAt =DateTime.Now;
-                return context.SaveChanges();
-            
+            UpdateById(entity.Id, entity);
         }
 
-     
+        public void SoftDeleteById(int id)
+        {
+            CategoryEntity? oldCat = GetById(id);
+            if (oldCat != null && oldCat.IsDeleted == false)
+            {
+                oldCat.IsDeleted = true;
+                oldCat.DeletedAt = DateTime.Now;
+            }
+        }
+        public void SoftDelete(CategoryEntity entity)
+        {
+            SoftDeleteById(entity.Id);
+        }
+
+
     }
 }

@@ -8,11 +8,18 @@ namespace PikaShop.Data.Entities.Core
 {
     public class Product
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Specifications { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
         public int UnitsInStock { get; set; }
+
+        public Product()
+        {
+            Name = string.Empty;
+            Description = string.Empty;
+            Specifications = string.Empty;
+        }
     }
 }

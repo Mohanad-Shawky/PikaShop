@@ -13,15 +13,20 @@ namespace PikaShop.Data.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<DepartmentEntity> builder)
         {
+            // Mapping
             builder.ToTable("Departments");
             builder.HasKey(d => d.Id);
             builder.HasMany(d => d.Categories).WithOne(c=>c.Department).HasForeignKey(c => c.DepartmentId).HasPrincipalKey(d=>d.Id);
+
+
+            // Data
             builder.Property(d=>d.Name).HasColumnType("nvarchar(200)").IsRequired();
             builder.Property(d=>d.Description).HasColumnType("nvarchar(200)").IsRequired();
             builder.Property(d => d.CreatedAt).HasColumnType("Date");
             builder.Property(d => d.DeletedAt).HasColumnType("Date");
             builder.Property(d=>d.IsDeleted).HasColumnType("bit");
 
+            // Other Configuration
         }
     }
 }

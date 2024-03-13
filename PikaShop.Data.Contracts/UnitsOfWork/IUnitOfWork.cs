@@ -13,6 +13,8 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         IDepartmentRepository DepartmentRepository { get; }
         IProductRepository ProductRepository { get; }
 
-       
+        int Save();
+
+        Task<int> SaveAsync();
     }
 }

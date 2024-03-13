@@ -13,7 +13,11 @@ namespace PikaShop.Data.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CustomerEntity> builder)
         {
-            throw new NotImplementedException();
+            // Mapping
+
+            // Data
+
+            // Other Configuration
         }
     }
 }

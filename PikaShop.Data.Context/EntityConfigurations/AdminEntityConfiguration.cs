@@ -8,5 +8,10 @@ namespace PikaShop.Data.Context.EntityConfigurations
 {
     internal class AdminEntityConfiguration
     {
+        // Mapping
+
+        // Data
+
+        // Other Configuration
     }
 }

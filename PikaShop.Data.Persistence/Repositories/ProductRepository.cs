@@ -10,32 +10,14 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class ProductRepository:IProductRepository
+    public class ProductRepository :  Repository<ProductEntity, int>, IProductRepository
     {
-        internal readonly ApplicationDbContext context = new();
-        public IQueryable<ProductEntity> GetAll()
-        {
-            return context.Products.AsNoTracking();
-        }
-        public ProductEntity GetById(int id)
-        {
-            return context.Products.FirstOrDefault(p => p.Id == id);
-        }
+        public ProductRepository(ApplicationDbContext context) : base(context) { }
 
 
-        public int Create(ProductEntity entity)
+        public void UpdateById(int id, ProductEntity other)
         {
-            if(entity != null)
-            {
-            context.Add(entity);
-            return context.SaveChanges();
-            }
-            return -1;
-        }
-
-        public int Update(int id, ProductEntity other)
-        {
-            ProductEntity editedProduct = GetById(id);
+            ProductEntity? editedProduct = GetById(id);
             if (editedProduct != null)
             {
                 editedProduct.Description = other.Description;
@@ -45,21 +27,25 @@ namespace PikaShop.Data.Persistence.Repositories
                 editedProduct.UnitsInStock = other.UnitsInStock;
                 editedProduct.CategoryId = other.CategoryId;
                 editedProduct.Category = other.Category;
-                return context.SaveChanges();  
             }
-            return -1;
         }
-       
-        public int Delete(int id)
+        public void Update(ProductEntity entity, ProductEntity other)
         {
-            ProductEntity oldPrd = GetById(id);
-            if (oldPrd == null || oldPrd.IsDeleted == true) return -1;
-                 oldPrd.IsDeleted = true;
-            oldPrd.DeletedAt= DateTime.Now;
-                return context.SaveChanges();
-           
+            UpdateById(entity.Id, other);
         }
 
-       
+        public void SoftDeleteById(int id)
+        {
+            ProductEntity? oldPrd = GetById(id);
+            if (oldPrd != null && !oldPrd.IsDeleted)
+            {
+                oldPrd.IsDeleted = true;
+                oldPrd.DeletedAt = DateTime.Now;
+            }
+        }
+        public void SoftDelete(ProductEntity entity)
+        {
+            SoftDeleteById(entity.Id);
+        }
     }
 }

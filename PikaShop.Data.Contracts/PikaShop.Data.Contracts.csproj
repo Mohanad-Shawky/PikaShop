@@ -27,4 +27,8 @@
     <ProjectReference Include="..\PikaShop.Data.Context\PikaShop.Data.Context.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Audit\" />
+  </ItemGroup>
+
 </Project>

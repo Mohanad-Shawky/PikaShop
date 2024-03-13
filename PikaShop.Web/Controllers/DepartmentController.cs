@@ -1,26 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PikaShop.Data.Contracts.UnitsOfWork;
+using PikaShop.Services.Contracts;
+using PikaShop.Services.Core;
 
 namespace PikaShop.Web.Controllers
 {
     public class DepartmentController : Controller
     {
-        IUnitOfWork unitOfWork;
+        IDepartmentServices services;
 
-        public DepartmentController(IUnitOfWork _uoc)
+        public DepartmentController(IDepartmentServices _services)
         {
-            unitOfWork=_uoc;
+            services = _services;
 
         }
         public IActionResult Index()
         {
-            return View(unitOfWork.DepartmentRepository.GetAll());
+            return View(services.UnitOfWork.DepartmentRepository.GetAll());
         }
 
         //[HttpGet]
         public IActionResult Details(int id)
         {
-            return View(unitOfWork.DepartmentRepository.GetById(id));
+            return View(services.UnitOfWork.DepartmentRepository.GetById(id));
 
         }
     }

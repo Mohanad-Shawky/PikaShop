@@ -13,7 +13,12 @@ namespace PikaShop.Data.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<AddressEntity> builder)
         {
+            // Mapping
             builder.ToTable("Address");
+
+            // Data
+
+            // Other Configuration
         }
     }
 }

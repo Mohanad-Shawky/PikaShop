@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,6 @@ namespace PikaShop.Data.Contracts.Repositories
 {
     public interface IRepository<TEntity, TKey>
         where TEntity : class
-        where TKey : class
     {
         // Naming Convension
         // Select... => Get...
@@ -21,15 +21,23 @@ namespace PikaShop.Data.Contracts.Repositories
         // Delete... => Delete...
         // DeleteRange
 
+        void Create(TEntity entity);
+
+        void CreateRange(IEnumerable<TEntity> entities);
+
 
         IQueryable<TEntity> GetAll();
-        TEntity GetById(TKey id);
 
-        int Update(TKey id,TEntity other);
-        int Update(TEntity target,TEntity other);
+        TEntity? GetById(TKey id);
 
-        int Delete(TEntity entity);
-        int DeleteById(TKey id);
+        IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+
+        void Delete(TEntity entity);
+
+        void DeleteById(TKey id);
+
+        void DeleteRange(IEnumerable<TEntity> entities);
+
 
     }
 }

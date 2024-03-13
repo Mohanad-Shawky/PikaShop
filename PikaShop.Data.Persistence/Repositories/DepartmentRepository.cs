@@ -10,56 +10,43 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : Repository<DepartmentEntity, int>, IDepartmentRepository
     {
-        private readonly ApplicationDbContext context = new();
 
-        //public DepartmentRepository(ApplicationDbContext _context)
-        //{
-        //    context = _context;
-        //}
-        
+        public DepartmentRepository(ApplicationDbContext _context) : base(_context) { }
 
-        public IQueryable<DepartmentEntity> GetAll()
+
+        public override IQueryable<DepartmentEntity> GetAll()
         {
-            return context.Departments.Where(d=>d.IsDeleted==false).AsNoTracking();
+            return context.Departments.Where(d=>d.IsDeleted==false);
         }
 
-        public DepartmentEntity GetById(int id)
+        public void UpdateById(int id, DepartmentEntity other)
         {
-            return context.Departments
-                .FirstOrDefault(d => d.Id == id);
-        }
-
-        public int Update(int id, DepartmentEntity other)
-        {
-            DepartmentEntity oldDep=GetById(id);
+            DepartmentEntity? oldDep = GetById(id);
             if(oldDep != null)
             {
-
                oldDep.Description = other.Description;
                oldDep.Name = other.Name;
-            return context.SaveChanges();
             }
-            return -1;
         }
-        public int Delete(int id)
+        public void Update(DepartmentEntity entity, DepartmentEntity other)
         {
-            DepartmentEntity oldDep = GetById(id);
-            if (oldDep == null || oldDep.IsDeleted == true) return -1;
-              oldDep.IsDeleted = true;
-            oldDep.DeletedAt = DateTime.Now;
-            return context.SaveChanges();
+            UpdateById(entity.Id, entity);
         }
 
-        public int Create(DepartmentEntity entity)
+        public void SoftDeleteById(int id)
         {
-            if (entity != null)
+            DepartmentEntity? oldDep = GetById(id);
+            if (oldDep != null && !oldDep.IsDeleted)
             {
-                context.Add(entity);
-                return context.SaveChanges();
+                oldDep.IsDeleted = true;
+                oldDep.DeletedAt = DateTime.Now;
             }
-            return -1;
+        }
+        public void SoftDelete(DepartmentEntity entity)
+        {
+            SoftDeleteById(entity.Id);
         }
     }
 }

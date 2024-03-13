@@ -2,6 +2,10 @@ using PikaShop.Data.Contracts.Repositories;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.Repositories;
 using PikaShop.Data.Persistence.UnitsOfWork;
+using PikaShop.Services.Core;
+using PikaShop.Services.Contracts;
+using PikaShop.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace PikaShop.Web
 {
@@ -13,11 +17,16 @@ namespace PikaShop.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<ApplicationDbContext>(dbOptionsBuilder =>
+            dbOptionsBuilder
+            .UseLazyLoadingProxies()
+            .UseSqlServer(builder.Configuration
+            .GetConnectionString("DevelopmentConnection"), b => b.MigrationsAssembly("PikaShop.Data.Persistence")));
 
-            builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
-            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
-            builder.Services.AddScoped<IProductRepository,ProductRepository>();
-          builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
+            builder.Services.AddScoped<ICategoryServices, CategoryServices>();
+            builder.Services.AddScoped<IProductServices, ProductServices>();
 
             var app = builder.Build();
 
