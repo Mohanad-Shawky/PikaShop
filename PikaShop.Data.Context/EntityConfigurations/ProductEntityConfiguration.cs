@@ -21,6 +21,9 @@ namespace PikaShop.Data.Context.EntityConfigurations
             builder.Property(p=>p.Price).HasColumnType("money").IsRequired();
             builder.Property(p=>p.Specifications).HasColumnType("nvarchar(500)").IsRequired();
             builder.Property(p=>p.UnitsInStock).HasColumnType("decimal").IsRequired();
+            builder.Property(p=> p.CreatedAt).HasColumnType("Date");
+            builder.Property(p => p.DeletedAt).HasColumnType("Date");
+            builder.Property(p => p.IsDeleted).HasColumnType("bit");
 
         }
     }

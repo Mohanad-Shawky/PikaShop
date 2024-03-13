@@ -19,6 +19,9 @@ namespace PikaShop.Data.Context.EntityConfigurations
             builder.HasMany(c => c.Products).WithOne(p=>p.Category).HasForeignKey(p=>p.CategoryId).HasPrincipalKey(c=>c.Id);
             builder.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(c => c.Description).HasColumnType("nvarchar(200)").IsRequired();
+            builder.Property(c => c.CreatedAt).HasColumnType("Date");
+            builder.Property(c => c.DeletedAt).HasColumnType("Date");
+            builder.Property(c => c.IsDeleted).HasColumnType("bit");
         }
     }
 }
