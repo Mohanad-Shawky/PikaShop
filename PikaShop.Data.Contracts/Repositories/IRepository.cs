@@ -20,6 +20,8 @@ namespace PikaShop.Data.Contracts.Repositories
         // Update... => Update...
         // Delete... => Delete...
         // DeleteRange
+
+
         IQueryable<TEntity> GetAll();
         TEntity GetById(TKey id);
 

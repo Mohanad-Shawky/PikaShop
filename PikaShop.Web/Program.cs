@@ -1,3 +1,8 @@
+using PikaShop.Data.Contracts.Repositories;
+using PikaShop.Data.Contracts.UnitsOfWork;
+using PikaShop.Data.Persistence.Repositories;
+using PikaShop.Data.Persistence.UnitsOfWork;
+
 namespace PikaShop.Web
 {
     public static class Program
@@ -8,6 +13,11 @@ namespace PikaShop.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
+            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+            builder.Services.AddScoped<IProductRepository,ProductRepository>();
+          builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 

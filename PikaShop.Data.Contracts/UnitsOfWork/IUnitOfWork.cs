@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PikaShop.Data.Contracts.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,10 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
 {
     public interface IUnitOfWork
     {
+        ICategoryRepository CategoryRepository { get; }
+        IDepartmentRepository DepartmentRepository { get; }
+        IProductRepository ProductRepository { get; }
+
+       
     }
 }
