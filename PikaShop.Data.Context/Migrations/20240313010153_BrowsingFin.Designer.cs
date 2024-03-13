@@ -12,8 +12,8 @@ using PikaShop.Data.Context;
 namespace PikaShop.Data.Context.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240312224856_init")]
-    partial class init
+    [Migration("20240313010153_BrowsingFin")]
+    partial class BrowsingFin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,21 @@ namespace PikaShop.Data.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("Date");
+
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -59,9 +68,18 @@ namespace PikaShop.Data.Context.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("Date");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -83,9 +101,18 @@ namespace PikaShop.Data.Context.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("Date");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("Date");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

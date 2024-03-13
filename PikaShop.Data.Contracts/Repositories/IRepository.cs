@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Contracts.Repositories
 {
+
     public interface IRepository<TEntity,Ttype> where TEntity : class
+
+   
     {
         // Naming Convension
         // Select... => Get...
@@ -19,6 +22,7 @@ namespace PikaShop.Data.Contracts.Repositories
         // Delete... => Delete...
         // DeleteRange
         IQueryable<TEntity> GetAll();
+
         TEntity GetById(Ttype id);
 
         int Update(Ttype id,TEntity other);
@@ -26,6 +30,9 @@ namespace PikaShop.Data.Contracts.Repositories
 
         //int Delete(TEntity entity);
         int DeleteById(Ttype id);
+        //int Update(TEntity target,TEntity other);
+        int Delete(Ttype id);
+
 
     }
 }
