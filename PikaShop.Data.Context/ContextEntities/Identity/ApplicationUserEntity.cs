@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace PikaShop.Data.Entities.ContextEntities.Core
+namespace PikaShop.Data.Context.ContextEntities.Identity
 {
     public class ApplicationUserEntity : IdentityUser<int>
     {

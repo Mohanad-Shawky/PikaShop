@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Entities.ContextEntities.Core;
 
-namespace PikaShop.Data.Context.EntityConfigurations
+namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
     public class AddressEntityConfiguration : IEntityTypeConfiguration<AddressEntity>
     {

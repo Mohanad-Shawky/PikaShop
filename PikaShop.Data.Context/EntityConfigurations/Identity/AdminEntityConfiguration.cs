@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PikaShop.Data.Entities.ContextEntities.Core;
+using PikaShop.Data.Context.ContextEntities.Identity;
 
-namespace PikaShop.Data.Context.EntityConfigurations
+namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
-    internal class CustomerEntityConfiguration : IEntityTypeConfiguration<CustomerEntity>
+    public class AdminEntityConfiguration : IEntityTypeConfiguration<AdminEntity>
     {
-        public void Configure(EntityTypeBuilder<CustomerEntity> builder)
+        public void Configure(EntityTypeBuilder<AdminEntity> builder)
         {
             // Mapping
 

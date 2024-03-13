@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PikaShop.Data.Entities.ContextEntities.Core
+namespace PikaShop.Data.Context.ContextEntities.Identity
 {
     public class AdminEntity : ApplicationUserEntity
     {

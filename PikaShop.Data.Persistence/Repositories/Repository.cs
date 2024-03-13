@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Core.Types;
 using PikaShop.Data.Context;
 using PikaShop.Data.Contracts.Repositories;
 
