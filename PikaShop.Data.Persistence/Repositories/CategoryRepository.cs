@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PikaShop.Data.Context;
+using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Contracts.Repositories;
 using PikaShop.Data.Entities.Core;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class CategoryRepository : IRepository<Category,int>
+    public class CategoryRepository : ICategoryRepository
     {
 
         private readonly ApplicationDbContext context;
@@ -19,19 +20,30 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             context = _context;
         }
-        public IQueryable<Category> GetAll()
+        public IQueryable<CategoryEntity> GetAll()
         {
-            return context.Categories.AsNoTracking();
+            return context.Categories.Where(c=>c.IsDeleted==false).AsNoTracking();
         }
 
-        public Category GetById(int id)
+        public CategoryEntity GetById(int id)
         {
             return context.Categories.FirstOrDefault(c => c.Id == id);
         }
 
-        public int Update(int id, Category other)
+
+        public int Create(CategoryEntity entity)
         {
-            Category oldCategory=GetById(id);
+            if (entity != null)
+            {
+                context.Add(entity);
+                return context.SaveChanges();
+            }
+            return -1;
+        }
+
+        public int Update(int id, CategoryEntity other)
+        {
+            CategoryEntity oldCategory =GetById(id);
             if(oldCategory != null)
             {
                 oldCategory.Name=other.Name;
@@ -42,7 +54,15 @@ namespace PikaShop.Data.Persistence.Repositories
         }
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            CategoryEntity oldCat = GetById(id);
+            if (oldCat == null || oldCat.IsDeleted == true) return -1;
+
+            oldCat.IsDeleted=true;
+            oldCat.DeletedAt =DateTime.Now;
+                return context.SaveChanges();
+            
         }
+
+     
     }
 }

@@ -22,6 +22,17 @@ namespace PikaShop.Data.Persistence.Repositories
             return context.Products.FirstOrDefault(p => p.Id == id);
         }
 
+
+        public int Create(ProductEntity entity)
+        {
+            if(entity != null)
+            {
+            context.Add(entity);
+            return context.SaveChanges();
+            }
+            return -1;
+        }
+
         public int Update(int id, ProductEntity other)
         {
             ProductEntity editedProduct = GetById(id);
@@ -38,42 +49,17 @@ namespace PikaShop.Data.Persistence.Repositories
             }
             return -1;
         }
-        /*public int Update(ProductEntity target, ProductEntity other)
+       
+        public int Delete(int id)
         {
-            if(target!=null && other != null)
-            {
-                target.Id = other.Id;
-                target.Description = other.Description;
-                target.Price = other.Price;
-                target.Name = other.Name;
-                target.Specifications = other.Specifications;
-                target.UnitsInStock = other.UnitsInStock;
-                target.CategoryId = other.CategoryId;
-                target.Category = other.Category;
-                context.SaveChanges();
-                return 1;
-            }
-            return -1;
+            ProductEntity oldPrd = GetById(id);
+            if (oldPrd == null || oldPrd.IsDeleted == true) return -1;
+                 oldPrd.IsDeleted = true;
+            oldPrd.DeletedAt= DateTime.Now;
+                return context.SaveChanges();
+           
         }
 
-        public int Delete(ProductEntity entity)
-        {
-            if (entity != null)
-            {
-                context.Products.Remove(entity);
-                return context.SaveChanges();
-            }
-            return -1;
-        }*/
-        public int DeleteById(int id)
-        {
-            ProductEntity deteltedProduct = GetById(id);
-            if (deteltedProduct != null)
-            {
-                context.Products.Remove(deteltedProduct);
-                return context.SaveChanges();
-            }
-            return -1;
-        }
+       
     }
 }

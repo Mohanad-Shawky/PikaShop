@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class DepartmentRepository : IRepository<DepartmentEntity,int>
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly ApplicationDbContext context;
 
@@ -22,7 +22,7 @@ namespace PikaShop.Data.Persistence.Repositories
 
         public IQueryable<DepartmentEntity> GetAll()
         {
-            return context.Departments.AsNoTracking();
+            return context.Departments.Where(d=>d.IsDeleted==false).AsNoTracking();
         }
 
         public DepartmentEntity GetById(int id)
@@ -46,8 +46,20 @@ namespace PikaShop.Data.Persistence.Repositories
         public int Delete(int id)
         {
             DepartmentEntity oldDep = GetById(id);
-            context.Remove(oldDep);
+            if (oldDep == null || oldDep.IsDeleted == true) return -1;
+              oldDep.IsDeleted = true;
+            oldDep.DeletedAt = DateTime.Now;
             return context.SaveChanges();
+        }
+
+        public int Create(DepartmentEntity entity)
+        {
+            if (entity != null)
+            {
+                context.Add(entity);
+                return context.SaveChanges();
+            }
+            return -1;
         }
     }
 }

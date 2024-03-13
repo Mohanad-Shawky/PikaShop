@@ -21,17 +21,17 @@ namespace PikaShop.Data.Contracts.Repositories
         // Update... => Update...
         // Delete... => Delete...
         // DeleteRange
+
+
         IQueryable<TEntity> GetAll();
 
+        int Create(TEntity entity);
+
         TEntity GetById(Ttype id);
-
         int Update(Ttype id,TEntity other);
-        //int Update(TEntity target,TEntity other);
-
-        //int Delete(TEntity entity);
-        int DeleteById(Ttype id);
-        //int Update(TEntity target,TEntity other);
+       
         int Delete(Ttype id);
+       
 
 
     }

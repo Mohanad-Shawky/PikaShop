@@ -9,13 +9,13 @@ namespace PikaShop.Data.Contracts.Repositories
 {
     public interface IProductRepository:IRepository<ProductEntity,int>
     {
-        IQueryable<ProductEntity> GetAll();
-        ProductEntity GetById(int id);
+        //IQueryable<ProductEntity> GetAll();
+        //ProductEntity GetById(int id);
 
-        int Update(int id, ProductEntity other);
-        //int Update(ProductEntity target, ProductEntity other);
+        //int Update(int id, ProductEntity other);
+        ////int Update(ProductEntity target, ProductEntity other);
 
-        //int Delete(ProductEntity entity);
-        int DeleteById(int id);
+        ////int Delete(ProductEntity entity);
+        //int Delete(int id);
     }
 }
