@@ -9,7 +9,7 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
-    internal class CustomerEntityConfiguration : IEntityTypeConfiguration<CustomerEntity>
+    public class CustomerEntityConfiguration : IEntityTypeConfiguration<CustomerEntity>
     {
         public void Configure(EntityTypeBuilder<CustomerEntity> builder)
         {

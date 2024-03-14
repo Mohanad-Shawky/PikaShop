@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
-    internal class ProductEntityConfiguration : IEntityTypeConfiguration<ProductEntity>
+    public class ProductEntityConfiguration : IEntityTypeConfiguration<ProductEntity>
     {
         public void Configure(EntityTypeBuilder<ProductEntity> builder)
         {

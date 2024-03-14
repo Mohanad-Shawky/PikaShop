@@ -7,9 +7,10 @@ using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
-using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.IdentityModel.Protocols;
+using PikaShop.Data.Context;
 
 namespace PikaShop.Web
 {
@@ -21,13 +22,18 @@ namespace PikaShop.Web
 
             // Add services to the container.
 
+            #region DbContext Configuration
             // DbContext Configuration & Injection
             var connectionString = builder.Configuration.GetConnectionString("DevelopmentConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+
             builder.Services.AddDbContext<ApplicationDbContext>(dbOptionsBuilder =>
             dbOptionsBuilder
             .UseLazyLoadingProxies()
-            .UseSqlServer(connectionString, b => b.MigrationsAssembly("PikaShop.Data.Persistence")));
+            .UseSqlServer(connectionString, b => b.MigrationsAssembly("PikaShop.Web")));
+            #endregion
 
+            #region Identity Configuration
             // Identity Configuration
             builder.Services.AddIdentity<ApplicationUserEntity, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -36,12 +42,16 @@ namespace PikaShop.Web
                 .AddSignInManager<SignInManager<ApplicationUserEntity>>()
                 .AddRoleManager<RoleManager<IdentityRole<int>>>();
             builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
+            #endregion
 
+            #region Custom Service Configuration
             // Service Injection
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
+            #endregion
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             // MVC Configuration
