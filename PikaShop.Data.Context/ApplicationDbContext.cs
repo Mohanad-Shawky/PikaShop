@@ -10,7 +10,7 @@ namespace PikaShop.Data.Context
 {
     public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity, IdentityRole<int>, int>
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

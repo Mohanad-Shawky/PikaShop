@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
 using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Identity;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace PikaShop.Web
 {
@@ -42,7 +44,7 @@ namespace PikaShop.Web
             builder.Services.AddScoped<IProductServices, ProductServices>();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+            // MVC Configuration
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
