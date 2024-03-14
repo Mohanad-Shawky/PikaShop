@@ -11,12 +11,13 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Protocols;
 using PikaShop.Data.Context;
+using PikaShop.Web.IdentityUnits;
 
 namespace PikaShop.Web
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -35,12 +36,12 @@ namespace PikaShop.Web
 
             #region Identity Configuration
             // Identity Configuration
-            builder.Services.AddIdentity<ApplicationUserEntity, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentity<ApplicationUserEntity, ApplicationUserRoleEntity>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddUserManager<UserManager<ApplicationUserEntity>>()
                 .AddSignInManager<SignInManager<ApplicationUserEntity>>()
-                .AddRoleManager<RoleManager<IdentityRole<int>>>();
+                .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>();
             builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
             #endregion
 
@@ -58,7 +59,9 @@ namespace PikaShop.Web
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
-            var app = builder.Build();
+
+
+                var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -66,10 +69,13 @@ namespace PikaShop.Web
                 app.UseMigrationsEndPoint();
                 app.UseDeveloperExceptionPage();
 
-                // Seed Database for Development
-                ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
+                    //DbRoleSeeder.SeedRolesAndAdminAsync();
+                    // Seed Database for Development
+                    ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
                 UnitOfWork unitOfWork = new UnitOfWork(contextFactory.CreateDbContext([""]));
                 unitOfWork.EnsureSeedDataForContext();
+
+
             }
             else
             {
@@ -87,6 +93,11 @@ namespace PikaShop.Web
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+
+            using (var scope = app.Services.CreateScope())
+                await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+
 
             app.Run();
         }

@@ -8,7 +8,7 @@ using PikaShop.Data.Context.EntityConfigurations.Core;
 
 namespace PikaShop.Data.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUserEntity, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUserEntity, ApplicationUserRoleEntity, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
