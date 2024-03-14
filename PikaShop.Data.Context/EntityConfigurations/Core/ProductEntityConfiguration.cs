@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
     public class ProductEntityConfiguration : IEntityTypeConfiguration<ProductEntity>
     {
-        public void Configure(EntityTypeBuilder<ProductEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<ProductEntity> builder)
         {
             // Mapping
             builder.HasKey(p => p.Id);

@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
     public class DepartmentEntityConfiguration : IEntityTypeConfiguration<DepartmentEntity>
     {
-        public void Configure(EntityTypeBuilder<DepartmentEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<DepartmentEntity> builder)
         {
             // Mapping
             builder.ToTable("Departments");

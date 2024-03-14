@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
     public class AdminEntityConfiguration : IEntityTypeConfiguration<AdminEntity>
     {
-        public void Configure(EntityTypeBuilder<AdminEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<AdminEntity> builder)
         {
             // Mapping
 

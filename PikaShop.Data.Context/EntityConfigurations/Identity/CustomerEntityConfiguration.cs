@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
     public class CustomerEntityConfiguration : IEntityTypeConfiguration<CustomerEntity>
     {
-        public void Configure(EntityTypeBuilder<CustomerEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<CustomerEntity> builder)
         {
             // Mapping
 

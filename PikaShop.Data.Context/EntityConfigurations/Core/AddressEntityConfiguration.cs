@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
     public class AddressEntityConfiguration : IEntityTypeConfiguration<AddressEntity>
     {
-        public void Configure(EntityTypeBuilder<AddressEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<AddressEntity> builder)
         {
             // Mapping
             builder.ToTable("Address");

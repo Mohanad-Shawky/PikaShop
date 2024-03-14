@@ -24,7 +24,7 @@ namespace PikaShop.Web
 
             #region DbContext Configuration
             // DbContext Configuration & Injection
-            var connectionString = builder.Configuration.GetConnectionString("DevelopmentConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("DevelopmentConnection") ?? throw new InvalidOperationException("Connection string 'DevelopmentConnection' not found.");
 
 
             builder.Services.AddDbContext<ApplicationDbContext>(dbOptionsBuilder =>
@@ -64,6 +64,12 @@ namespace PikaShop.Web
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                app.UseDeveloperExceptionPage();
+
+                // Seed Database for Development
+                ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
+                UnitOfWork unitOfWork = new UnitOfWork(contextFactory.CreateDbContext([""]));
+                unitOfWork.EnsureSeedDataForContext();
             }
             else
             {

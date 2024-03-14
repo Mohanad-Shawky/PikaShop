@@ -14,18 +14,18 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
     {
         protected ApplicationDbContext context;
 
-        public ICategoryRepository CategoryRepository { get; }
+        public ICategoryRepository Categories { get; }
 
-        public IDepartmentRepository DepartmentRepository { get; }
+        public IDepartmentRepository Departments { get; }
 
-        public IProductRepository ProductRepository { get; }
+        public IProductRepository Products { get; }
 
         public UnitOfWork(ApplicationDbContext _context)
         {
             context = _context;
-            CategoryRepository = new CategoryRepository(context);
-            DepartmentRepository = new DepartmentRepository(context);
-            ProductRepository = new ProductRepository(context);
+            Categories = new CategoryRepository(context);
+            Departments = new DepartmentRepository(context);
+            Products = new ProductRepository(context);
         }
 
         public int Save()

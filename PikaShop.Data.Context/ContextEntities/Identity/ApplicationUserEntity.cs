@@ -9,10 +9,13 @@ namespace PikaShop.Data.Context.ContextEntities.Identity
 {
     public class ApplicationUserEntity : IdentityUser<int>
     {
-        public ApplicationUserEntity() : base() { }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        public ApplicationUserEntity(string userName) : base(userName) { }
-
-
+        public ApplicationUserEntity()
+        {
+            FirstName = string.Empty;
+            LastName = string.Empty;
+        }
     }
 }

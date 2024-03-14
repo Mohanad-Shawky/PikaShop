@@ -7,9 +7,6 @@ using PikaShop.Data.Entities.ContextEntities.Core;
 
 namespace PikaShop.Data.Context.ContextEntities.Identity
 {
-    /// <summary>
-    /// The Entities mapped by the context
-    /// </summary>
     public class CustomerEntity : ApplicationUserEntity
     {
         public virtual ICollection<AddressEntity>? Addresses { get; set; }

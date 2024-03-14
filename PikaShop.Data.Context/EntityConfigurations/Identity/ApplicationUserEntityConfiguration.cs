@@ -11,7 +11,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUserEntity>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUserEntity> builder)
+        public virtual void Configure(EntityTypeBuilder<ApplicationUserEntity> builder)
         {
             // Mapping
 
