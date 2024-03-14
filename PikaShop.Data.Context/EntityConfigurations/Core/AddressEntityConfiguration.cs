@@ -15,8 +15,16 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
         {
             // Mapping
             builder.ToTable("Address");
+            builder.HasKey(nameof(AddressEntity.ID))
+                .HasName("PK_AddressID");
 
             // Data
+            builder.Property<string>(nameof(AddressEntity.State)).HasMaxLength(50);
+            builder.Property<string>(nameof(AddressEntity.Region)).HasMaxLength(50);
+            builder.Property<string>(nameof(AddressEntity.Street)).HasMaxLength(50);
+            builder.Property<string>(nameof(AddressEntity.BuildingNumber)).HasMaxLength(10);
+            builder.Property<string>(nameof(AddressEntity.FloorNumber)).HasMaxLength(10);
+            builder.Property<string>(nameof(AddressEntity.AppartmentNumber)).HasMaxLength(10);
 
             // Other Configuration
         }

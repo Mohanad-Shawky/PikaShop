@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PikaShop.Data.Context.ContextEntities.Core;
-using PikaShop.Data.Entities.Core;
+using PikaShop.Data.Contracts.UnitsOfWork;
 
 namespace PikaShop.Data.Persistence.UnitsOfWork
 {
     public static class UnitOfWorkExtensions
     {
-        public static void EnsureSeedDataForContext(this UnitOfWork unitOfWork)
+        public static void EnsureSeedDataForContext(this IUnitOfWork unitOfWork)
         {
             if(!unitOfWork.Departments.GetAll().Any())
             {
