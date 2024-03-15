@@ -23,7 +23,7 @@ namespace PikaShop.Data.Persistence.Repositories
                 editedProduct.Description = other.Description;
                 editedProduct.Price = other.Price;
                 editedProduct.Name = other.Name;
-                editedProduct.Specifications = other.Specifications;
+                //editedProduct.Specifications = other.Specifications;
                 editedProduct.UnitsInStock = other.UnitsInStock;
                 editedProduct.CategoryId = other.CategoryId;
                 editedProduct.Category = other.Category;

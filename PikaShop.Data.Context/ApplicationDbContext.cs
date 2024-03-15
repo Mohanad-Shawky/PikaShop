@@ -32,13 +32,22 @@ namespace PikaShop.Data.Context
             modelBuilder.ApplyConfiguration(new DepartmentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductSpecsEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new CategorySpecsEntityConfiguration());
+
 
             #endregion
+
+
+
         }
 
         public virtual DbSet<DepartmentEntity> Departments { get; set; }
         public virtual DbSet<CategoryEntity> Categories { get; set; }
         public virtual DbSet<ProductEntity> Products { get; set; }
+        public virtual DbSet<ProductSpecsEntity> ProductSpecs { get; set; }
+        public virtual DbSet<CategorySpecsEntity> CategorySpecs { get; set; }
+
     }
 
 }
