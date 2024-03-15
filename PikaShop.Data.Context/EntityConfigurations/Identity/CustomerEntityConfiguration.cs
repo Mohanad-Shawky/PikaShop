@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Context.ContextEntities.Identity;
+using PikaShop.Data.Entities.ContextEntities.Core;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Identity
 {
@@ -16,6 +17,10 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
             // Mapping
 
             // Data
+            builder.HasMany<AddressEntity>(nameof(CustomerEntity.Addresses))
+                .WithOne(nameof(AddressEntity.Customer))
+                .HasForeignKey(nameof(AddressEntity.CustomerID))
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Other Configuration
         }

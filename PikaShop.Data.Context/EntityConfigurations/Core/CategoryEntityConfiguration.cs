@@ -18,6 +18,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
             builder.HasKey(c => c.Id);
             builder.HasOne(c => c.Department).WithMany(d => d.Categories).HasForeignKey(c => c.DepartmentId);
             builder.HasMany(c => c.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId).HasPrincipalKey(c => c.Id);
+            builder.HasMany(c => c.CategorySpecs).WithOne(cs => cs.Category).HasForeignKey(cs => cs.CategoryId).HasPrincipalKey(c => c.Id);
 
             // Data
             builder.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();

@@ -34,7 +34,7 @@ namespace PikaShop.Data.Persistence.Repositories
         }
         public void Update(CategoryEntity entity, CategoryEntity other)
         {
-            UpdateById(entity.Id, entity);
+            UpdateById(entity.Id, other);
         }
 
         public void SoftDeleteById(int id)

@@ -19,13 +19,21 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         public IDepartmentRepository Departments { get; }
 
         public IProductRepository Products { get; }
+       
+        public ICategorySpecsRepository CategorySpecs { get; }
+        
+        public IProductSpecsRepository ProductSpecs { get; }
 
+
+        
         public UnitOfWork(ApplicationDbContext _context)
         {
             context = _context;
             Categories = new CategoryRepository(context);
             Departments = new DepartmentRepository(context);
             Products = new ProductRepository(context);
+            CategorySpecs = new CategorySpecsRepository(context);         
+            ProductSpecs = new ProductSpecsRepository(context);
         }
 
         public int Save()

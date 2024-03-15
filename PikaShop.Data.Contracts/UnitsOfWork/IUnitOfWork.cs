@@ -12,6 +12,8 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         ICategoryRepository Categories { get; }
         IDepartmentRepository Departments { get; }
         IProductRepository Products { get; }
+        ICategorySpecsRepository CategorySpecs { get; }
+        IProductSpecsRepository ProductSpecs { get; }
 
         int Save();
 
