@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.IdentityModel.Protocols;
 using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Google;
+using System.Configuration;
 
 namespace PikaShop.Web
 {
@@ -27,12 +30,10 @@ namespace PikaShop.Web
             // DbContext Configuration & Injection
             var connectionString = builder.Configuration.GetConnectionString("DevelopmentConnection") ?? throw new InvalidOperationException("Connection string 'DevelopmentConnection' not found.");
 
-
             builder.Services.AddDbContext<ApplicationDbContext>(dbOptionsBuilder =>
             dbOptionsBuilder
             .UseLazyLoadingProxies()
             .UseSqlServer(connectionString, b => b.MigrationsAssembly("PikaShop.Web")));
-
             #endregion
 
             #region Identity Configuration
@@ -45,12 +46,33 @@ namespace PikaShop.Web
             builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
             #endregion
 
+            #region External Logins
+            builder.Services.AddAuthentication()
+            .AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+                microsoftOptions.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
+            }).AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            }).AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            }); 
+            #endregion
+
             #region Custom Service Configuration
             // Service Injection
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
+            builder.Services.AddScoped<UserManager<ApplicationUserEntity>>();
+            builder.Services.AddScoped<RoleManager<ApplicationUserRoleEntity>>();
+
+
             #endregion
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -72,8 +94,6 @@ namespace PikaShop.Web
                     ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
                 UnitOfWork unitOfWork = new UnitOfWork(contextFactory.CreateDbContext([""]));
                 unitOfWork.EnsureSeedDataForContext();
-
-
             }
             else
             {
@@ -86,6 +106,11 @@ namespace PikaShop.Web
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+            name: "profile1",
+            pattern: "{area}/{controller}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",

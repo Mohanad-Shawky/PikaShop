@@ -8,6 +8,7 @@ namespace PikaShop.Data.Context.Enums
 {
     public enum UserRole
     {
+        SuperAdmin,
         Admin,
         Anonymous,
         Customer,

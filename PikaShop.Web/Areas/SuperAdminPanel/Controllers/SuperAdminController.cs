@@ -13,18 +13,20 @@ using PikaShop.Web.Areas.AdminPanel.ViewModel;
 
 namespace PikaShop.Web.Areas.AdminPanel.Controllers
 {
-    [Area("AdminPanel")]
-    [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    [Area("SuperAdminPanel")]
+    [Authorize(Roles = "SuperAdmin")]
+    public class SuperAdminController : Controller
     {
         readonly UserManager<ApplicationUserEntity> _userManager;
         readonly RoleManager<ApplicationUserRoleEntity> _roleManager;
-        readonly UnitOfWork _unitOfWork;
+        //readonly UnitOfWork _unitOfWork;
 
 
-        public AdminController(UnitOfWork unitOfWork)
+        public SuperAdminController(UserManager<ApplicationUserEntity> userManager, RoleManager<ApplicationUserRoleEntity> roleManager)//UnitOfWork unitOfWork,)
         {
-            _unitOfWork = unitOfWork;
+            //_unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<ActionResult> Index()
@@ -47,10 +49,10 @@ namespace PikaShop.Web.Areas.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetUserRole(string SelectedUserId, string SelectedRoleId)
+        public async Task<IActionResult> SetUserRole(string SelectedUserID, string SelectedUserRole)
         {
-            var user = await _userManager.FindByIdAsync(SelectedUserId);
-            var role = await _roleManager.FindByIdAsync(SelectedRoleId);
+            var user = await _userManager.FindByIdAsync(SelectedUserID);
+            var role = await _roleManager.FindByIdAsync(SelectedUserRole);
 
             if (user != null && role != null)
             {

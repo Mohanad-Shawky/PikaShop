@@ -23,10 +23,11 @@ namespace PikaShop.Web.IdentityUnits
             // 2- creating and adding roles to the `roleManger` Instance
             if (roleManager is not null && userManager is not null)
             {
-                await roleManager.CreateAsync(new ApplicationUserRoleEntity(UserRole.Admin.ToString()));
-                await roleManager.CreateAsync(new ApplicationUserRoleEntity(UserRole.Anonymous.ToString()));
-                await roleManager.CreateAsync(new ApplicationUserRoleEntity(UserRole.Customer.ToString()));
-                await roleManager.CreateAsync(new ApplicationUserRoleEntity(UserRole.Delivery.ToString()));
+                await roleManager.CreateAsync(new ApplicationUserRoleEntity("Admin"));
+                await roleManager.CreateAsync(new ApplicationUserRoleEntity("Anonymous"));
+                await roleManager.CreateAsync(new ApplicationUserRoleEntity("Customer"));
+                await roleManager.CreateAsync(new ApplicationUserRoleEntity("Delivery"));
+                await roleManager.CreateAsync(new ApplicationUserRoleEntity("SuperAdmin"));
 
                 // creating admin in code to be secure. 
 
@@ -52,7 +53,7 @@ namespace PikaShop.Web.IdentityUnits
                     // setting it's password
                     await userManager.CreateAsync(user, "Admin@123");
                     // setting it's role
-                    await userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
+                    await userManager.AddToRoleAsync(user,"SuperAdmin");
                 }
 
                 /* If the email doesn't exist we will make a new account

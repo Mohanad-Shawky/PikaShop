@@ -22,14 +22,14 @@
 }
 
 
-<form asp-controller="Admin" asp-action="SetUserRole" method="post">
+<form asp-controller="SuperAdmin" asp-action="SetUserRole" method="post">
     <div>
         <label>Select User:</label>
-        <select asp-for="SelectedUserId" asp-items="@(new SelectList(Model.Users,"Id","UserName"))"></select>
+        <select asp-for="SelectedUserID" asp-items="@(new SelectList(Model.Users,"Id","UserName"))"></select>
     </div>
     <div>
         <label>Select Role:</label>
-        <select asp-for="SelectedRoleId" asp-items="@(new SelectList(Model.Roles,"Id","Name"))"></select>
+        <select asp-for="SelectedUserRole" asp-items="@(new SelectList(Model.Roles,"Id","Name"))"></select>
     </div>
     <button type="submit">Set Role</button>
 </form>
