@@ -22,7 +22,7 @@ namespace PikaShop.Data.Persistence.Repositories
         //}
         public IQueryable<CategoryEntity> GetAll()
         {
-            return context.Categories.Where(c=>c.IsDeleted==false).AsNoTracking();
+            return context.Categories.Where(c=>c.IsDeleted==false).Include(c=>c.Department).AsNoTracking();
         }
 
         public CategoryEntity GetById(int id)

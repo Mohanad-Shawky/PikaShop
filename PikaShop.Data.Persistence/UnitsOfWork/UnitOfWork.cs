@@ -25,5 +25,17 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         }
 
 
+<<<<<<< Updated upstream
+=======
+        public Task<int> SaveAsync()
+        {
+            return context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        { 
+             context.Dispose();
+        }
+>>>>>>> Stashed changes
     }
 }

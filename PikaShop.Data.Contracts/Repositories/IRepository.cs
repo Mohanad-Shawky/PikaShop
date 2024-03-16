@@ -11,16 +11,7 @@ namespace PikaShop.Data.Contracts.Repositories
 
    
     {
-        // Naming Convension
-        // Select... => Get...
-        // SelectBy{instance attribute} => GetBy{instance attribute}
-        // SelectBy{Other instance attribute} => GetBy{Other instance attribute}
-        // ex: SelectCategoryByDeparmentName => GetCategoryByDeparmentName
-        // when implementing this interface :Get{EntityName}{target}
-        // GetInclude(string relationship)
-        // Update... => Update...
-        // Delete... => Delete...
-        // DeleteRange
+        
 
 
         IQueryable<TEntity> GetAll();
