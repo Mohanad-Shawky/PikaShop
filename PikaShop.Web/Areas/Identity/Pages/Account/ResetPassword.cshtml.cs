@@ -11,14 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUserEntity> _userManager;
 
-        public ResetPasswordModel(UserManager<IdentityUser> userManager)
+        public ResetPasswordModel(UserManager<ApplicationUserEntity> userManager)
         {
             _userManager = userManager;
         }
@@ -99,6 +100,14 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             {
                 // Don't reveal that the user does not exist
                 return RedirectToPage("./ResetPasswordConfirmation");
+            }
+            
+
+            // Check if the Password already exists !!
+            if (await _userManager.CheckPasswordAsync(user, Input.Password))
+            {
+                ModelState.AddModelError(string.Empty, "The new password should be different from the old password");
+                return Page();
             }
 
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);

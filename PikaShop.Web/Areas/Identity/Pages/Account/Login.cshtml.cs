@@ -21,12 +21,14 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUserEntity> _signInManager;
+        private readonly UserManager<ApplicationUserEntity> _userManager;  // Added UserManager
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUserEntity> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUserEntity> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUserEntity> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this._userManager = userManager;
         }
 
         /// <summary>
@@ -112,6 +114,13 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "You must confirm your email before logging in.");
+                    return Page();
+                }
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -132,10 +134,10 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    if (!_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
@@ -168,6 +170,53 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
+
+
+        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
+        {
+            /*
+             *  Provide Mail Address From Elasticmail
+             * 
+             *  get Mail subject, email as an input, confirmlink which is encrypted
+             *  
+             *  smtpPort 2525 , Host from ElasticEmail
+             *  
+             *  Elastic Account
+             *  Email    : Pikashop8879@gmail.com
+             *  Password : PikaShop@2024ITI.com
+             *  
+             *  Service Credentials
+             *  UserName : PikaShop8879@gmail.com
+             *  Password : 98345F46C390A3F184737C9F3C048420DB26
+             *  
+             */
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient();
+                message.From = new MailAddress("PikaShop8879@gmail.com");
+                message.To.Add(email);
+                message.Subject = subject;
+                message.IsBodyHtml = true;
+                message.Body = confirmLink;
+
+                smtpClient.Port = 2525;
+                smtpClient.Host = "smtp.elasticemail.com";
+
+
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("PikaShop8879@gmail.com", "98345F46C390A3F184737C9F3C048420DB26");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(message);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
         private IUserEmailStore<ApplicationUserEntity> GetEmailStore()
         {

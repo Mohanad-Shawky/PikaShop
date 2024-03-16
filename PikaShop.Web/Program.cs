@@ -33,10 +33,6 @@ namespace PikaShop.Web
             .UseLazyLoadingProxies()
             .UseSqlServer(connectionString, b => b.MigrationsAssembly("PikaShop.Web")));
 
-
-
-
-
             #endregion
 
             #region Identity Configuration
@@ -45,7 +41,7 @@ namespace PikaShop.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddUserManager<UserManager<ApplicationUserEntity>>()
                 .AddSignInManager<SignInManager<ApplicationUserEntity>>()
-                .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>().AddDefaultUI();//.AddUserConfirmation<ApplicationUserEntity>();
+                .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>().AddDefaultUI().AddDefaultTokenProviders();//.AddUserConfirmation<ApplicationUserEntity>();
             builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
             #endregion
 
@@ -62,8 +58,6 @@ namespace PikaShop.Web
             // MVC Configuration
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
-
-
 
                 var app = builder.Build();
 
