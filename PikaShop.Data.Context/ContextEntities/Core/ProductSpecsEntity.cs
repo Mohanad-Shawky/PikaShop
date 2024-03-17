@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.ContextEntities.Core
 {
-    public class ProductSpecsEntity:Specification, IEntityCreatedAt, IEntitySoftDelete
+    public class ProductSpecsEntity:ProductSpecification, IEntityCreatedAt, IEntitySoftDelete
     {
         public int Id;
         public int? ProductId;
