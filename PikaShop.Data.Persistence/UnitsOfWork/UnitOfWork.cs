@@ -1,4 +1,5 @@
-﻿using PikaShop.Data.Contracts.Repositories;
+﻿using PikaShop.Data.Context;
+using PikaShop.Data.Contracts.Repositories;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.Repositories;
 using System;
@@ -9,24 +10,37 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.UnitsOfWork
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        public ICategoryRepository CategoryRepository { get; }
+        protected ApplicationDbContext context;
 
-        public IDepartmentRepository DepartmentRepository { get; }
+        public ICategoryRepository Categories { get; }
 
-        public IProductRepository ProductRepository { get; }
+        public IDepartmentRepository Departments { get; }
 
-        public UnitOfWork(ICategoryRepository _categoryRepo, IDepartmentRepository _departmentRepo, IProductRepository _productRepo)
+        public IProductRepository Products { get; }
+       
+        public ICategorySpecsRepository CategorySpecs { get; }
+        
+        public IProductSpecsRepository ProductSpecs { get; }
+
+
+        
+        public UnitOfWork(ApplicationDbContext _context)
         {
-            CategoryRepository = _categoryRepo;
-            DepartmentRepository = _departmentRepo;
-            ProductRepository = _productRepo;
+            context = _context;
+            Categories = new CategoryRepository(context);
+            Departments = new DepartmentRepository(context);
+            Products = new ProductRepository(context);
+            CategorySpecs = new CategorySpecsRepository(context);         
+            ProductSpecs = new ProductSpecsRepository(context);
         }
 
-
-<<<<<<< Updated upstream
-=======
+        public int Save()
+        {
+            return context.SaveChanges();
+        }
+        
         public Task<int> SaveAsync()
         {
             return context.SaveChangesAsync();
@@ -36,6 +50,5 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         { 
              context.Dispose();
         }
->>>>>>> Stashed changes
     }
 }
