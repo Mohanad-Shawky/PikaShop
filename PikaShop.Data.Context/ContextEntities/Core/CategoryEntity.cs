@@ -15,8 +15,11 @@ namespace PikaShop.Data.Context.ContextEntities.Core
         public int? DepartmentId { get; set; }
         public virtual DepartmentEntity? Department { get; set; }
         public virtual ICollection<ProductEntity>? Products { get; set; }
+        public virtual ICollection<CategorySpecsEntity>? CategorySpecs { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }
+        
+
     }
 }

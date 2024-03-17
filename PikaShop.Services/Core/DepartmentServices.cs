@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Services.Core
 {
-    public class DepartmentServices :IDepartmentServices
+    public class DepartmentServices : Contracts.IDepartmentServices
     {
         public IUnitOfWork UnitOfWork { get; set; }
 

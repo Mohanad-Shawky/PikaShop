@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Contracts.Repositories
 {
-    public interface ICategoryRepository :
-        IRepository<CategoryEntity , int>,
-        ISoftDelete<CategoryEntity, int>,
-        IUpdate<CategoryEntity, int>
+    public interface ICategorySpecsRepository:
+        IRepository<CategorySpecsEntity, int>,
+        ISoftDelete<CategorySpecsEntity, int>,
+        IUpdate<CategorySpecsEntity, int>
     {
     }
 }

@@ -7,36 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
+using PikaShop.Services.Contracts;
+using PikaShop.Services.Core;
 
 namespace PikaShop.Web.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IProductServices productServices;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(IProductServices _productService)
         {
-            _context = context;
+            productServices = _productService;
         }
 
         // GET: Product
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            return View(productServices.UnitOfWork.Products.GetAll());
         }
 
         // GET: Product/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var productEntity = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
                 return NotFound();
@@ -48,41 +46,42 @@ namespace PikaShop.Web.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description");
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description");
             return View();
         }
 
         // POST: Product/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /*[Bind("CategoryId,CreatedAt,IsDeleted,DeletedAt,Id,Name,Description,Price,UnitsInStock")]*/
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,CreatedAt,IsDeleted,DeletedAt,Id,Name,Description,Price,UnitsInStock")] ProductEntity productEntity)
+
+        public IActionResult Create( ProductEntity entity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(productEntity);
-                await _context.SaveChangesAsync();
+                productServices.UnitOfWork.Products.Create(entity);
+                productServices.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", productEntity.CategoryId);
-            return View(productEntity);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", entity.CategoryId);
+            return View(entity);
         }
 
         // GET: Product/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var productEntity = await _context.Products.FindAsync(id);
+            var productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", productEntity.CategoryId);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryId);
             return View(productEntity);
         }
 
@@ -91,7 +90,7 @@ namespace PikaShop.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CreatedAt,IsDeleted,DeletedAt,Id,Name,Description,Price,UnitsInStock")] ProductEntity productEntity)
+        public IActionResult Edit(int id,  ProductEntity productEntity)
         {
             if (id != productEntity.Id)
             {
@@ -102,8 +101,8 @@ namespace PikaShop.Web.Controllers
             {
                 try
                 {
-                    _context.Update(productEntity);
-                    await _context.SaveChangesAsync();
+                    productServices.UnitOfWork.Products.UpdateById(id, productEntity);
+                    productServices.UnitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,21 +117,19 @@ namespace PikaShop.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Description", productEntity.CategoryId);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryId);
             return View(productEntity);
         }
 
         // GET: Product/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productEntity = await _context.Products
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            ProductEntity productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
                 return NotFound();
@@ -144,21 +141,18 @@ namespace PikaShop.Web.Controllers
         // POST: Product/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var productEntity = await _context.Products.FindAsync(id);
-            if (productEntity != null)
-            {
-                _context.Products.Remove(productEntity);
-            }
+            productServices.UnitOfWork.Products.DeleteById(id);
+            productServices.UnitOfWork.Save();
 
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductEntityExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return productServices.UnitOfWork.Products.GetAll().Any(p => p.Id == id);
         }
     }
 }

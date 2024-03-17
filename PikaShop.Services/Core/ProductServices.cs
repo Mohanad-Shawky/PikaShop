@@ -9,15 +9,14 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Services.Core
 {
-    public class CategoryServices : ICategoryServices
+    public class ProductServices : IProductServices
     {
         public IUnitOfWork UnitOfWork { get; set; }
 
-        public CategoryServices(IUnitOfWork _uow)
+        public ProductServices(IUnitOfWork _uow)
         {
             UnitOfWork = _uow;
         }
     }
-
-
 }
+

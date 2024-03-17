@@ -9,10 +9,14 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
 {
     public interface IUnitOfWork
     {
-        ICategoryRepository CategoryRepository { get; }
-        IDepartmentRepository DepartmentRepository { get; }
-        IProductRepository ProductRepository { get; }
+        ICategoryRepository Categories { get; }
+        IDepartmentRepository Departments { get; }
+        IProductRepository Products { get; }
+        ICategorySpecsRepository CategorySpecs { get; }
+        IProductSpecsRepository ProductSpecs { get; }
 
-       
+        int Save();
+
+        Task<int> SaveAsync();
     }
 }

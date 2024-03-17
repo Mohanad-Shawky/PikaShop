@@ -11,14 +11,9 @@ namespace PikaShop.Data.Context.ContextEntities.Core
 {
     public class CategorySpecsEntity:CategorySpecification, IEntityCreatedAt, IEntitySoftDelete
     {
-<<<<<<< Updated upstream
         public int Id;
+        public int CategoryId;
         public bool Searchable;
-        public int? CategoryId;
-=======
-        public int Id { get; set; }
-        public int CategoryId { get; set; }
->>>>>>> Stashed changes
         public virtual CategoryEntity? Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
