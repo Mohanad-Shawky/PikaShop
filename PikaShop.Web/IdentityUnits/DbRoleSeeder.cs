@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿#nullable enable
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Context.Enums;
@@ -29,7 +31,7 @@ namespace PikaShop.Web.IdentityUnits
                 await roleManager.CreateAsync(new ApplicationUserRoleEntity("Delivery"));
                 await roleManager.CreateAsync(new ApplicationUserRoleEntity("SuperAdmin"));
 
-                // creating admin in code to be secure. 
+                // creating admin in code to be secure.
 
                 var user = new ApplicationUserEntity
                 {
@@ -57,7 +59,7 @@ namespace PikaShop.Web.IdentityUnits
                 }
 
                 /* If the email doesn't exist we will make a new account
-            
+
                  */
             }
         }

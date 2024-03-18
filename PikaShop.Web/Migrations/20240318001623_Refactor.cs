@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PikaShop.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class init3 : Migration
+    public partial class Refactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -230,6 +230,31 @@ namespace PikaShop.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CategorySpecification",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "Date", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "Date", nullable: true),
+                    Key = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Searchable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CategorySpecification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CategorySpecification_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
@@ -260,7 +285,7 @@ namespace PikaShop.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "Date", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "Date", nullable: true),
@@ -271,31 +296,7 @@ namespace PikaShop.Web.Migrations
                 {
                     table.PrimaryKey("PK_ProductSpecification", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductSpecification_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductSpecifications",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "Date", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "Date", nullable: true),
-                    Key = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(50)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSpecifications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProductSpecifications_Products_ProductId",
+                        name: "FK_ProductSpecification_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -352,18 +353,18 @@ namespace PikaShop.Web.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategorySpecification_CategoryId",
+                table: "CategorySpecification",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSpecification_CategoryId",
+                name: "IX_ProductSpecification_ProductId",
                 table: "ProductSpecification",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSpecifications_ProductId",
-                table: "ProductSpecifications",
                 column: "ProductId");
         }
 
@@ -389,10 +390,10 @@ namespace PikaShop.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ProductSpecification");
+                name: "CategorySpecification");
 
             migrationBuilder.DropTable(
-                name: "ProductSpecifications");
+                name: "ProductSpecification");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

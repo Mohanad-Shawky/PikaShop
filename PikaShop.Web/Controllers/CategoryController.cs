@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,11 +31,6 @@ namespace PikaShop.Web.Controllers
         // GET: Category/Details/5
         public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var categoryEntity = categoryServices.UnitOfWork.Categories.GetById(id);
             if (categoryEntity == null)
             {
@@ -51,10 +48,10 @@ namespace PikaShop.Web.Controllers
             return View();
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  IActionResult Create( 
+        public  IActionResult Create(
         CategoryEntity entity)
         {
             if (ModelState.IsValid)
@@ -70,10 +67,6 @@ namespace PikaShop.Web.Controllers
         // GET: Category/Edit/5
         public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var categoryEntity = categoryServices.UnitOfWork.Categories.GetById(id);
             if (categoryEntity == null)
@@ -89,7 +82,7 @@ namespace PikaShop.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, 
+        public IActionResult Edit(int id,
         CategoryEntity categoryEntity)
         {
             if (id != categoryEntity.Id)
@@ -119,12 +112,7 @@ namespace PikaShop.Web.Controllers
         // GET: Category/Delete/5
         public  IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            CategoryEntity categoryEntity = categoryServices.UnitOfWork.Categories.GetById(id);
+            CategoryEntity? categoryEntity = categoryServices.UnitOfWork.Categories.GetById(id);
             if (categoryEntity == null)
             {
                 return NotFound();
@@ -145,6 +133,6 @@ namespace PikaShop.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,10 +32,6 @@ namespace PikaShop.Web.Controllers
         // GET: Product/Details/5
         public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
@@ -72,10 +70,6 @@ namespace PikaShop.Web.Controllers
         // GET: Product/Edit/5
         public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
@@ -124,12 +118,7 @@ namespace PikaShop.Web.Controllers
         // GET: Product/Delete/5
         public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            ProductEntity productEntity = productServices.UnitOfWork.Products.GetById(id);
+            ProductEntity? productEntity = productServices.UnitOfWork.Products.GetById(id);
             if (productEntity == null)
             {
                 return NotFound();

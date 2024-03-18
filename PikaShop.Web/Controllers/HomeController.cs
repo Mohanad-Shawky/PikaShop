@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Web.Models;

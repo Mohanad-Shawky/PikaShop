@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace PikaShop.Web.Models
 {
     public class ErrorViewModel

@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.ContextEntities.Core
 {
-    public class CategorySpecsEntity:CategorySpecification, IEntityCreatedAt, IEntitySoftDelete
+    public class CategorySpecsEntity : CategorySpecification, IEntityCreatedAt, IEntitySoftDelete
     {
-        public int Id;
-        public int CategoryId;
-        public bool Searchable;
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
         public virtual CategoryEntity? Category { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }

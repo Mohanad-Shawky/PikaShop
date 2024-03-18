@@ -1,4 +1,5 @@
-﻿using PikaShop.Data.Context.ContextEntities.Identity;
+﻿#nullable disable
+using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.AdminPanel.ViewModel
 {

@@ -12,8 +12,8 @@ using PikaShop.Data.Context;
 namespace PikaShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240316035416_init3")]
-    partial class init3
+    [Migration("20240318001623_Refactor")]
+    partial class Refactor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,9 @@ namespace PikaShop.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("Searchable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
@@ -195,7 +198,7 @@ namespace PikaShop.Web.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductSpecification", (string)null);
+                    b.ToTable("CategorySpecification", (string)null);
                 });
 
             modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Core.DepartmentEntity", b =>
@@ -301,7 +304,7 @@ namespace PikaShop.Web.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductSpecifications", (string)null);
+                    b.ToTable("ProductSpecification", (string)null);
                 });
 
             modelBuilder.Entity("PikaShop.Data.Context.ContextEntities.Identity.ApplicationUserEntity", b =>

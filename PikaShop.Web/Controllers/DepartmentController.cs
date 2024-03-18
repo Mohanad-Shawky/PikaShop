@@ -1,26 +1,23 @@
+#nullable enable
 
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace PikaShop.Web.Controllers
 {
     public class DepartmentController : Controller
     {
-        
+
        private IDepartmentServices departmentServices { get; }
 
         public DepartmentController(IDepartmentServices _depServ)
         {
             departmentServices = _depServ;
-            
+
         }
         public ActionResult Index()
         {
@@ -50,11 +47,11 @@ namespace PikaShop.Web.Controllers
                 departmentServices.UnitOfWork.Departments.Create(entity);
                 departmentServices.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
-           
+
             }
-           
+
                 return View();
-            
+
         }
 
         // GET: DepartmentController/Edit/5
@@ -77,8 +74,8 @@ namespace PikaShop.Web.Controllers
                 departmentServices.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-            
-            
+
+
             return View();
         }
 
@@ -106,7 +103,7 @@ namespace PikaShop.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
                 return View();
-          
+
         }
     }
 }

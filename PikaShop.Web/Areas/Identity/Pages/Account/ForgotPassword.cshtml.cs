@@ -88,23 +88,25 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             return Page();
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             /*
              *  Provide Mail Address From Elasticmail
-             * 
+             *
              *  get Mail subject, email as an input, confirmlink which is encrypted
-             *  
+             *
              *  smtpPort 2525 , Host from ElasticEmail
-             *  
+             *
              *  Elastic Account
              *  Email    : Pikashop8879@gmail.com
              *  Password : PikaShop@2024ITI.com
-             *  
+             *
              *  Service Credentials
              *  UserName : PikaShop8879@gmail.com
              *  Password : 98345F46C390A3F184737C9F3C048420DB26
-             *  
+             *
              */
             try
             {

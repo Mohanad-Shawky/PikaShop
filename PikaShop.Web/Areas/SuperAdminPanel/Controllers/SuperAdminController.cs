@@ -1,4 +1,6 @@
-﻿using Castle.Core.Resource;
+﻿#nullable enable
+
+using Castle.Core.Resource;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,17 +21,15 @@ namespace PikaShop.Web.Areas.AdminPanel.Controllers
     {
         readonly UserManager<ApplicationUserEntity> _userManager;
         readonly RoleManager<ApplicationUserRoleEntity> _roleManager;
-        //readonly UnitOfWork _unitOfWork;
 
 
-        public SuperAdminController(UserManager<ApplicationUserEntity> userManager, RoleManager<ApplicationUserRoleEntity> roleManager)//UnitOfWork unitOfWork,)
+        public SuperAdminController(UserManager<ApplicationUserEntity> userManager, RoleManager<ApplicationUserRoleEntity> roleManager)
         {
-            //_unitOfWork = unitOfWork;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        public async Task<ActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -61,7 +61,7 @@ namespace PikaShop.Web.Areas.AdminPanel.Controllers
                 await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
                 // Assign user to selected role
-                var result = await _userManager.AddToRoleAsync(user, role.Name);
+                var result = await _userManager.AddToRoleAsync(user, role.Name ?? throw new ArgumentNullException("Role name cannot be null"));
 
                 if (result.Succeeded)
                 {

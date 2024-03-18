@@ -15,6 +15,8 @@ using PikaShop.Web.IdentityUnits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Google;
 using System.Configuration;
+using PikaShop.Data.Contracts.Repositories;
+using PikaShop.Data.Persistence.Repositories;
 
 namespace PikaShop.Web
 {
@@ -44,47 +46,45 @@ namespace PikaShop.Web
                 .AddSignInManager<SignInManager<ApplicationUserEntity>>()
                 .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>().AddDefaultUI().AddDefaultTokenProviders();//.AddUserConfirmation<ApplicationUserEntity>();
             builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
+
+            //builder.Services.AddScoped<UserManager<ApplicationUserEntity>>();
+            //builder.Services.AddScoped<RoleManager<ApplicationUserRoleEntity>>();
             #endregion
 
             #region External Logins
             builder.Services.AddAuthentication()
             .AddMicrosoftAccount(microsoftOptions =>
             {
-                microsoftOptions.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
+                microsoftOptions.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"] ?? throw new ArgumentNullException("Microsoft Client Id can not be null");
+                microsoftOptions.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"] ?? throw new ArgumentNullException("Microsoft Client Secret can not be null");
             }).AddGoogle(options =>
             {
-                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new ArgumentNullException("Google Client Id can not be null");
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new ArgumentNullException("Google Client Secret can not be null");
             }).AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-            }); 
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? throw new ArgumentNullException("Facebook Application Id can not be null");
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? throw new ArgumentNullException("Facebook Application Secret can not be null");
+            });
             #endregion
 
             #region Custom Service Configuration
             // Service Injection
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
-            builder.Services.AddScoped<UserManager<ApplicationUserEntity>>();
-            builder.Services.AddScoped<RoleManager<ApplicationUserRoleEntity>>();
-
-
             #endregion
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            #region MVC Configuration
             // MVC Configuration
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+            #endregion
 
-            builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
-            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
-            builder.Services.AddScoped<IProductRepository,ProductRepository>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 
@@ -94,11 +94,13 @@ namespace PikaShop.Web
                 app.UseMigrationsEndPoint();
                 app.UseDeveloperExceptionPage();
 
-                    //DbRoleSeeder.SeedRolesAndAdminAsync();
-                    // Seed Database for Development
-                    ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
+                #region Database Development Seeding
+                //DbRoleSeeder.SeedRolesAndAdminAsync();
+                // Seed Database for Development
+                ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
                 UnitOfWork unitOfWork = new UnitOfWork(contextFactory.CreateDbContext([""]));
                 unitOfWork.EnsureSeedDataForContext();
+                #endregion
             }
             else
             {
@@ -122,9 +124,11 @@ namespace PikaShop.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-
+            #region Identity Seeding
+            // Identity Seeding
             using (var scope = app.Services.CreateScope())
                 await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+            #endregion
 
 
             app.Run();

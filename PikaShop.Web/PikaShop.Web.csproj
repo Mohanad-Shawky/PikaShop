@@ -2,10 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-PikaShop.Web-1bbbe2fb-eb81-4b63-9810-9772da68fa02</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\SuperAdminPanel\Models\**" />
+    <Content Remove="Areas\SuperAdminPanel\Models\**" />
+    <EmbeddedResource Remove="Areas\SuperAdminPanel\Models\**" />
+    <None Remove="Areas\SuperAdminPanel\Models\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
@@ -33,10 +40,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PikaShop.Services\PikaShop.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\SuperAdminPanel\Models\" />
   </ItemGroup>
 
 </Project>
