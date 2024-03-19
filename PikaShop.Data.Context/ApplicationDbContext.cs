@@ -23,7 +23,8 @@ namespace PikaShop.Data.Context
             modelBuilder.ApplyConfiguration(new AdminEntityConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DeliveryPersonEntityConfiguration());
-
+            modelBuilder.ApplyConfiguration(new CartEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new CartItemEntityConfiguration());
             #endregion
 
             #region Core Configuration
@@ -34,7 +35,8 @@ namespace PikaShop.Data.Context
             modelBuilder.ApplyConfiguration(new ProductEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ProductSpecsEntityConfiguration());
             modelBuilder.ApplyConfiguration(new CategorySpecsEntityConfiguration());
-
+            modelBuilder.ApplyConfiguration(new CartEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new CartItemEntityConfiguration());
 
             #endregion
 
@@ -47,7 +49,8 @@ namespace PikaShop.Data.Context
         public virtual DbSet<ProductEntity> Products { get; set; }
         public virtual DbSet<ProductSpecsEntity> ProductSpecs { get; set; }
         public virtual DbSet<CategorySpecsEntity> CategorySpecs { get; set; }
-
+        public virtual DbSet<CartEntity> carts { get; set; }
+        public virtual DbSet<CartItemEntity> CartItems { get; set; }
     }
 
 }

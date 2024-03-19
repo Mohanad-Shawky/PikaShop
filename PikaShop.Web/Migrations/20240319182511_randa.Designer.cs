@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PikaShop.Data.Context;
 
@@ -11,9 +12,11 @@ using PikaShop.Data.Context;
 namespace PikaShop.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319182511_randa")]
+    partial class randa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,10 +299,6 @@ namespace PikaShop.Web.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Img")
-                        .HasColumnType("varchar(500)")
-                        .HasAnnotation("Regular Expression", "[unsplash]{1}");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
