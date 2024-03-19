@@ -23,9 +23,10 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         public ICategorySpecsRepository CategorySpecs { get; }
         
         public IProductSpecsRepository ProductSpecs { get; }
+        public ICartRepository Carts { get; }
 
 
-        
+
         public UnitOfWork(ApplicationDbContext _context)
         {
             context = _context;
@@ -34,6 +35,7 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             Products = new ProductRepository(context);
             CategorySpecs = new CategorySpecsRepository(context);         
             ProductSpecs = new ProductSpecsRepository(context);
+            Carts = new CartRepository(context);
         }
 
         public int Save()
