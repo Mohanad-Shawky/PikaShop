@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Context.ContextEntities.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,8 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
             builder.Property(p => p.CreatedAt).HasColumnType("Date");
             builder.Property(p => p.DeletedAt).HasColumnType("Date");
             builder.Property(p => p.IsDeleted).HasColumnType("bit");
+            builder.Property(p => p.Img).HasColumnType("varchar(500)").HasAnnotation("Regular Expression", "[unsplash]{1}"
+                );
             //builder.Property(p => p.Specifications).HasColumnType("nvarchar(500)").IsRequired();
 
             // Other Configuration

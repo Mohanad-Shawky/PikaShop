@@ -1,0 +1,21 @@
+﻿@* @model  *@
+
+<article class="accordion-item">
+    <header class="accordion-header" id="deptHeading-@Model.Id">
+        <h3 class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@Model.Id">
+            @Model.Name
+        </h3>
+    </header>
+    <div id="collapse-@Model.Id" class="accordion-collapse collapse" aria-labelledby="deptHeading-@Model.Id" data-bs-parent="#departmentsAccordion">
+        <div class="accordion-body">
+            <ul class="list-group list-group-flush">
+                @foreach (var category in Model.Categories)
+                {
+                    <li class="list-group-item" aria-current="true">
+                        <a class="btn btn-outline-secondary" asp-controller="CustomerProducts" asp-action="Index" asp-route-catId="@category.Id">@category.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</article>

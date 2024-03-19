@@ -1,0 +1,114 @@
+﻿@model List<PikaShop.Web.ViewModels.ProductViewModel>;
+
+@{
+    var Departments = ViewBag.Departments;
+    var img = "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+}
+
+<style>
+    h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0; 
+    }
+</style>
+<div class="container">
+    <div class="row">
+        @*  Filters Section *@
+        <div class="col-lg-3">
+            <div>
+                <div class="container">
+                    <section>
+                        <h2 class="text-decoration-underline text-lg fw-bolder mb-4 p-3">Departments</h2>
+                        <div class="accordion" id="departmentsAccordion">
+                            @foreach (var dept in Departments)
+                            {
+                               <partial name="_partialCategories" model="@dept"/>
+                            }
+                        </div>
+                    </section>
+                </div>
+               
+                
+                @*   Add more categories and brands here   *@
+            </div>
+        </div>
+
+
+        @* {/* Product Section */} *@
+
+            <div class="col-lg-9 ">
+            <div class="container mt-5">
+                <form class="d-flex" asp-action="Search" asp-controller="CustomerProducts" method="get">
+                    <input id="SearchInput" class="form-control me-2" type="search" name="searchKeyword" placeholder="Search here" aria-label="Search">
+                    <button id="SearchBtn" class="btn btn-primary px-2" type="submit">
+                            Search
+                    </button>
+                </form>
+            </div>
+        @if (Model.Count > 0)
+        {
+                <div class="row">
+                    @* Product Cards  *@
+                    @foreach (var item in Model)
+                    {
+
+                      <partial name="_partialProductItem" model="@item"/>
+                    }
+
+            </div>
+        }else
+        {
+            <h1 style="">No Products Were Found!</h1>
+        }
+                </div>
+    </div>
+            </div>
+
+  <script>
+
+      document.getElementById("SearchBtn").disabled = true;
+
+    document.getElementById("SearchInput").addEventListener('input', () => {
+        document.getElementById("SearchBtn").disabled = document.getElementById("SearchInput").value.trim() === "";
+    });
+   
+
+
+    //CHild part
+
+        const removeBtns = document.querySelectorAll('.remove-btn');
+    const addBtns = document.querySelectorAll('.add-btn');
+
+    removeBtns.forEach((removeBtn) => {
+
+        removeBtn.addEventListener('click', () => {
+            //to get its input
+
+            const inputId = removeBtn.getAttribute('data-input');
+            const input = document.getElementById(inputId);
+            //ensuring it doesnt exceed available Amount
+
+            input.innerText = Math.max(Number(input.innerText) - 1, 1);
+        });
+    });
+
+    // Loop over each add button in Children
+    addBtns.forEach((addBtn) => {
+        addBtn.addEventListener('click', () => {
+            //to get its input 
+            const inputId = addBtn.getAttribute('data-input');
+            const input = document.getElementById(inputId);
+            //getting maxUnitsValue in each input
+            const maxUnits = parseInt(input.getAttribute('max'));
+
+            //ensuring it doesnt exceed available Amount
+            input.innerText = Math.min(Number(input.innerText) + 1, maxUnits);
+        });
+    });
+
+
+  </script>
+

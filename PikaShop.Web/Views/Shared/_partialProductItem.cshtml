@@ -1,0 +1,19 @@
+﻿@model PikaShop.Web.ViewModels.ProductViewModel;
+<div class="col-lg-4 mb-4">
+    <div class="card">
+        <img src="@Model.Img" class="card-img-top" alt="Product" />
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">Units in Stock @Model.UnitsInStock</p>
+            <p class="card-text">Category @Model.CategoryID</p>
+            <div>
+                <button id="@Model.Id-removingBtn" data-input="@Model.Id" class="btn-danger btn remove-btn ">-</button>
+                <span id="@Model.Id" min="1" type="number" max="@Model.UnitsInStock">1</span>
+                <button id="@Model.Id-addingBtn" data-input="@Model.Id" class="btn btn-success add-btn">+</button>
+            </div>
+        </div>
+    </div>
+ </div>
+
+
+
