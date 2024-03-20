@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace PikaShop.Data.Contracts.Repositories
 {
     public interface IRepository<TEntity, TKey>
         where TEntity : class
     {
-        // Naming Convension
+        // Naming Convention
         // Select... => Get...
         // SelectBy{instance attribute} => GetBy{instance attribute}
         // SelectBy{Other instance attribute} => GetBy{Other instance attribute}
@@ -25,7 +20,6 @@ namespace PikaShop.Data.Contracts.Repositories
 
         void CreateRange(IEnumerable<TEntity> entities);
 
-
         IQueryable<TEntity> GetAll();
 
         TEntity? GetById(TKey id);
@@ -37,7 +31,5 @@ namespace PikaShop.Data.Contracts.Repositories
         void DeleteById(TKey id);
 
         void DeleteRange(IEnumerable<TEntity> entities);
-
-
     }
 }

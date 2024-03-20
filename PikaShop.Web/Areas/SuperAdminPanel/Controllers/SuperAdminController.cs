@@ -1,33 +1,24 @@
 ﻿#nullable enable
 
-using Castle.Core.Resource;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol.Plugins;
 using PikaShop.Data.Context.ContextEntities.Identity;
-using PikaShop.Data.Contracts.Repositories;
-using PikaShop.Data.Contracts.UnitsOfWork;
-using PikaShop.Data.Entities.Core;
-using PikaShop.Data.Persistence.UnitsOfWork;
 using PikaShop.Web.Areas.AdminPanel.ViewModel;
 
 namespace PikaShop.Web.Areas.AdminPanel.Controllers
 {
     [Area("SuperAdminPanel")]
     [Authorize(Roles = "SuperAdmin")]
-    public class SuperAdminController : Controller
+    public class SuperAdminController
+        (UserManager<ApplicationUserEntity> userManager,
+        RoleManager<ApplicationUserRoleEntity> roleManager)
+
+        : Controller
     {
-        readonly UserManager<ApplicationUserEntity> _userManager;
-        readonly RoleManager<ApplicationUserRoleEntity> _roleManager;
-
-
-        public SuperAdminController(UserManager<ApplicationUserEntity> userManager, RoleManager<ApplicationUserRoleEntity> roleManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
+        readonly UserManager<ApplicationUserEntity> _userManager = userManager;
+        readonly RoleManager<ApplicationUserRoleEntity> _roleManager = roleManager;
 
         public IActionResult Index()
         {
@@ -61,7 +52,7 @@ namespace PikaShop.Web.Areas.AdminPanel.Controllers
                 await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
                 // Assign user to selected role
-                var result = await _userManager.AddToRoleAsync(user, role.Name ?? throw new ArgumentNullException("Role name cannot be null"));
+                var result = await _userManager.AddToRoleAsync(user: user, role: role.Name ?? throw new ArgumentNullException("Role name cannot be null"));
 
                 if (result.Succeeded)
                 {

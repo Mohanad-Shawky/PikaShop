@@ -2,19 +2,11 @@
 using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class ProductRepository :  Repository<ProductEntity, int>, IProductRepository
+    public class ProductRepository(ApplicationDbContext context) :  Repository<ProductEntity, int>(context), IProductRepository
     {
-        public ProductRepository(ApplicationDbContext context) : base(context) { }
-
-
         public void UpdateById(int id, ProductEntity other)
         {
             ProductEntity? editedProduct = GetById(id);
@@ -25,27 +17,27 @@ namespace PikaShop.Data.Persistence.Repositories
                 editedProduct.Name = other.Name;
                 //editedProduct.Specifications = other.Specifications;
                 editedProduct.UnitsInStock = other.UnitsInStock;
-                editedProduct.CategoryId = other.CategoryId;
+                editedProduct.CategoryID = other.CategoryID;
                 editedProduct.Category = other.Category;
             }
         }
         public void Update(ProductEntity entity, ProductEntity other)
         {
-            UpdateById(entity.Id, other);
+            UpdateById(entity.ID, other);
         }
 
         public void SoftDeleteById(int id)
         {
             ProductEntity? oldPrd = GetById(id);
-            if (oldPrd != null && !oldPrd.IsDeleted)
+            if (oldPrd?.IsDeleted == false)
             {
                 oldPrd.IsDeleted = true;
-                oldPrd.DeletedAt = DateTime.Now;
+                oldPrd.DateModified = DateTime.Now;
             }
         }
         public void SoftDelete(ProductEntity entity)
         {
-            SoftDeleteById(entity.Id);
+            SoftDeleteById(entity.ID);
         }
     }
 }

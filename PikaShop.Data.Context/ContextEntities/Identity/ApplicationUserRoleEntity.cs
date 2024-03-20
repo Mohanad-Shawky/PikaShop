@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.ContextEntities.Identity
 {
@@ -11,13 +6,9 @@ namespace PikaShop.Data.Context.ContextEntities.Identity
     {
         public ApplicationUserRoleEntity() : base()
         {
-
         }
-
         public ApplicationUserRoleEntity(string rolename) : base(rolename)
         {
-
         }
-
     }
 }

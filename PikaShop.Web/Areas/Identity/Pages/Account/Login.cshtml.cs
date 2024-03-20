@@ -18,18 +18,16 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
-    {
-        private readonly SignInManager<ApplicationUserEntity> _signInManager;
-        private readonly UserManager<ApplicationUserEntity> _userManager;  // Added UserManager
-        private readonly ILogger<LoginModel> _logger;
+    public class LoginModel
+        (SignInManager<ApplicationUserEntity> signInManager,
+        ILogger<LoginModel> logger,
+        UserManager<ApplicationUserEntity> userManager)
 
-        public LoginModel(SignInManager<ApplicationUserEntity> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUserEntity> userManager)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-            this._userManager = userManager;
-        }
+        : PageModel
+    {
+        private readonly SignInManager<ApplicationUserEntity> _signInManager = signInManager;
+        private readonly UserManager<ApplicationUserEntity> _userManager = userManager;  // Added UserManager
+        private readonly ILogger<LoginModel> _logger = logger;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -129,7 +127,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {

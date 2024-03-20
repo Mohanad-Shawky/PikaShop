@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Context.Enums;
@@ -28,8 +23,8 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
 
             // Other Configuration
             builder.ToTable(t => t.HasCheckConstraint("CH_UserType",
-                $"[UserType] >= {((int)UserDiscriminator.User)} AND [UserType] <= " +
-                $"{((int) UserDiscriminator.DeliveryPerson)}"));
+                $"[UserType] >= {(int)UserDiscriminator.User} AND [UserType] <= " +
+                $"{(int)UserDiscriminator.DeliveryPerson}"));
         }
     }
 }

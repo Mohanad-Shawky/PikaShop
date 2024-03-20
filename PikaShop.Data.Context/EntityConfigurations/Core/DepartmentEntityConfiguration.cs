@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Context.ContextEntities.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
@@ -14,18 +9,31 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
         public virtual void Configure(EntityTypeBuilder<DepartmentEntity> builder)
         {
             // Mapping
-            builder.ToTable("Departments");
-            builder.HasKey(d => d.Id);
-            builder.HasMany(d => d.Categories).WithOne(c => c.Department).HasForeignKey(c => c.DepartmentId).HasPrincipalKey(d => d.Id);
+            #region Table & Primary Keys
 
+            builder.ToTable("Departments");
+            builder.HasKey(d => d.ID);
+
+            #endregion
 
             // Data
+            #region Data
+
             builder.Property(d => d.Name).HasColumnType("nvarchar(200)").IsRequired();
             builder.Property(d => d.Description).HasColumnType("nvarchar(200)").IsRequired();
-            builder.Property(d => d.CreatedAt).HasColumnType("Date");
-            builder.Property(d => d.DeletedAt).HasColumnType("Date");
-            builder.Property(d => d.IsDeleted).HasColumnType("bit");
 
+            builder.Property(d => d.IsDeleted).HasColumnType("bit").HasDefaultValue(false);
+
+            #region Audit Configuration
+
+            builder.Property<DateTime>(entity => entity.DateCreated).HasDefaultValueSql("getdate()");
+            builder.Property<DateTime>(entity => entity.DateModified).HasDefaultValueSql("getdate()");
+            builder.Property<string>(entity => entity.CreatedBy).HasDefaultValue("system");
+            builder.Property<string>(entity => entity.ModifiedBy).HasDefaultValue("system");
+
+            #endregion
+
+            #endregion
             // Other Configuration
         }
     }

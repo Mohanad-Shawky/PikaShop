@@ -10,19 +10,13 @@ using PikaShop.Data.Contracts.Repositories;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class Repository<TEntity, TKey>
+    public class Repository<TEntity, TKey>(ApplicationDbContext _context)
         : IRepository<TEntity, TKey>
         where TEntity : class
     {
+        protected ApplicationDbContext context = _context;
 
-        protected ApplicationDbContext context;
-        protected DbSet<TEntity> entities;
-
-        public Repository(ApplicationDbContext _context)
-        {
-            context = _context;
-            entities = _context.Set<TEntity>();
-        }
+        protected DbSet<TEntity> entities = _context.Set<TEntity>();
 
         #region Create
         public virtual void Create(TEntity entity)

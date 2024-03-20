@@ -1,32 +1,23 @@
 #nullable enable
 
 using Microsoft.AspNetCore.Mvc;
-using PikaShop.Data.Contracts.UnitsOfWork;
-using Microsoft.AspNetCore.Http;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Core;
 
 namespace PikaShop.Web.Controllers
 {
-    public class DepartmentController : Controller
+    public class DepartmentController(IDepartmentServices _depServ) : Controller
     {
+        private IDepartmentServices DepartmentService { get; } = _depServ;
 
-       private IDepartmentServices departmentServices { get; }
-
-        public DepartmentController(IDepartmentServices _depServ)
-        {
-            departmentServices = _depServ;
-
-        }
         public ActionResult Index()
         {
-            return View(departmentServices.UnitOfWork.Departments.GetAll());
+            return View(DepartmentService.UnitOfWork.Departments.GetAll());
         }
 
         public ActionResult Details(int id)
         {
-            return View(departmentServices.UnitOfWork.Departments.GetById(id));
+            return View(DepartmentService.UnitOfWork.Departments.GetById(id));
         }
 
         // GET: DepartmentController/Create
@@ -43,21 +34,18 @@ namespace PikaShop.Web.Controllers
             if (entity == null) return View(entity);
             if (ModelState.IsValid)
             {
-
-                departmentServices.UnitOfWork.Departments.Create(entity);
-                departmentServices.UnitOfWork.Save();
+                DepartmentService.UnitOfWork.Departments.Create(entity);
+                DepartmentService.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
-
             }
 
                 return View();
-
         }
 
         // GET: DepartmentController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View(departmentServices.UnitOfWork.Departments.GetById(id));
+            return View(DepartmentService.UnitOfWork.Departments.GetById(id));
         }
 
         // POST: DepartmentController/Edit/5
@@ -65,16 +53,13 @@ namespace PikaShop.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, DepartmentEntity entity)
         {
-
             if(entity ==null) return View();
             if (ModelState.IsValid)
             {
-
-                departmentServices.UnitOfWork.Departments.UpdateById(id, entity);
-                departmentServices.UnitOfWork.Save();
+                DepartmentService.UnitOfWork.Departments.UpdateById(id, entity);
+                DepartmentService.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-
 
             return View();
         }
@@ -97,13 +82,11 @@ namespace PikaShop.Web.Controllers
             if(entity==null)return View();
            if(ModelState.IsValid)
             {
-
-                departmentServices.UnitOfWork.Departments.DeleteById(id);
-                departmentServices.UnitOfWork.Save();
+                DepartmentService.UnitOfWork.Departments.DeleteById(id);
+                DepartmentService.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
                 return View();
-
         }
     }
 }

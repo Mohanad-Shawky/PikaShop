@@ -13,16 +13,14 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
-    public class LogoutModel : PageModel
-    {
-        private readonly SignInManager<ApplicationUserEntity> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
+    public class LogoutModel
+        (SignInManager<ApplicationUserEntity> signInManager,
+        ILogger<LogoutModel> logger)
 
-        public LogoutModel(SignInManager<ApplicationUserEntity> signInManager, ILogger<LogoutModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        : PageModel
+    {
+        private readonly SignInManager<ApplicationUserEntity> _signInManager = signInManager;
+        private readonly ILogger<LogoutModel> _logger = logger;
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {

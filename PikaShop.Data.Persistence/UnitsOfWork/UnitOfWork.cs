@@ -2,11 +2,6 @@
 using PikaShop.Data.Contracts.Repositories;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.UnitsOfWork
 {
@@ -19,13 +14,10 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         public IDepartmentRepository Departments { get; }
 
         public IProductRepository Products { get; }
-       
+
         public ICategorySpecsRepository CategorySpecs { get; }
-        
+
         public IProductSpecsRepository ProductSpecs { get; }
-        public ICartRepository Carts { get; }
-
-
 
         public UnitOfWork(ApplicationDbContext _context)
         {
@@ -33,24 +25,24 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             Categories = new CategoryRepository(context);
             Departments = new DepartmentRepository(context);
             Products = new ProductRepository(context);
-            CategorySpecs = new CategorySpecsRepository(context);         
+            CategorySpecs = new CategorySpecsRepository(context);
             ProductSpecs = new ProductSpecsRepository(context);
-            Carts = new CartRepository(context);
         }
 
         public int Save()
         {
             return context.SaveChanges();
         }
-        
+
         public Task<int> SaveAsync()
         {
             return context.SaveChangesAsync();
         }
 
         public void Dispose()
-        { 
-             context.Dispose();
+        {
+            context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

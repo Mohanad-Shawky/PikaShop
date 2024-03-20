@@ -2,24 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
@@ -102,7 +95,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -131,7 +123,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId, code, returnUrl },
                         protocol: Request.Scheme);
 
                     await SendEmailAsync(Input.Email, "Confirm your email",
@@ -139,7 +131,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
 
                     if (!_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
                     else
                     {
@@ -167,7 +159,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             {
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUserEntity)}'. " +
                     $"Ensure that '{nameof(ApplicationUserEntity)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                    "override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
@@ -194,8 +186,8 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
              */
             try
             {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
+                MailMessage message = new();
+                SmtpClient smtpClient = new();
                 message.From = new MailAddress("PikaShop8879@gmail.com");
                 message.To.Add(email);
                 message.Subject = subject;
@@ -218,7 +210,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 return false;
             }
         }
-
 
         private IUserEmailStore<ApplicationUserEntity> GetEmailStore()
         {

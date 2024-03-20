@@ -1,29 +1,18 @@
 ﻿#nullable enable
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 
 namespace PikaShop.Web.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController(ICategoryServices _categoryService) : Controller
     {
-        private readonly ICategoryServices categoryServices;
-
-        public CategoryController(ICategoryServices _categoryService)
-        {
-            categoryServices = _categoryService;
-        }
+        private readonly ICategoryServices categoryServices = _categoryService;
 
         // GET: Category
-        public  IActionResult Index()
+        public IActionResult Index()
         {
             return View(categoryServices.UnitOfWork.Categories.GetAll());
         }
@@ -48,7 +37,6 @@ namespace PikaShop.Web.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public  IActionResult Create(
@@ -67,7 +55,6 @@ namespace PikaShop.Web.Controllers
         // GET: Category/Edit/5
         public IActionResult Edit(int id)
         {
-
             var categoryEntity = categoryServices.UnitOfWork.Categories.GetById(id);
             if (categoryEntity == null)
             {
@@ -85,7 +72,7 @@ namespace PikaShop.Web.Controllers
         public IActionResult Edit(int id,
         CategoryEntity categoryEntity)
         {
-            if (id != categoryEntity.Id)
+            if (id != categoryEntity.ID)
             {
                 return NotFound();
             }
@@ -96,7 +83,6 @@ namespace PikaShop.Web.Controllers
                 {
                     categoryServices.UnitOfWork.Categories.UpdateById(id, categoryEntity);
                     categoryServices.UnitOfWork.Save();
-
                 }
                 catch (Exception)
                 {
@@ -129,10 +115,7 @@ namespace PikaShop.Web.Controllers
             categoryServices.UnitOfWork.Categories.DeleteById(id);
             categoryServices.UnitOfWork.Save();
 
-
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

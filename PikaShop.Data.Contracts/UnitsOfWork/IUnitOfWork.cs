@@ -1,9 +1,4 @@
 ﻿using PikaShop.Data.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Contracts.UnitsOfWork
 {
@@ -14,7 +9,6 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         IProductRepository Products { get; }
         ICategorySpecsRepository CategorySpecs { get; }
         IProductSpecsRepository ProductSpecs { get; }
-        ICartRepository Carts { get; }
 
         int Save();
 

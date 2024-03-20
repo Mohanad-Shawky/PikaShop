@@ -2,23 +2,14 @@
 using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
-    public class CategorySpecsRepository: Repository<CategorySpecsEntity, int>, ICategorySpecsRepository
+    public class CategorySpecsRepository(ApplicationDbContext _context) : Repository<CategorySpecsEntity, int>(_context), ICategorySpecsRepository
     {
-        public CategorySpecsRepository(ApplicationDbContext _context) : base(_context)
-        {
-        }
-
         public override IQueryable<CategorySpecsEntity> GetAll()
         {
-            return context.CategorySpecs.Where(cs => cs.IsDeleted == false).AsNoTracking();
+            return context.CategorySpecTemplates.Where(cs => !cs.IsDeleted).AsNoTracking();
         }
 
         public void UpdateById(int id, CategorySpecsEntity other)
@@ -30,23 +21,25 @@ namespace PikaShop.Data.Persistence.Repositories
                 oldCategorySpecs.Value = other.Value;
             }
         }
+
         public void Update(CategorySpecsEntity entity, CategorySpecsEntity other)
         {
-            UpdateById(entity.Id, other);
+            UpdateById(entity.ID, other);
         }
 
         public void SoftDeleteById(int id)
         {
             CategorySpecsEntity? oldCat = GetById(id);
-            if (oldCat != null && oldCat.IsDeleted == false)
+            if (oldCat?.IsDeleted == false)
             {
                 oldCat.IsDeleted = true;
-                oldCat.DeletedAt = DateTime.Now;
+                oldCat.DateModified = DateTime.Now;
             }
         }
+
         public void SoftDelete(CategorySpecsEntity entity)
         {
-            SoftDeleteById(entity.Id);
+            SoftDeleteById(entity.ID);
         }
     }
 }

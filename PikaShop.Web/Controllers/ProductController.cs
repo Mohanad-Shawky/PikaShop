@@ -1,27 +1,16 @@
 ﻿#nullable enable
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Core;
 
 namespace PikaShop.Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController(IProductServices _productService) : Controller
     {
-        private readonly IProductServices productServices;
-
-        public ProductController(IProductServices _productService)
-        {
-            productServices = _productService;
-        }
+        private readonly IProductServices productServices = _productService;
 
         // GET: Product
         public IActionResult Index()
@@ -49,9 +38,6 @@ namespace PikaShop.Web.Controllers
         }
 
         // POST: Product/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*[Bind("CategoryId,CreatedAt,IsDeleted,DeletedAt,Id,Name,Description,Price,UnitsInStock")]*/
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -63,7 +49,7 @@ namespace PikaShop.Web.Controllers
                 productServices.UnitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", entity.CategoryId);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", entity.CategoryID);
             return View(entity);
         }
 
@@ -75,18 +61,16 @@ namespace PikaShop.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryId);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryID);
             return View(productEntity);
         }
 
         // POST: Product/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id,  ProductEntity productEntity)
         {
-            if (id != productEntity.Id)
+            if (id != productEntity.ID)
             {
                 return NotFound();
             }
@@ -98,20 +82,13 @@ namespace PikaShop.Web.Controllers
                     productServices.UnitOfWork.Products.UpdateById(id, productEntity);
                     productServices.UnitOfWork.Save();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException) when (!ProductEntityExists(productEntity.ID))
                 {
-                    if (!ProductEntityExists(productEntity.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryId);
+            ViewData["CategoryId"] = new SelectList(productServices.UnitOfWork.Categories.GetAll(), "Id", "Description", productEntity.CategoryID);
             return View(productEntity);
         }
 
@@ -135,13 +112,12 @@ namespace PikaShop.Web.Controllers
             productServices.UnitOfWork.Products.DeleteById(id);
             productServices.UnitOfWork.Save();
 
-
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductEntityExists(int id)
         {
-            return productServices.UnitOfWork.Products.GetAll().Any(p => p.Id == id);
+            return productServices.UnitOfWork.Products.GetAll().Any(p => p.ID == id);
         }
     }
 }

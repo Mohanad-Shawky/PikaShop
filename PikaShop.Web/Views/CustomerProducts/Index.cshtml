@@ -2,7 +2,6 @@
 
 @{
     var Departments = ViewBag.Departments;
-    var img = "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 }
 
 <style>
@@ -11,7 +10,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        margin: 0; 
+        margin: 0;
     }
 </style>
 <div class="container">
@@ -30,8 +29,8 @@
                         </div>
                     </section>
                 </div>
-               
-                
+
+
                 @*   Add more categories and brands here   *@
             </div>
         </div>
@@ -74,7 +73,7 @@
     document.getElementById("SearchInput").addEventListener('input', () => {
         document.getElementById("SearchBtn").disabled = document.getElementById("SearchInput").value.trim() === "";
     });
-   
+
 
 
     //CHild part
@@ -98,7 +97,7 @@
     // Loop over each add button in Children
     addBtns.forEach((addBtn) => {
         addBtn.addEventListener('click', () => {
-            //to get its input 
+            //to get its input
             const inputId = addBtn.getAttribute('data-input');
             const input = document.getElementById(inputId);
             //getting maxUnitsValue in each input

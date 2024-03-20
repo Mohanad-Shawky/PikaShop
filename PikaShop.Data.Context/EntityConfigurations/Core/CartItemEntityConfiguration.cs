@@ -1,18 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PikaShop.Data.Entities.Core;
 using PikaShop.Data.Context.ContextEntities.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PikaShop.Data.Context.ContextEntities.Core;
-using System;
-using System.Reflection.Emit;
-using Stripe;
 using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Core
@@ -21,18 +9,44 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
     {
         public virtual void Configure(EntityTypeBuilder<CartItemEntity> builder)
         {
-
-
             // Mapping
-            builder.ToTable("CartItem");
-            builder.HasKey(nameof(CartItemEntity.ProductId), nameof(CartItemEntity.CartId)).HasName("PK_CartItemId");
-            builder.HasOne<ProductEntity>(c => c.Product).WithMany().HasForeignKey(c => c.ProductId);
-            builder.HasOne<CartEntity>(c => c.Cart).WithMany(cart=>cart.CartItems).HasForeignKey(c => c.CartId);
+            #region Table & Primary Keys
 
+            builder.ToTable("CartItems");
+            builder.HasKey(nameof(CartItemEntity.ProductID), nameof(CartItemEntity.CustomerID));
 
+            #endregion
 
+            #region Relationships
 
+            // Relationship with Product
+            builder.HasOne<ProductEntity>(c => c.Product)
+                .WithMany()
+                .HasForeignKey(c => c.ProductID)
+                .HasPrincipalKey(product => product.ID)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // Relationship with Customer
+            builder.HasOne<CustomerEntity>(cartItem => cartItem.Customer)
+                .WithMany(customer => customer.Cart)
+                .HasForeignKey(cartItem => cartItem.CustomerID)
+                .HasPrincipalKey(customer => customer.Id)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
+
+            // Data
+
+            #region Audit Configuration
+
+            builder.Property<DateTime>(entity => entity.DateCreated).HasDefaultValueSql("getdate()");
+            builder.Property<DateTime>(entity => entity.DateModified).HasDefaultValueSql("getdate()");
+            builder.Property<string>(entity => entity.CreatedBy).HasDefaultValue("system");
+            builder.Property<string>(entity => entity.ModifiedBy).HasDefaultValue("system");
+
+            #endregion
 
             // Other Configuration
         }

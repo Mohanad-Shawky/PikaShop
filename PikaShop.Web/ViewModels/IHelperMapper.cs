@@ -4,28 +4,17 @@ namespace PikaShop.Web.ViewModels
 {
     static class IHelperMapper
     {
-        //public static DepartmentViewModel DepartmentMapper(DepartmentEntity entity)
-        //{
-        //    DepartmentViewModel department = new DepartmentViewModel()
-        //    {
-
-        //    };
-
-        //}
-
         public static ProductViewModel ProductViewMapper(ProductEntity entity)
         {
-
-            ProductViewModel ProductVM = new ProductViewModel()
+            ProductViewModel ProductVM = new()
             {
                 Name = entity.Name,
-                Id = entity.Id,
+                Id = entity.ID,
                 Img = entity.Img,
-                CategoryID = entity.CategoryId,
+                CategoryID = entity.CategoryID,
                 UnitsInStock = entity.UnitsInStock,
             };
             return ProductVM;
         }
-
     }
 }

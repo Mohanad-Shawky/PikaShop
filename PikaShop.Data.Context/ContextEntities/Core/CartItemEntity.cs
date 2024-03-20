@@ -1,33 +1,18 @@
-﻿using PikaShop.Data.Context.Contracts;
-using PikaShop.Data.Contracts;
-using PikaShop.Data.Entities.Core;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
- 
+﻿using PikaShop.Data.Entities.Core;
+using PikaShop.Data.Context.Contracts;
 using PikaShop.Data.Context.ContextEntities.Identity;
- 
-
 
 namespace PikaShop.Data.Context.ContextEntities.Core
 {
-    public class CartItemEntity  
+    public class CartItemEntity : CartItem, IProductItem
     {
+        public int ProductID { get; set; }
 
-     
-        public int ProductId { get; set; }
-
-       
-        public int CartId { get; set; }
+        public int CustomerID { get; set; }
 
         // Navigation properties
-        public virtual ProductEntity Product { get; set; }
+        public virtual ProductEntity Product { get; set; } = default!;
 
-        public virtual CartEntity Cart { get; set; }
-
+        public virtual CustomerEntity Customer { get; set; } = default!;
     }
 }

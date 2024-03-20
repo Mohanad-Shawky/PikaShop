@@ -1,6 +1,4 @@
 ﻿namespace PikaShop.Web.ViewModels
 {
-    public class DepartmentViewModel
-    {
-    }
+    public class DepartmentViewModel;
 }

@@ -15,14 +15,12 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
-    public class ResetPasswordModel : PageModel
-    {
-        private readonly UserManager<ApplicationUserEntity> _userManager;
+    public class ResetPasswordModel
+        (UserManager<ApplicationUserEntity> userManager)
 
-        public ResetPasswordModel(UserManager<ApplicationUserEntity> userManager)
-        {
-            _userManager = userManager;
-        }
+        : PageModel
+    {
+        private readonly UserManager<ApplicationUserEntity> _userManager = userManager;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -69,7 +67,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             public string Code { get; set; }
-
         }
 
         public IActionResult OnGet(string code = null)
@@ -101,7 +98,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 // Don't reveal that the user does not exist
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
-            
 
             // Check if the Password already exists !!
             if (await _userManager.CheckPasswordAsync(user, Input.Password))

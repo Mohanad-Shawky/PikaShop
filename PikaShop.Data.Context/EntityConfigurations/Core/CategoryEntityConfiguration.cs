@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PikaShop.Data.Context.ContextEntities.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PikaShop.Data.Context.EntityConfigurations.Core
 {
@@ -14,18 +9,43 @@ namespace PikaShop.Data.Context.EntityConfigurations.Core
         public virtual void Configure(EntityTypeBuilder<CategoryEntity> builder)
         {
             // Mapping
+
+            #region Table & Primary Keys
+
             builder.ToTable("Categories");
-            builder.HasKey(c => c.Id);
-            builder.HasOne(c => c.Department).WithMany(d => d.Categories).HasForeignKey(c => c.DepartmentId);
-            builder.HasMany(c => c.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId).HasPrincipalKey(c => c.Id);
-            builder.HasMany(c => c.CategorySpecs).WithOne(cs => cs.Category).HasForeignKey(cs => cs.CategoryId).HasPrincipalKey(c => c.Id);
+            builder.HasKey(c => c.ID);
+
+            #endregion
+
+            #region Relationships
+
+            // Relationship with Department
+            builder.HasOne(c => c.Department)
+                .WithMany(d => d.Categories)
+                .HasForeignKey(c => c.DepartmentID)
+                .HasPrincipalKey(d => d.ID)
+                .IsRequired();
+
+            #endregion
 
             // Data
+            #region Data
+
             builder.Property(c => c.Name).HasColumnType("nvarchar(50)").IsRequired();
             builder.Property(c => c.Description).HasColumnType("nvarchar(200)").IsRequired();
-            builder.Property(c => c.CreatedAt).HasColumnType("Date");
-            builder.Property(c => c.DeletedAt).HasColumnType("Date");
-            builder.Property(c => c.IsDeleted).HasColumnType("bit");
+
+            builder.Property(c => c.IsDeleted).HasColumnType("bit").HasDefaultValue(false);
+
+            #region Audit Configuration
+
+            builder.Property<DateTime>(entity => entity.DateCreated).HasDefaultValueSql("getdate()");
+            builder.Property<DateTime>(entity => entity.DateModified).HasDefaultValueSql("getdate()");
+            builder.Property<string>(entity => entity.CreatedBy).HasDefaultValue("system");
+            builder.Property<string>(entity => entity.ModifiedBy).HasDefaultValue("system");
+
+            #endregion
+
+            #endregion
 
             // Other Configuration
         }

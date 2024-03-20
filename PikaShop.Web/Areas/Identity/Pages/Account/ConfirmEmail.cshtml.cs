@@ -15,14 +15,9 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
-    public class ConfirmEmailModel : PageModel
+    public class ConfirmEmailModel(UserManager<ApplicationUserEntity> userManager) : PageModel
     {
-        private readonly UserManager<ApplicationUserEntity> _userManager;
-
-        public ConfirmEmailModel(UserManager<ApplicationUserEntity> userManager)
-        {
-            _userManager = userManager;
-        }
+        private readonly UserManager<ApplicationUserEntity> _userManager = userManager;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

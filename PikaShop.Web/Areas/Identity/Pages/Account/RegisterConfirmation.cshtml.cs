@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,16 +14,14 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterConfirmationModel : PageModel
-    {
-        private readonly UserManager<ApplicationUserEntity> _userManager;
-        private readonly IEmailSender _sender;
+    public class RegisterConfirmationModel
+        (UserManager<ApplicationUserEntity> userManager,
+        IEmailSender sender)
 
-        public RegisterConfirmationModel(UserManager<ApplicationUserEntity> userManager, IEmailSender sender)
-        {
-            _userManager = userManager;
-            _sender = sender;
-        }
+        : PageModel
+    {
+        private readonly UserManager<ApplicationUserEntity> _userManager = userManager;
+        private readonly IEmailSender _sender = sender;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -51,7 +47,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("/Index");
             }
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -72,7 +68,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 EmailConfirmationUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                    values: new { area = "Identity", userId, code, returnUrl },
                     protocol: Request.Scheme);
             }
 

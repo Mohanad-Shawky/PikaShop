@@ -2,14 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +16,12 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 
 namespace PikaShop.Web.Areas.Identity.Pages.Account
 {
-    public class ForgotPasswordModel : PageModel
+    public class ForgotPasswordModel
+        (UserManager<ApplicationUserEntity> userManager, IEmailSender emailSender)
+        : PageModel
     {
-        private readonly UserManager<ApplicationUserEntity> _userManager;
-        private readonly IEmailSender _emailSender;
-
-        public ForgotPasswordModel(UserManager<ApplicationUserEntity> userManager, IEmailSender emailSender)
-        {
-            _userManager = userManager;
-            _emailSender = emailSender;
-        }
+        private readonly UserManager<ApplicationUserEntity> _userManager = userManager;
+        private readonly IEmailSender _emailSender = emailSender;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -68,7 +61,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
 
                 // Generate Hashing to send in the confirmation Link linked to password
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-
 
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -110,8 +102,8 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
              */
             try
             {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
+                MailMessage message = new();
+                SmtpClient smtpClient = new();
                 message.From = new MailAddress("PikaShop8879@gmail.com");
                 message.To.Add(email);
                 message.Subject = subject;
@@ -121,12 +113,12 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 smtpClient.Port = 2525;
                 smtpClient.Host = "smtp.elasticemail.com";
 
-
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.Credentials = new NetworkCredential("PikaShop8879@gmail.com", "98345F46C390A3F184737C9F3C048420DB26");
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.Send(message);
+
                 return true;
             }
             catch (Exception)

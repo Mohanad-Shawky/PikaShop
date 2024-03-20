@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PikaShop.Data.Context.ContextEntities.Identity;
+﻿using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Contracts;
 using PikaShop.Data.Entities.Core;
 

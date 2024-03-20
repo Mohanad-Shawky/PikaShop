@@ -1,22 +1,12 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
 using PikaShop.Data.Context.ContextEntities.Identity;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.IdentityModel.Protocols;
 using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.Google;
-using System.Configuration;
-using PikaShop.Data.Contracts.Repositories;
-using PikaShop.Data.Persistence.Repositories;
 
 namespace PikaShop.Web
 {
@@ -77,14 +67,12 @@ namespace PikaShop.Web
             builder.Services.AddScoped<IProductServices, ProductServices>();
             #endregion
 
-
             #region MVC Configuration
             // MVC Configuration
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             #endregion
-
 
             var app = builder.Build();
 
@@ -97,8 +85,8 @@ namespace PikaShop.Web
                 #region Database Development Seeding
                 //DbRoleSeeder.SeedRolesAndAdminAsync();
                 // Seed Database for Development
-                ApplicationDbContextFactory contextFactory = new ApplicationDbContextFactory();
-                UnitOfWork unitOfWork = new UnitOfWork(contextFactory.CreateDbContext([""]));
+                ApplicationDbContextFactory contextFactory = new();
+                UnitOfWork unitOfWork = new(contextFactory.CreateDbContext([""]));
                 unitOfWork.EnsureSeedDataForContext();
                 #endregion
             }
@@ -129,7 +117,6 @@ namespace PikaShop.Web
             using (var scope = app.Services.CreateScope())
                 await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
             #endregion
-
 
             app.Run();
         }
