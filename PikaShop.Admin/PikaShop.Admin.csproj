@@ -14,14 +14,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PikaShop.Data.Context\PikaShop.Data.Context.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <ProjectReference Include="..\PikaShop.Data.Contracts\PikaShop.Data.Contracts.csproj" />
+    <ProjectReference Include="..\PikaShop.Data.Persistence\PikaShop.Data.Persistence.csproj" />
+    <ProjectReference Include="..\PikaShop.Services\PikaShop.Services.csproj" />
   </ItemGroup>
 
 </Project>
