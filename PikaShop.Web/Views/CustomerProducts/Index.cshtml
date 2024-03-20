@@ -12,6 +12,16 @@
         transform: translate(-50%, -50%);
         margin: 0;
     }
+
+    .price-range-labels::before {
+        content: "$";
+        margin-right: 2px; /* Adjust as needed */
+    }
+
+    .productUnitPrice::before{
+        content:"$";
+        margin-left:1px;
+    }
 </style>
 <div class="container">
     <div class="row">
@@ -19,6 +29,19 @@
         <div class="col-lg-3">
             <div>
                 <div class="container">
+                    <section>
+                       <form asp-action="Sort" asp-controller="CustomerProducts">
+                           <select name="sortBy">
+                                <option value="NameAscending">Name-Ascending</option>
+                                <option value="NameDescending">Name-Descending</option>
+                                <option value="PriceAscending">Price-Ascending</option>
+                                <option value="PriceDescending">Price-Descending</option>
+                           </select>
+                                <button style="btn btn-success" value="submit">sort</button>
+
+                       </form>
+
+                    </section>
                     <section>
                         <h2 class="text-decoration-underline text-lg fw-bolder mb-4 p-3">Departments</h2>
                         <div class="accordion" id="departmentsAccordion">
@@ -28,18 +51,22 @@
                             }
                         </div>
                     </section>
+                    <section class="p-3 border rounded">
+                        <partial name="_partialPriceRange" model="@maximumCurrentPrice" />
+                    </section>
                 </div>
 
 
                 @*   Add more categories and brands here   *@
             </div>
+            
         </div>
 
 
         @* {/* Product Section */} *@
 
             <div class="col-lg-9 ">
-            <div class="container mt-5">
+            <div class="container my-5">
                 <form class="d-flex" asp-action="Search" asp-controller="CustomerProducts" method="get">
                     <input id="SearchInput" class="form-control me-2" type="search" name="searchKeyword" placeholder="Search here" aria-label="Search">
                     <button id="SearchBtn" class="btn btn-primary px-2" type="submit">
@@ -108,6 +135,20 @@
         });
     });
 
+
+    //Range value Display
+    const rangeInput = document.getElementById('priceRange');
+    const rangeValue = document.getElementById('rangeValue');
+
+    // Display initial value
+    rangeValue.textContent = rangeInput.value;
+
+    // Update value when input changes
+    rangeInput.addEventListener('input', () => {
+        rangeValue.textContent = rangeInput.value;
+    });
+
+     
 
   </script>
 

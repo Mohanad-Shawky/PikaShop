@@ -1,28 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
+using PikaShop.Services.Core;
+using PikaShop.Web.Cache;
 using PikaShop.Web.ViewModels;
 
 namespace PikaShop.Web.Controllers
 {
-    public class CustomerProductsController(IProductServices _prdService) : Controller
+    public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
     {
-        private IProductServices ProductService { get; } = _prdService;
+        private IProductServices productServices { get; set; } = _prdService;
+        private CacheHelper cacheHelper { get; } = _cacheHelper;
 
+       
         [HttpGet]
         public IActionResult Index(int? catId)
         {
-           ViewBag.Departments= ProductService.UnitOfWork.Departments.GetAll().Include(d => d.Categories);
-
+          
             IQueryable<ProductEntity> prds;
-            List<ProductViewModel> prdsModel = [];
+            cacheHelper.GetDepartments(out List <DepartmentEntity> Departments);
+            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
+            ViewBag.Departments = Departments;
+            ViewBag.MaxPrice = MaxPrice;
+
+            List<ProductViewModel> prdsModel= new List<ProductViewModel>();
             if (catId ==null)
             {
-            prds= ProductService.UnitOfWork.Products.GetAll();
+            prds= productServices.UnitOfWork.Products.GetAll();
             }else
             {
-             prds = ProductService.UnitOfWork.Products.GetAll().Where(p => p.CategoryID == catId);
+             prds = productServices.UnitOfWork.Products.GetAll().Where(p => p.CategoryID == catId);
             }
             if (prds.Any())
             {
@@ -37,11 +46,14 @@ namespace PikaShop.Web.Controllers
 
         public IActionResult Search(string searchKeyword)
         {
-            ViewBag.Departments = ProductService.UnitOfWork.Departments.GetAll().Include(d => d.Categories);
+            cacheHelper.GetDepartments(out List<DepartmentEntity> Departments);
+            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
+            ViewBag.Departments = Departments;
+            ViewBag.MaxPrice = MaxPrice;
 
             List<ProductViewModel> prdsModel = [];
 
-            var prds = ProductService.UnitOfWork.Products.GetAll().Where(p =>p.Name.Contains(searchKeyword, StringComparison.CurrentCultureIgnoreCase));
+            var prds = productServices.UnitOfWork.Products.GetAll().Where(p =>p.Name.Contains(searchKeyword, StringComparison.CurrentCultureIgnoreCase));
             if (prds.Any())
             {
                 foreach (var prd in prds)
@@ -51,5 +63,33 @@ namespace PikaShop.Web.Controllers
             }
             return View("Index", prdsModel);
         }
+
+
+        public IActionResult MaxPriceRange(double maxPrice)
+        {
+            //ViewBag.Departments = productServices.UnitOfWork.Departments.GetAll().Include(d => d.Categories);
+            cacheHelper.GetDepartments(out List<DepartmentEntity> Departments);
+            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
+            ViewBag.Departments = Departments;
+            ViewBag.MaxPrice = MaxPrice;
+
+
+            IQueryable<ProductEntity> prds;
+
+            List<ProductViewModel> prdsModel = new List<ProductViewModel>();
+            prds=productServices.UnitOfWork.Products.GetAll().Where(p => p.Price <= maxPrice );
+
+            if (prds.Count() > 0)
+            {
+                foreach (var prd in prds)
+                {
+                    prdsModel.Add(IHelperMapper.ProductViewMapper(prd));
+                }
+            }
+            return View("Index", prdsModel);
+
+        }
+
+
     }
 }

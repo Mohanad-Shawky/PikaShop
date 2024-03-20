@@ -74,7 +74,14 @@ namespace PikaShop.Web
             builder.Services.AddRazorPages();
             #endregion
 
+            builder.Services.AddScoped<CacheHelper>();
+
+
             var app = builder.Build();
+
+
+            app.UseSession();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

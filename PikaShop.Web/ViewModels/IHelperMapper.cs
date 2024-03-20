@@ -13,6 +13,7 @@ namespace PikaShop.Web.ViewModels
                 Img = entity.Img,
                 CategoryID = entity.CategoryID,
                 UnitsInStock = entity.UnitsInStock,
+                UnitPrice=entity.Price,
             };
             return ProductVM;
         }

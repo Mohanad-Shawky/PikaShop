@@ -1,0 +1,10 @@
+﻿<form asp-action="MaxPriceRange" asp-controller="CustomerProducts">
+
+    <h2 class="text-decoration-underline text-lg fw-bolder mb-4">Price Range</h2>
+    <input type="range" min="0" max="@Model" name="maxPrice" class="form-range" id="priceRange" value="@Model" />
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="price-range-labels">0</span>
+        <span id="rangeValue" class="mb-0 font-weight-bold price-range-labels">@Model</span>
+    </div>
+    <button type="submit">submit</button>
+</form>
