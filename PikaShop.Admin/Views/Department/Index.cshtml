@@ -7,7 +7,6 @@
 <h4 class="page-title">Departments</h4>
 
 <p>
-    @* <button class="btn btn-primary">Primary</button> *@
     <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 
@@ -29,7 +28,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr onclick="window.location.href = '@Url.Action("Details", new { id = item.ID })';">
                 <td>
                     @Html.DisplayFor(modelItem => item.ID)
                 </td>
@@ -47,7 +46,6 @@
                         <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
                             @Html.ActionLink("", "Delete", new { id = item.ID }, new { @class = "la la-times btn-simple-danger" })
                         </button>
-                        @* @Html.ActionLink("Details", "Details", new { id = item.ID }) | *@
                     </div>
                 </td>
             </tr>
