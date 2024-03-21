@@ -4,13 +4,15 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>DepartmentViewModel</h4>
+<h4 class="page-title"> Departments</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">Edit department</div>
+	</div>
+	<div class="card-body">
+
+		<form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
             <div class="form-group">
@@ -23,15 +25,13 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+			<div class="card-action">
+				<input type="submit" value="Save" class="btn btn-success" />
+				<a asp-action="Index" class="btn btn-default">Back to List</a>
+			</div>
+		</form>
+	</div>
 </div>
 
 @section Scripts {

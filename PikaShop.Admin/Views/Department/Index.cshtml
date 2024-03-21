@@ -4,13 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4 class="page-title">Departments</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @* <button class="btn btn-primary">Primary</button> *@
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
+
+<table class="my-table mt-3">
+    <thead class="custom-class bg-white">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.ID)
@@ -25,23 +27,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <div class="form-button-action">
+                        <button type="button" data-toggle="tooltip" title="Edit" class="btn btn-link <btn-simple-primary">
+                            @Html.ActionLink("", "Edit", new { id = item.ID }, new { @class = "la la-edit" }) 
+                        </button>
+                        <button type="button" data-toggle="tooltip" title="Remove" class="btn btn-link btn-simple-danger">
+                            @Html.ActionLink("", "Delete", new { id = item.ID }, new { @class = "la la-times btn-simple-danger" })
+                        </button>
+                        @* @Html.ActionLink("Details", "Details", new { id = item.ID }) | *@
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
