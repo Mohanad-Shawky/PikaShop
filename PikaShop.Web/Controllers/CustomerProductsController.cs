@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Core;
-using PikaShop.Web.Cache;
 using PikaShop.Web.ViewModels;
+
+using PikaShop.Services.Cache;
+using System.Diagnostics;
+using System.Text.Json;
+using Newtonsoft.Json;
+using PikaShop.Data.Context.Contracts;
+using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Stripe;
 
 namespace PikaShop.Web.Controllers
 {
@@ -14,82 +20,96 @@ namespace PikaShop.Web.Controllers
         private IProductServices productServices { get; set; } = _prdService;
         private CacheHelper cacheHelper { get; } = _cacheHelper;
 
-       
+
         [HttpGet]
         public IActionResult Index(int? catId)
         {
-          
-            IQueryable<ProductEntity> prds;
-            cacheHelper.GetDepartments(out List <DepartmentEntity> Departments);
-            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
+
+            List<ProductViewModel> prdsModel = new List<ProductViewModel>();
+            List<ProductEntity> products = productServices.GetCategoryProducts(catId);
+            GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice);
             ViewBag.Departments = Departments;
             ViewBag.MaxPrice = MaxPrice;
+            ViewBag.Specification = productServices.GetCategorySpecs(catId, products);
 
-            List<ProductViewModel> prdsModel= new List<ProductViewModel>();
-            if (catId ==null)
-            {
-            prds= productServices.UnitOfWork.Products.GetAll();
-            }else
-            {
-             prds = productServices.UnitOfWork.Products.GetAll().Where(p => p.CategoryID == catId);
-            }
-            if (prds.Any())
-            {
-                foreach(var prd in prds)
-                {
-                    prdsModel.Add(IHelperMapper.ProductViewMapper(prd));
-                }
-            }
 
+            if (products.Count() > 0)
+            {
+                cacheHelper.SetProductsCache(products);
+                prdsModel = products.Select(IHelperMapper.ProductViewMapper).ToList();
+            }
             return View(prdsModel);
         }
 
+        [HttpGet]
         public IActionResult Search(string searchKeyword)
         {
-            cacheHelper.GetDepartments(out List<DepartmentEntity> Departments);
-            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
-            ViewBag.Departments = Departments;
-            ViewBag.MaxPrice = MaxPrice;
+   
+            List<ProductEntity> products = productServices.SearchByName(searchKeyword);
 
-            List<ProductViewModel> prdsModel = [];
-
-            var prds = productServices.UnitOfWork.Products.GetAll().Where(p =>p.Name.Contains(searchKeyword, StringComparison.CurrentCultureIgnoreCase));
-            if (prds.Any())
+            List<ProductViewModel> prdsModel = new();
+            if (products.Count>0)
             {
-                foreach (var prd in prds)
-                {
-                    prdsModel.Add(IHelperMapper.ProductViewMapper(prd));
-                }
+               cacheHelper.SetProductsCache(products);
+               prdsModel = products.Select(IHelperMapper.ProductViewMapper).ToList();
+
             }
-            return View("Index", prdsModel);
+            return PartialView("_partialProductItem", prdsModel);
+
         }
 
 
+        [HttpGet]
         public IActionResult MaxPriceRange(double maxPrice)
-        {
-            //ViewBag.Departments = productServices.UnitOfWork.Departments.GetAll().Include(d => d.Categories);
-            cacheHelper.GetDepartments(out List<DepartmentEntity> Departments);
-            cacheHelper.GetMaximumPriceRange(out double MaxPrice);
-            ViewBag.Departments = Departments;
-            ViewBag.MaxPrice = MaxPrice;
+        {         
 
+            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
 
-            IQueryable<ProductEntity> prds;
+           List<ProductEntity> Products=productServices.SearchByPriceRange(maxPrice, cachedProducts);
+           
+            List<ProductViewModel> prdsModel = Products.Select(IHelperMapper.ProductViewMapper).ToList();
 
-            List<ProductViewModel> prdsModel = new List<ProductViewModel>();
-            prds=productServices.UnitOfWork.Products.GetAll().Where(p => p.Price <= maxPrice );
-
-            if (prds.Count() > 0)
-            {
-                foreach (var prd in prds)
-                {
-                    prdsModel.Add(IHelperMapper.ProductViewMapper(prd));
-                }
-            }
-            return View("Index", prdsModel);
-
+            return PartialView("_partialProductItem", prdsModel);
         }
 
+
+
+        public IActionResult SortProducts(string orderBy)
+        {
+         
+            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+           List<ProductEntity> products=productServices.SortProducts(orderBy, cachedProducts);
+            List<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).ToList();
+
+            return PartialView("_partialProductItem", prdsModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult FeaturesFilter(string specificationJson)
+        {
+
+            var SpecificationKeys = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(specificationJson);
+
+            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+
+           List<ProductEntity> products = productServices.FilterBySpecifications(SpecificationKeys, cachedProducts);
+
+
+            List<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).ToList();
+
+            
+            return PartialView("_partialProductItem",prdsModel);
+        }
+
+
+        private void GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice)
+        {
+            cacheHelper.GetDepartments(out List<DepartmentEntity> _Departments);
+            cacheHelper.GetMaximumPriceRange(out double _MaxPrice);
+            Departments = _Departments;
+            MaxPrice= _MaxPrice;
+        }         
 
     }
 }

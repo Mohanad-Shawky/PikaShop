@@ -35,7 +35,7 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             return entities.Where(predicate);
         }
-
+         
         public virtual IQueryable<TEntity> GetAll()
         {
             return entities;

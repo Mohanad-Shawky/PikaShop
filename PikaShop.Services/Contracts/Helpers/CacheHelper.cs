@@ -2,12 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace PikaShop.Web.Cache
+
+namespace PikaShop.Services.Cache
 {
     public class CacheHelper
     {
@@ -16,6 +13,7 @@ namespace PikaShop.Web.Cache
 
         private  string DepartmentCacheKey = "DepartmentKey";
         private  string PriceRangeCacheKey = "PriceKey";
+        private string CategorySpecificationKey = "CategorySpecificationKey";
         private string ProductCachedKey = "ProductCached";
 
         private  MemoryCacheEntryOptions cacheEntryOption = new MemoryCacheEntryOptions()
@@ -67,6 +65,21 @@ namespace PikaShop.Web.Cache
             Products = _productServices.UnitOfWork.Products.GetAll().ToList();
             _cache.Set(ProductCachedKey, Products, cacheEntryOption);
         }
+
+        public void setCategorySpecification(Dictionary<string,List<string>> specification)
+        {
+            _cache.Set(CategorySpecificationKey, specification, cacheEntryOption);
+
+        }
+        public void getCategorySpecification(out Dictionary<string,List<string>> specification)
+        {
+            if(_cache.TryGetValue(CategorySpecificationKey,out specification)) { }
+            else
+            {
+                specification= new Dictionary<string,List<string>>();
+            }
+        }
+
 
     }
 }
