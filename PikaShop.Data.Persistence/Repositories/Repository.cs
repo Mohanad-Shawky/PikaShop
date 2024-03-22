@@ -66,6 +66,16 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             entities.RemoveRange(_entities);
         }
+
+        public TEntity? GetById(TKey id, string includeProperties)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteById(TKey id, TKey id2)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

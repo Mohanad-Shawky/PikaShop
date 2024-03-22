@@ -3,7 +3,7 @@ using PikaShop.Services.Contracts;
 
 namespace PikaShop.Services.Core
 {
-    public class CartServices(IUnitOfWork _uow) : ICartServices
+    public class CartItemServices(IUnitOfWork _uow) : Contracts.ICartItemServices
     {
         public IUnitOfWork UnitOfWork { get; set; } = _uow;
     }

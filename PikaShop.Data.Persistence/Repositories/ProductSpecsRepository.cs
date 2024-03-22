@@ -39,5 +39,10 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             SoftDeleteById(entity.ID);
         }
+
+        public void Update(ProductSpecsEntity entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
