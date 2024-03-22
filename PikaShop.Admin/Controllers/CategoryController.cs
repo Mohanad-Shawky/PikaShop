@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Core;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PikaShop.Admin.Controllers
 {
@@ -54,6 +53,14 @@ namespace PikaShop.Admin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            var departments = _categoryServices.UnitOfWork.Departments.GetAll().ToList();
+            if(departments == null)
+            {
+                // Redirect because you cannot create a category
+                // without a department
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.Departments = _mapper.Map<List<SelectListItem>>(departments);
             return View(new CategoryViewModel());
         }
 
@@ -73,7 +80,7 @@ namespace PikaShop.Admin.Controllers
                     return RedirectToAction(nameof(Index));
                 }
                 return View(categry);
-                
+
             }
             catch
             {
@@ -86,10 +93,13 @@ namespace PikaShop.Admin.Controllers
         [Route("{id:int}")]
         public ActionResult Edit(int id)
         {
+
             var category = _categoryServices.UnitOfWork.Categories.GetById(id);
             if (category != null)
             {
                 CategoryViewModel result = _mapper.Map<CategoryViewModel>(category);
+                var departments = _categoryServices.UnitOfWork.Departments.GetAll().ToList();
+                ViewBag.Departments = _mapper.Map<List<SelectListItem>>(departments);
                 return View(result);
             }
             return RedirectToAction(nameof(Index));

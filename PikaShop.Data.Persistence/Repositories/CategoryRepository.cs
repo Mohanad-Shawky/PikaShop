@@ -19,6 +19,7 @@ namespace PikaShop.Data.Persistence.Repositories
             {
                 oldCategory.Name=other.Name;
                 oldCategory.Description=other.Description;
+                oldCategory.DepartmentID=other.DepartmentID;
             }
         }
 
