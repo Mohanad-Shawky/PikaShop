@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PikaShop.Admin.Helpers.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Entities.Core;
@@ -20,15 +21,26 @@ namespace PikaShop.Admin.Controllers
         }
         // GET: DepartmentController
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber)
         {
-            var departments = _departmentServices.UnitOfWork.Departments.GetAll();
-            IEnumerable<DepartmentViewModel> models = new List<DepartmentViewModel>();
-            if(departments != null)
+            int pageSize = 3;
+            var departments = _departmentServices.UnitOfWork.Departments.GetAll()
+                .ToPaginatedList(pageNumber ?? 1, pageSize);
+
+            //var count = departments.Count();
+
+            //var departmentList = departments
+            //    .ToPaginatedList(pageNumber ?? 1, pageSize)?
+            //    .OrderByDescending(d => d.Name)
+            //    .ToPaginatedList(pageNumber ?? 1, count, pageSize);
+
+            if (departments != null)
             {
-                models = _mapper.Map<IQueryable<DepartmentEntity>, IEnumerable<DepartmentViewModel>>(departments);
+                var result = _mapper.Map<PaginatedList<DepartmentViewModel>>(departments);
+                return View(result);
             }
-            return View(models);
+            return View(null);
+
         }
 
         // GET: DepartmentController/Details/5
