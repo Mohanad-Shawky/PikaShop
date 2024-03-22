@@ -104,7 +104,7 @@ namespace PikaShop.Admin
             //    await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
             #endregion
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

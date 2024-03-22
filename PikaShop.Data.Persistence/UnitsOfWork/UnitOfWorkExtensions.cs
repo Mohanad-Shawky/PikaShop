@@ -12,11 +12,14 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
                 // Add Departments Here
                 var departments = new List<DepartmentEntity>
                 {
-                    new DepartmentEntity {Name="Electornics", Description="Every Home Device, Mobiles, tablets, and Computers"},
-                    new DepartmentEntity {Name="Entertainment", Description=""},
-                    new DepartmentEntity {Name="Books", Description=""},
-                    new DepartmentEntity {Name="Cloths", Description=""},
-                    new DepartmentEntity {Name="Tools", Description = ""}
+                    new() { Name="Electronics", Description="Every Home Device, Mobiles, tablets, and Computers" },
+                    new() { Name="Entertainment", Description="" },
+                    new() { Name="Books", Description="" },
+                    new() { Name="Cloths", Description="" },
+                    new() { Name="Tools", Description = "" },
+                    new() { Name="Toys", Description = "" },
+                    new() { Name = "Groceries", Description = "" },
+                    new() { Name="Heavy Machines", Description = "" }
                 };
                 unitOfWork.Departments.CreateRange(departments);
                 unitOfWork.Save();

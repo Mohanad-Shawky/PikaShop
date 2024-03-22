@@ -9,7 +9,6 @@ namespace PikaShop.Admin.MappingProfiles
         public DepartmentEntityProfile()
         {
             CreateMap<DepartmentEntity, DepartmentViewModel>().ReverseMap();
-            ShouldMapField = _ => false;
         }
     }
 }
