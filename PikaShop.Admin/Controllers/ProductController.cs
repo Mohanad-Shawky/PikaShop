@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Entities.Core;
@@ -21,15 +22,18 @@ namespace PikaShop.Admin.Controllers
         }
         // GET: ProductController
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber)
         {
-            var products = _productServices.UnitOfWork.Products.GetAll();
-            IEnumerable<ProductViewModel> models = new List<ProductViewModel>();
+            int pageSize = 5;
+            var products = _productServices.UnitOfWork.Products.GetAll()
+                .ToPaginatedList(pageNumber ?? 1, pageSize);
             if (products != null)
             {
-                models = _mapper.Map<IQueryable<ProductEntity>, IEnumerable<ProductViewModel>>(products);
+                var result = _mapper.Map<PaginatedList<ProductViewModel>>(products);
+                return View(result);
             }
-            return View(models);
+            return View(null);
+
         }
 
 		// GET: ProductController/Details/5
@@ -153,3 +157,13 @@ namespace PikaShop.Admin.Controllers
         }
     }
 }
+//public ActionResult Index()
+//{
+//    var products = _productServices.UnitOfWork.Products.GetAll();
+//    IEnumerable<ProductViewModel> models = new List<ProductViewModel>();
+//    if (products != null)
+//    {
+//        models = _mapper.Map<IQueryable<ProductEntity>, IEnumerable<ProductViewModel>>(products);
+//    }
+//    return View(models);
+//}

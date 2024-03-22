@@ -11,6 +11,10 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             return context.CategorySpecTemplates.Where(cs => !cs.IsDeleted).AsNoTracking();
         }
+        public IQueryable<CategorySpecsEntity> GetByCategoryID(int categoryID)
+        {
+            return context.CategorySpecTemplates.Where(cs=>cs.CategoryID == categoryID).AsNoTracking();
+        }
 
         public void UpdateById(int id, CategorySpecsEntity other)
         {

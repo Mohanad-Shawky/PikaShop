@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
+using PikaShop.Services.Core;
 
 namespace PikaShop.Admin.Controllers
 {
@@ -20,15 +22,18 @@ namespace PikaShop.Admin.Controllers
         }
         // GET: CategoryController
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber)
         {
-            var categories = _categoryServices.UnitOfWork.Categories.GetAll();
-            IEnumerable<CategoryViewModel>models = new List<CategoryViewModel>();
+            int pageSize = 5;
+            var categories = _categoryServices.UnitOfWork.Categories.GetAll()
+                .ToPaginatedList(pageNumber ?? 1, pageSize);
             if (categories != null)
             {
-                models=_mapper.Map<IQueryable<CategoryEntity>,IEnumerable<CategoryViewModel>>(categories);
+                var result = _mapper.Map<PaginatedList<CategoryViewModel>>(categories);
+                return View(result);
             }
-            return View(models);
+            return View(null);
+
         }
 
         // GET: CategoryController/Details/5
