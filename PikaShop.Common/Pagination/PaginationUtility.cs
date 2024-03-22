@@ -1,4 +1,5 @@
-﻿namespace PikaShop.Admin.Helpers.Pagination
+﻿
+namespace PikaShop.Common.Pagination
 {
     public static class PaginationUtility
     {

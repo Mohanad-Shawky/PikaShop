@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using PikaShop.Admin.Helpers.Pagination;
+using PikaShop.Common.Pagination;
 
-namespace PikaShop.Admin.MappingProfiles
+namespace PikaShop.Common.MappingProfiles
 {
     public class PaginatedListConverter<TSource, TDestination> : ITypeConverter<PaginatedList<TSource>, PaginatedList<TDestination>>
         where TSource : class
@@ -10,7 +10,7 @@ namespace PikaShop.Admin.MappingProfiles
         public PaginatedList<TDestination> Convert(PaginatedList<TSource> source, PaginatedList<TDestination> destination,
             ResolutionContext context)
         {
-            destination ??= new PaginatedList<TDestination>();
+            destination ??= [];
             foreach (var item in source)
             {
                 var dest = context.Mapper.Map<TSource, TDestination>(item);

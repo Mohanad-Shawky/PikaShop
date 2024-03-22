@@ -19,10 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PikaShop.Data.Context\PikaShop.Data.Context.csproj" />
-    <ProjectReference Include="..\PikaShop.Data.Contracts\PikaShop.Data.Contracts.csproj" />
-    <ProjectReference Include="..\PikaShop.Data.Persistence\PikaShop.Data.Persistence.csproj" />
+    <ProjectReference Include="..\PikaShop.Common\PikaShop.Common.csproj" />
     <ProjectReference Include="..\PikaShop.Services\PikaShop.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

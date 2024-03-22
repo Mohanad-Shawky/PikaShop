@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using PikaShop.Admin.Helpers.Pagination;
-using PikaShop.Admin.ViewModels;
-using PikaShop.Data.Context.ContextEntities.Core;
+using PikaShop.Common.Pagination;
 
-namespace PikaShop.Admin.MappingProfiles
+namespace PikaShop.Common.MappingProfiles
 {
     public class PaginatedEntityProfile : Profile
 

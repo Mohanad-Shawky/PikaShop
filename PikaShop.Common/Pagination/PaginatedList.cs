@@ -1,4 +1,5 @@
-﻿namespace PikaShop.Admin.Helpers.Pagination
+﻿
+namespace PikaShop.Common.Pagination
 {
     public class PaginatedList<T> : List<T> where T : class
     {

@@ -1,10 +1,9 @@
 ﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PikaShop.Admin.Helpers.Pagination;
+using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
-using PikaShop.Data.Entities.Core;
 using PikaShop.Services.Contracts;
 
 namespace PikaShop.Admin.Controllers
@@ -23,7 +22,7 @@ namespace PikaShop.Admin.Controllers
         [HttpGet]
         public ActionResult Index(int? pageNumber)
         {
-            int pageSize = 3;
+            const int pageSize = 3;
             var departments = _departmentServices.UnitOfWork.Departments.GetAll()
                 .ToPaginatedList(pageNumber ?? 1, pageSize);
 

@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using PikaShop.Admin.MappingProfiles;
+using PikaShop.Common.Pagination;
 using PikaShop.Data.Context;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
@@ -55,7 +56,7 @@ namespace PikaShop.Admin
 
             #region AutoMapper Configuration
 
-            builder.Services.AddAutoMapper(typeof(DepartmentEntityProfile));
+            builder.Services.AddAutoMapper(typeof(DepartmentEntityProfile).Assembly, typeof(PaginatedList<>).Assembly);
 
             #endregion
 
