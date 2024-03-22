@@ -1,10 +1,10 @@
-﻿@model IEnumerable<PikaShop.Admin.ViewModels.CategoryViewModel>
+﻿@model IEnumerable<PikaShop.Admin.ViewModels.ProductViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h4 class="page-title">Categories</h4>
+<h4 class="page-title">Products</h4>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New</a>
@@ -25,7 +25,16 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DepartmentID)
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryID)
             </th>
             <th>Actions</th>
         </tr>
@@ -44,7 +53,16 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DepartmentID)
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsInStock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Img)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryID)
                 </td>
                 <td>
                     <div class="form-button-action">
