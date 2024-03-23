@@ -30,20 +30,5 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             UpdateById(entity.ID, other);
         }
-
-        public void SoftDeleteById(int id)
-        {
-            CategorySpecsEntity? oldCat = GetById(id);
-            if (oldCat?.IsDeleted == false)
-            {
-                oldCat.IsDeleted = true;
-                oldCat.DateModified = DateTime.Now;
-            }
-        }
-
-        public void SoftDelete(CategorySpecsEntity entity)
-        {
-            SoftDeleteById(entity.ID);
-        }
     }
 }

@@ -25,19 +25,5 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             UpdateById(entity.ID, other);
         }
-
-        public void SoftDeleteById(int id)
-        {
-            ProductEntity? oldPrd = GetById(id);
-            if (oldPrd?.IsDeleted == false)
-            {
-                oldPrd.IsDeleted = true;
-                oldPrd.DateModified = DateTime.Now;
-            }
-        }
-        public void SoftDelete(ProductEntity entity)
-        {
-            SoftDeleteById(entity.ID);
-        }
     }
 }

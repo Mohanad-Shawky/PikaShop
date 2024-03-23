@@ -8,7 +8,7 @@ namespace PikaShop.Data.Contracts.Partial
 {
     public interface ISoftDelete<TEntity,TKey> where TEntity : class
     {
-        void SoftDeleteById(TKey id);
-        void SoftDelete(TEntity entity);
+        void SoftDeleteById(TKey id, string username = "system");
+        void SoftDelete(TEntity entity, string username = "system");
     }
 }

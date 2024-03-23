@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    @* <meta name="viewport" content="width=device-width, initial-scale=1.0" /> *@
-    <title>@ViewData["Title"] - PikaShop.Admin</title>
+	<meta charset="utf-8" />
+	@* <meta name="viewport" content="width=device-width, initial-scale=1.0" /> *@
+	<title>@ViewData["Title"] - PikaShop.Admin</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="/assets/css/demo.css">
 </head>
 <body>
-    <header>
+	<header>
 		<div class="main-header">
 			<div class="logo-header">
 				<a href="\home/index" class="logo">
@@ -131,7 +131,7 @@
 				</div>
 			</nav>
 		</div>
-    </header>
+	</header>
 	<div class="sidebar">
 		<div class="scrollbar-inner sidebar-wrapper">
 			<div class="user">
@@ -265,34 +265,6 @@
 		</footer>
 	</div>
 
-
-	@* <footer class="footer">
-		<div class="container-fluid">
-			<nav class="pull-left">
-				<ul class="nav">
-					<li class="nav-item">
-						<a class="nav-link" href="http://www.themekita.com">
-							ThemeKita
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">
-							Help
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="https://themewagon.com/license/#free-item">
-							Licenses
-						</a>
-					</li>
-				</ul>
-			</nav>
-			<div class="copyright ml-auto">
-				2018, made with <i class="la la-heart heart text-danger"></i> by <a href="http://www.themekita.com">ThemeKita</a>
-			</div>
-		</div>
-	</footer> *@
-
 	<script src="~/assets/js/core/jquery.3.2.1.min.js"></script>
 	<script src="~/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 	<script src="/assets/js/core/popper.min.js"></script>
@@ -307,6 +279,7 @@
 	<script src="~/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 	<script src="~/assets/js/ready.min.js"></script>
 	<script src="~/assets/js/demo.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+	<partial name="_ValidationScriptsPartial" />
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
