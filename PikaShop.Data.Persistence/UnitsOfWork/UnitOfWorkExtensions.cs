@@ -1,4 +1,5 @@
-﻿using PikaShop.Data.Contracts.UnitsOfWork;
+﻿using PikaShop.Data.Context.ContextEntities.Core;
+using PikaShop.Data.Contracts.UnitsOfWork;
 
 namespace PikaShop.Data.Persistence.UnitsOfWork
 {
@@ -9,6 +10,7 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             if(!unitOfWork.Departments.GetAll().Any())
             {
                 // Add Departments Here
+
             }
 
             if (!unitOfWork.Categories.GetAll().Any())
