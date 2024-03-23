@@ -6,8 +6,6 @@
 
 <h4 class="page-title"> Categories</h4>
 <hr />
-
-
 <div class="card">
     <div class="card-header">
         <div class="card-title">Create new category</div>
@@ -17,7 +15,6 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
-                @* <input asp-for="ID" class="form-control" /> *@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />

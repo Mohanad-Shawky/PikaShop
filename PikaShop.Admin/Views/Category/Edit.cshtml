@@ -6,8 +6,6 @@
 
 <h4 class="page-title">Categories</h4>
 <hr />
-
-
 <div class="card">
     <div class="card-header">
         <div class="card-title">Edit Category</div>
@@ -38,6 +36,14 @@
                 <a asp-action="Index" class="btn btn-default">Back to List</a>
             </div>
         </form>
+        @* @{
+            if(Model.CategorySpecifications.Count == 0)
+            {
+                Model.CategorySpecifications.Add(new() { CategoryID = Model.ID });
+            }
+        } *@
+        @await Html.PartialAsync("~/Views/CategorySpecs/Index.cshtml",
+                       Model.CategorySpecifications)
     </div>
 </div>
 

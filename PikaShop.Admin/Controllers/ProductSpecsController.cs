@@ -5,6 +5,8 @@ using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PikaShop.Services.Core;
 
 namespace PikaShop.Admin.Controllers
 {
@@ -51,6 +53,8 @@ namespace PikaShop.Admin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            var products = _productSpecsServices.UnitOfWork.Products.GetAll();
+            ViewBag.Products = new SelectList(products, "ID", "Name");
             return View(new ProductSpecsViewModel());
         }
 
@@ -61,18 +65,20 @@ namespace PikaShop.Admin.Controllers
         {
             try
             {
-                if (productSpec != null && ModelState.IsValid)
+                if (productSpec != null && ModelState.IsValid && productSpec.ProductID != default)
                 {
                     ProductSpecsEntity entity = _mapper.Map<ProductSpecsEntity>(productSpec);
+                    entity.Product = null;
+                    entity.Value = "";
                     _productSpecsServices.UnitOfWork.ProductSpecs.Create(entity);
                     _productSpecsServices.UnitOfWork.Save();
-                    return RedirectToAction(nameof(Index));
+                    return Redirect("/dashboard/Product/Edit/" + entity.ProductID.ToString());
                 }
-                return View(productSpec);
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View(productSpec);
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -102,6 +108,8 @@ namespace PikaShop.Admin.Controllers
                 if (target != null && ModelState.IsValid)
                 {
                     ProductSpecsEntity other = _mapper.Map<ProductSpecsEntity>(productSpec);
+                    other.Product = null;
+                    other.Value = "";
                     _productSpecsServices.UnitOfWork.ProductSpecs.Update(target, other);
                     _productSpecsServices.UnitOfWork.Save();
                     return RedirectToAction(nameof(Index));

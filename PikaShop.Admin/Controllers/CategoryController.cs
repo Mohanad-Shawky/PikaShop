@@ -74,7 +74,7 @@ namespace PikaShop.Admin.Controllers
                 if(categry!=null && ModelState.IsValid)
                 {
                     CategoryEntity entity= _mapper.Map<CategoryViewModel, CategoryEntity>(categry);
-
+                    entity.Department = null;
                     _categoryServices.UnitOfWork.Categories.Create(entity);
                     _categoryServices.UnitOfWork.Save();
                     return RedirectToAction(nameof(Index));

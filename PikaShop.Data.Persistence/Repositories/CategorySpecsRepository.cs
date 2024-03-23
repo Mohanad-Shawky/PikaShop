@@ -16,17 +16,18 @@ namespace PikaShop.Data.Persistence.Repositories
             return context.CategorySpecTemplates.Where(cs=>cs.CategoryID == categoryID).AsNoTracking();
         }
 
-        public void UpdateById(int id, CategorySpecsEntity other)
+        public void UpdateById(int id, CategorySpecsEntity other, string username = "system")
         {
             CategorySpecsEntity? oldCategorySpecs = GetById(id);
             if (oldCategorySpecs != null)
             {
                 oldCategorySpecs.Key = other.Key;
                 oldCategorySpecs.Value = other.Value;
+                UpdateAudit(oldCategorySpecs,username);
             }
         }
 
-        public void Update(CategorySpecsEntity entity, CategorySpecsEntity other)
+        public void Update(CategorySpecsEntity entity, CategorySpecsEntity other, string username = "system")
         {
             UpdateById(entity.ID, other);
         }

@@ -16,5 +16,6 @@ namespace PikaShop.Admin.ViewModels
         public string Value { get; set; }
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public bool Searchable { get; set; }
     }
 }

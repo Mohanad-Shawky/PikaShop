@@ -14,6 +14,10 @@ namespace PikaShop.Admin.MappingProfiles
                     opt.MapFrom(p => p.Category != null ? p.Category.Name : "");
                     opt.NullSubstitute("");
                 })
+                .ForMember<ICollection<ProductSpecsViewModel>>(pvm => pvm.ProductSpecifications, opt =>
+                {
+                    opt.MapFrom(p => p.ProductSpecs);
+                })
                 .ReverseMap();
             ShouldMapField = _ => false;
         }

@@ -6,6 +6,7 @@ using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PikaShop.Admin.Controllers
 {
@@ -52,6 +53,8 @@ namespace PikaShop.Admin.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            var categories = _categorySpecsServices.UnitOfWork.Categories.GetAll();
+            ViewBag.Categories = new SelectList(categories, "ID", "Name");
             return View(new CategorySpecsViewModel());
         }
 
@@ -62,18 +65,20 @@ namespace PikaShop.Admin.Controllers
         {
             try
             {
-                if (categorySpec != null && ModelState.IsValid)
+                if (categorySpec != null && ModelState.IsValid && categorySpec.CategoryID!=default)
                 {
                     CategorySpecsEntity entity = _mapper.Map<CategorySpecsEntity>(categorySpec);
+                    entity.Category = null;
+                    entity.Value = "";
                     _categorySpecsServices.UnitOfWork.CategorySpecs.Create(entity);
                     _categorySpecsServices.UnitOfWork.Save();
-                    return RedirectToAction(nameof(Index));
+                    return Redirect("/dashboard/Category/Edit/" + entity.CategoryID.ToString());
                 }
-                return View(categorySpec);
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View(categorySpec);
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -103,6 +108,8 @@ namespace PikaShop.Admin.Controllers
                 if (target != null && ModelState.IsValid)
                 {
                     CategorySpecsEntity other = _mapper.Map<CategorySpecsEntity>(categorySpec);
+                    other.Category = null;
+                    other.Value = "";
                     _categorySpecsServices.UnitOfWork.CategorySpecs.Update(target, other);
                     _categorySpecsServices.UnitOfWork.Save();
                     return RedirectToAction(nameof(Index));

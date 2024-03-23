@@ -15,16 +15,17 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             return context.ProductSpecs.Where(ps => ps.ProductID == productID).AsNoTracking();
         }
-        public void UpdateById(int id, ProductSpecsEntity other)
+        public void UpdateById(int id, ProductSpecsEntity other, string username = "system")
         {
             ProductSpecsEntity? oldProductSpecs = GetById(id);
             if (oldProductSpecs != null)
             {
                 oldProductSpecs.Key = other.Key;
                 oldProductSpecs.Value = other.Value;
+                UpdateAudit(oldProductSpecs, username);
             }
         }
-        public void Update(ProductSpecsEntity entity, ProductSpecsEntity other)
+        public void Update(ProductSpecsEntity entity, ProductSpecsEntity other, string username = "system")
         {
             UpdateById(entity.ID, other);
         }

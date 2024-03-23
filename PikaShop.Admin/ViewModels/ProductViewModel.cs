@@ -23,5 +23,6 @@ namespace PikaShop.Admin.ViewModels
         public int? CategoryID { get; set; }
         public string CategoryName { get; set; }
         public virtual ICollection<ProductSpecsEntity> ProductSpecs { get; set; }
+        public virtual ICollection<ProductSpecsViewModel> ProductSpecifications { get; set; }
     }
 }

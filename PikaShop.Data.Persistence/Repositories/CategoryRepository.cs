@@ -12,7 +12,7 @@ namespace PikaShop.Data.Persistence.Repositories
             return context.Categories.Where(c => !c.IsDeleted).Include(c => c.Department).AsNoTracking();
         }
 
-        public void UpdateById(int id, CategoryEntity other)
+        public void UpdateById(int id, CategoryEntity other, string username = "system")
         {
             CategoryEntity? oldCategory = GetById(id);
             if(oldCategory != null)
@@ -20,10 +20,11 @@ namespace PikaShop.Data.Persistence.Repositories
                 oldCategory.Name=other.Name;
                 oldCategory.Description=other.Description;
                 oldCategory.DepartmentID=other.DepartmentID;
+                UpdateAudit(oldCategory,username);
             }
         }
 
-        public void Update(CategoryEntity entity, CategoryEntity other)
+        public void Update(CategoryEntity entity, CategoryEntity other, string username = "system")
         {
             UpdateById(entity.ID, other);
         }
