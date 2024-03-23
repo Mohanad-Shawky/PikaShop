@@ -8,7 +8,13 @@ namespace PikaShop.Admin.MappingProfiles
     {
         public ProductSpecsEntityProfile()
         {
-            CreateMap<ProductSpecsEntity, ProductSpecsViewModel>().ReverseMap();
+            CreateMap<ProductSpecsEntity, ProductSpecsViewModel>()
+                .ForMember<string>(psvm => psvm.ProductName, opt =>
+                {
+                    opt.MapFrom(p => p.Product != null ? p.Product.Name : "");
+                    opt.NullSubstitute("");
+                })
+                .ReverseMap();
             ShouldMapField = _ => false;
         }
     }

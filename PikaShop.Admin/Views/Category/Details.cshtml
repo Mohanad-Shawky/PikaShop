@@ -28,11 +28,29 @@
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DepartmentID)
+                @Html.DisplayNameFor(model => model.DepartmentName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DepartmentID)
+                @Html.DisplayFor(model => model.DepartmentName)
             </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayName("Category Specifiction")
+            </dt>
+            @if (Model.CategorySpecs.Count==0)
+            {
+                <dd class="col-sm-10">
+                    @Html.DisplayName("No specifications added")
+                </dd>
+            }
+            else
+            {
+                @foreach (var spec in Model.CategorySpecs)
+                {
+                    <dd class="col-sm-10">
+                        @Html.DisplayName(spec.Key)
+                    </dd> 
+                }
+            }
         </dl>
 
         <div class="card-action">

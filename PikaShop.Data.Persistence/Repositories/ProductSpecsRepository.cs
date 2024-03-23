@@ -11,7 +11,7 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             return context.ProductSpecs.Where(ps => !ps.IsDeleted).AsNoTracking();
         }
-        public IQueryable<ProductSpecsEntity> GetByProductID(int productID)
+        public IQueryable<ProductSpecsEntity> GetAllByProductID(int productID)
         {
             return context.ProductSpecs.Where(ps => ps.ProductID == productID).AsNoTracking();
         }

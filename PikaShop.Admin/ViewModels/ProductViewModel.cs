@@ -1,6 +1,7 @@
-﻿
+﻿#nullable disable
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using PikaShop.Data.Context.ContextEntities.Core;
 
 namespace PikaShop.Admin.ViewModels
 {
@@ -18,7 +19,9 @@ namespace PikaShop.Admin.ViewModels
 
         public int UnitsInStock { get; set; }
 
-        public string? Img { get; set; }
+        public string Img { get; set; }
         public int? CategoryID { get; set; }
+        public string CategoryName { get; set; }
+        public virtual ICollection<ProductSpecsEntity> ProductSpecs { get; set; }
     }
 }

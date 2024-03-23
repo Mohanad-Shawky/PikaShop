@@ -51,6 +51,8 @@ namespace PikaShop.Admin
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
+            builder.Services.AddScoped<ICategorySpecsServices, CategorySpecsServices>();
+            builder.Services.AddScoped<IProductSpecsServices, ProductSpecsServices>();
 
             #endregion
 

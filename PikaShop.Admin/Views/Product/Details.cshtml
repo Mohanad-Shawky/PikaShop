@@ -45,11 +45,29 @@
                 @Html.DisplayFor(model => model.Img)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CategoryID)
+                @Html.DisplayNameFor(model => model.CategoryName)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CategoryID)
+                @Html.DisplayFor(model => model.CategoryName)
             </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayName("Product Specifiction")
+            </dt>
+            @if (Model.ProductSpecs.Count == 0)
+            {
+                <dd class="col-sm-10">
+                    @Html.DisplayName("No specifications added")
+                </dd>
+            }
+            else
+            {
+                @foreach (var spec in Model.ProductSpecs)
+                {
+                    <dd class="col-sm-10">
+                        @Html.DisplayName(spec.Key)
+                    </dd>
+                }
+            }
         </dl>
 
         <div class="card-action">

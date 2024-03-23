@@ -1,4 +1,6 @@
 ﻿@using PikaShop.Common.Pagination
+@using PikaShop.Data.Context
+@using PikaShop.Data.Context.ContextEntities.Core
 @model PaginatedList<PikaShop.Admin.ViewModels.CategoryViewModel>
 
 @{
@@ -26,7 +28,7 @@
                 Description
             </th>
             <th>
-                DepartmentID
+                Department
             </th>
             <th>Actions</th>
         </tr>
@@ -45,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DepartmentID)
+                    @Html.DisplayFor(modelItem => item.DepartmentName)
                 </td>
                 <td>
                     <div class="form-button-action">

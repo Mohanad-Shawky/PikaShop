@@ -8,7 +8,13 @@ namespace PikaShop.Admin.MappingProfiles
     {
         public CategoryEntityProfile()
         {
-            CreateMap<CategoryEntity, CategoryViewModel>().ReverseMap();
+            CreateMap<CategoryEntity, CategoryViewModel>()
+                .ForMember<string>(cvm => cvm.DepartmentName, opt => 
+                {
+                    opt.MapFrom(c => c.Department != null ? c.Department.Name : "");
+                    opt.NullSubstitute("");
+                })
+                .ReverseMap();
             ShouldMapField = _ => false;
         }
     }

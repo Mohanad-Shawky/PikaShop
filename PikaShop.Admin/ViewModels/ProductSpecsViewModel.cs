@@ -14,5 +14,6 @@ namespace PikaShop.Admin.ViewModels
 
         public string Value { get; set; }
         public int ProductID { get; set; }
+        public string ProductName { get; set; }
     }
 }
