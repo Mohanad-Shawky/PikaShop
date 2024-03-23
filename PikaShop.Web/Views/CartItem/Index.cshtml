@@ -1,46 +1,49 @@
-﻿@using PikaShop.Web.ViewModels
+﻿ @using PikaShop.Web.ViewModels
 @model IEnumerable<CartItemViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Shopping Cart";
 }
 
-<h1>Shopping Cart</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Shopping Cart</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Image</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Price</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.ProductImage</td>
-                <td>@item.ProductName</td>
-                <td>@item.Quantity</td>
-                <td>@item.Price.ToString("C")</td>
-                <td>@item.TotalPrice.ToString("C")</td>
-                <td>
-                    <form asp-action="Delete" method="post">
-                        <input type="hidden" name="productId" value="@item.ProductId" />
-                        <input type="hidden" name="customerId" value="@item.CustomerId" />
-                        <input type="submit" value="Delete" class="btn btn-danger" />
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Product Image</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><img src="@item.ProductImage" alt="@item.ProductName" class="img-thumbnail" style="max-height: 100px;" /></td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.TotalPrice.ToString("C")</td>
+                        <td>
+                            <form asp-action="Delete" method="post">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <input type="hidden" name="customerId" value="@item.CustomerId" />
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<div>
-
-    <a href="/Home">Continue Shopping</a>
-    <a href="/Checkout" class="btn btn-primary">Proceed to Checkout</a>
+    <div class="text-center mt-4">
+        <a href="/Home" class="btn btn-secondary mr-3">Continue Shopping</a>
+        <a href="/Checkout" class="btn btn-primary">Proceed to Checkout</a>
+    </div>
 </div>

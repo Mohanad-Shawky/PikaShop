@@ -1,84 +1,120 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Stripe;
-using PikaShop.Web.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using PikaShop.Services.Contracts;
+using Stripe;
+using Stripe.Checkout;
+using System;
+using System.Collections.Generic;
 using System.Security.Claims;
-using System.Linq;
+using PikaShop.Web.ViewModels;
 
-namespace PikaShop.Web.Controllers
+namespace YourNamespace.Controllers
 {
     public class CheckoutController : Controller
     {
-        private readonly ICartItemServices _cartItemServices;
-        private readonly IStripeService _stripeService;  
+        private readonly string _stripeSecretKey = "sk_test_51Ou2OOGFkpxy9DHRADa2B3NpA00Jd65SAxn3uZfOSQL0sHcGERLn0XFZKkF6wzfm80HAO2CKu7pbIdDvvqUl60sO00YGRzG5Hk";
+        private readonly ICartItemServices _cartItemService;
 
-        public CheckoutController(ICartItemServices cartItemServices, IStripeService stripeService)
+        public CheckoutController(ICartItemServices cartItemService)
         {
-            _cartItemServices = cartItemServices;
-            _stripeService = stripeService;
+            _cartItemService = cartItemService;
         }
 
-        // GET: /Checkout
         public IActionResult Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cartItems = _cartItemServices.UnitOfWork.CartItems
-                .GetAll()
-                .Where(ci => ci.CustomerID == int.Parse(userId))
-                .Select(ci => new CartItemViewModel
-                {
-                    ProductId = ci.ProductID,
-                    CustomerId = ci.CustomerID,
-                    ProductImage = ci.Product.Img,
-                    ProductName = ci.Product.Name,
-                    Quantity = ci.Quantity,
-                    Price = (decimal)ci.Product.Price,
-                    TotalPrice = (decimal)(ci.Quantity * ci.Product.Price)
-                })
-                .ToList();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            // Calculate total price of all items in the cart
+            var cartItems = _cartItemService.UnitOfWork.CartItems
+               .GetAll()
+               .Where(ci => ci.CustomerID == int.Parse(userId))
+               .Select(ci => new CartItemViewModel
+               {
+                   ProductId = ci.ProductID,
+                   CustomerId = ci.CustomerID,
+                   ProductImage = ci.Product.Img,
+                   ProductName = ci.Product.Name,
+                   Quantity = ci.Quantity,
+                   Price = (decimal)ci.Product.Price,
+                   TotalPrice = (decimal)(ci.Quantity * ci.Product.Price)
+               })
+               .ToList();
+
             var totalPrice = cartItems.Sum(ci => ci.TotalPrice);
-
-            // Pass cart items and total price to the view
             ViewBag.TotalPrice = totalPrice;
+
             return View(cartItems);
         }
 
-        // POST: /Checkout/ProcessPayment
-        [HttpPost]
-        public IActionResult ProcessPayment(string stripeToken)
+        public IActionResult CreateCheckoutSession()
         {
-            // Create a Stripe payment intent
+            StripeConfiguration.ApiKey = _stripeSecretKey;
+            var domain = "http://localhost:12879/";
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cartItems = _cartItemServices.UnitOfWork.CartItems
+            var cartItems = _cartItemService.UnitOfWork.CartItems
                 .GetAll()
                 .Where(ci => ci.CustomerID == int.Parse(userId))
                 .ToList();
-            
-            decimal totalPrice = cartItems.Sum(ci => (decimal)(ci.Quantity * ci.Product.Price));
 
-            var paymentIntent = _stripeService.CreatePaymentIntent(totalPrice, "usd", stripeToken);
-
-            // Handle successful payment intent creation
-            if (paymentIntent != null)
+            var lineItems = cartItems.Select(ci => new SessionLineItemOptions
             {
-                // Clear the user's cart
-                foreach (var item in cartItems)
+                PriceData = new SessionLineItemPriceDataOptions
                 {
-                    _cartItemServices.UnitOfWork.CartItems.DeleteById(item.ProductID, item.CustomerID);
-                }
-                _cartItemServices.UnitOfWork.Save();
+                    Currency = "usd",
+                    UnitAmount = (long)(ci.Product.Price * 100),
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = ci.Product.Name,
+                    },
+                },
+                Quantity = ci.Quantity,
+            }).ToList();
 
-                return RedirectToAction("Index", "Home"); // Redirect to home page or a thank you page
-            }
-            else
+            var options = new SessionCreateOptions
             {
-                // Handle payment intent creation failure
-                ViewBag.ErrorMessage = "Payment failed. Please try again.";
-                return View("Index"); // Return to checkout page with error message
-            }
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = lineItems,
+                Mode = "payment",
+                SuccessUrl = domain + $"Checkout/Success",
+                CancelUrl = domain + "Checkout/Cancel",
+            };
+
+            var service = new SessionService();
+            var session = service.Create(options);
+
+            return Redirect(session.Url);
+        }
+
+        public IActionResult Success(string sessionId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            ClearCart();
+
+            return View();
+        }
+
+        public IActionResult Cancel()
+        {
+            return View();
+        }
+
+        public IActionResult ClearCart()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cartItems = _cartItemService.UnitOfWork.CartItems
+                .GetAll()
+                .Where(ci => ci.CustomerID == int.Parse(userId))
+                .ToList();
+
+            _cartItemService.UnitOfWork.CartItems.DeleteRange(cartItems);
+            _cartItemService.UnitOfWork.Save();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

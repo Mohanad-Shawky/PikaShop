@@ -10,6 +10,7 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         ICategorySpecsRepository CategorySpecs { get; }
         IProductSpecsRepository ProductSpecs { get; }
         ICartItemRepository CartItems { get; }
+        IReviewRepository Reviews { get; }
         int Save();
 
         Task<int> SaveAsync();

@@ -81,20 +81,8 @@ namespace PikaShop.Web.Controllers
             _cartItemServices.UnitOfWork.Save();
 
             // Redirect the user to a relevant page
-            return RedirectToAction("Index", "Product");
+            return RedirectToAction("Index");
         }
-
-        // GET: CartItem/Details/5
-        public IActionResult Details(int id)
-        {
-            var cartItemEntity = _cartItemServices.UnitOfWork.CartItems.GetById(id, includeProperties: "Product");
-            if (cartItemEntity == null)
-            {
-                return NotFound();
-            }
-            return View(cartItemEntity);
-        }
- 
 
         // GET: CartItem/Delete/5
         public IActionResult Delete(int id)
@@ -111,7 +99,7 @@ namespace PikaShop.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int productId, int customerId)
         {
-            _cartItemServices.UnitOfWork.CartItems.DeleteById(productId, customerId);
+            _cartItemServices.UnitOfWork.CartItems.deletebyid(productId, customerId);
             _cartItemServices.UnitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
