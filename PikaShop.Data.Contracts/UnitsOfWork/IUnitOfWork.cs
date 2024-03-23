@@ -9,6 +9,7 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         IProductRepository Products { get; }
         ICategorySpecsRepository CategorySpecs { get; }
         IProductSpecsRepository ProductSpecs { get; }
+        IOrderRepository Orders { get; }
 
         int Save();
 
