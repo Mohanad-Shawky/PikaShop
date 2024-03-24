@@ -13,7 +13,7 @@ namespace PikaShop.Data.Contracts.Repositories
        ISoftDelete<CartItemEntity, int>,
        IUpdate<CartItemEntity, int>{
         public void deletebyid(int id, int id2);
-            void ClearCartItemsForUser(string userId);
+          //  void ClearCartItemsForUser(string userId);
     }
 
 }

@@ -5,6 +5,6 @@ namespace PikaShop.Data.Contracts.Partial
     {
         public void Update(TEntity entity, TEntity other);
         public void Update(TEntity entity);
-        public void UpdateById(TKey key, TEntity other);
+     public void UpdateById (TKey KEY , TEntity entity);
     }
 }

@@ -42,35 +42,8 @@ namespace PikaShop.Data.Persistence.Repositories
             context.CartItems.Remove(context.CartItems.FirstOrDefault(c=>c.ProductID==id&c.CustomerID==id2));
         }
 
+ 
 
-        /* public void ClearCartItemsForUser(string userId)
-        {
-            var cartItems = context.CartItems.Where(ci => ci.CustomerID.ToString() == userId).ToList();
-
-            foreach (var cartItem in cartItems)
-            {
-                context.CartItems.Remove(cartItem);
-            }
-
-            context.SaveChanges();
-        }*/
-        public void ClearCartItemsForUser(int productId, string userId)
-        {
-            var cartItems = context.CartItems
-                .Where(ci => ci.CustomerID.ToString() == userId && ci.ProductID == productId)
-                .ToList();
-
-            foreach (var cartItem in cartItems)
-            {
-                context.CartItems.Remove(cartItem);
-            }
-
-            context.SaveChanges();
-        }
-
-        public void ClearCartItemsForUser(string userId)
-        {
-            throw new NotImplementedException();
-        }
+ 
     }
 }

@@ -20,7 +20,6 @@ namespace PikaShop.Web.Controllers
             _productServices = productServices;
         }
 
- 
 
         public IActionResult Index()
         {

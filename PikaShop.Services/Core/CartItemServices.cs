@@ -7,15 +7,7 @@ namespace PikaShop.Services.Core
     {
        
         public IUnitOfWork UnitOfWork { get; set; } = _uow;
-
-        public void ClearCartItemsForUser(string userId)
-        {
-        }
-
-        public void ClearCartItemsForUser(int productId, string userId)
-        {
-
-        }
+   
         public void DeleteCartItem(int id, int id1)
         {
            
