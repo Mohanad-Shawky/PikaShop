@@ -28,8 +28,8 @@ namespace PikaShop.Admin.IdentityUnits
                 {
                     UserName = "superadmin@gmail.com",
                     Email = "superadmin@gmail.com",
-                    FirstName = "Ibrahim",
-                    LastName = "Hassan",
+                    FirstName = "Hebatallah",
+                    LastName = "Ali",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };
@@ -48,8 +48,8 @@ namespace PikaShop.Admin.IdentityUnits
                 {
                     UserName = "customer@gmail.com",
                     Email = "customer@gmail.com",
-                    FirstName = "Ibrahim",
-                    LastName = "Hassan",
+                    FirstName = "Ali",
+                    LastName = "Elnaggar",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true
                 };

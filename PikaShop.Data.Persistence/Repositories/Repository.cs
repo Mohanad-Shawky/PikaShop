@@ -18,6 +18,11 @@ namespace PikaShop.Data.Persistence.Repositories
 
 		protected DbSet<TEntity> entities = _context.Set<TEntity>();
 
+		public IQueryable<TEntity> GetSet()
+		{
+			return entities.AsQueryable();
+		}
+
 		#region Create
 		public virtual void Create(TEntity entity, string username = "system")
 		{

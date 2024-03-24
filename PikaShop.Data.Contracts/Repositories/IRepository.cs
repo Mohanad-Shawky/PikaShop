@@ -16,6 +16,8 @@ namespace PikaShop.Data.Contracts.Repositories
         // Delete... => Delete...
         // DeleteRange
 
+        public IQueryable<TEntity> GetSet();
+
         void Create(TEntity entity, string username = "system");
 
         void CreateRange(IEnumerable<TEntity> entities, string username = "system");
