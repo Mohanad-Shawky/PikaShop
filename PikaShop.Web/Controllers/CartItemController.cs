@@ -113,7 +113,7 @@ namespace PikaShop.Web.Controllers
 
             if (cartItem == null)
             {
-                return NotFound();  
+                return NotFound();
             }
 
             cartItem.Quantity++;
@@ -133,7 +133,7 @@ namespace PikaShop.Web.Controllers
 
             if (cartItem == null || cartItem.Quantity <= 1)
             {
-                return NoContent();  
+                return NoContent();
             }
 
             cartItem.Quantity--;
