@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PikaShop.Data.Context;
+﻿using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Data.Contracts.Repositories;
 using System;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Persistence.Repositories
 {
+  
     public class CartItemRepository(ApplicationDbContext _context) : Repository<CartItemEntity, int>(_context), ICartItemRepository
     {
         public void DeleteById(int id, int id2)
@@ -36,15 +36,13 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             throw new NotImplementedException();
         }
-
-        public void UpdateById(int key, int key1, CartItemEntity other)
+        public void deletebyid(int id, int id2)
         {
-            throw new NotImplementedException();
+            context.CartItems.Remove(context.CartItems.FirstOrDefault(c=>c.ProductID==id&c.CustomerID==id2));
         }
 
-        public void UpdateById(int key, CartItemEntity other, string username = "system")
-        {
-            throw new NotImplementedException();
-        }
+ 
+
+ 
     }
 }

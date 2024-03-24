@@ -13,5 +13,6 @@ namespace PikaShop.Data.Context.ContextEntities.Core
         public virtual ProductEntity? Product { get; set; }
 
         public virtual CustomerEntity? Customer { get; set; }
+     
     }
 }
