@@ -1,5 +1,5 @@
 ﻿
 namespace PikaShop.Data.Context.ContextEntities.Identity
 {
-    public class DeliveryPersonEntity : ApplicationUserEntity;
+    public class SuperAdminEntity : ApplicationUserEntity;
 }
