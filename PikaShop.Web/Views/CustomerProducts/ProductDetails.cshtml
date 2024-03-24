@@ -8,7 +8,7 @@
 <div class="container-fluid ">
     <div class="row justify-content-around gap-2">
         <div class="col-md-8">
-            
+
             <div class="row mt-2 justify-content-around gap-2">
                     <div class="align-self-start">
                     <a class="btn btn-outline-secondary "
@@ -16,7 +16,14 @@
 er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to Products</a>
                     </div>
                 <div class="col-md-6">
-                    <img src="@Model.Img" class="img-fluid w-100 h-100" alt="Product Images"/>
+                    @if(Model?.Img != null)
+                    {
+                        <img src="@Model.Img" class="img-fluid w-100 h-100" alt="Product Images" />
+                    }
+                    else
+                    {
+                        <img src="" class="img-fluid w-100 h-100" alt="Product Images" />
+                    }
                 </div>
                 <div class="col-md-5">
                     <h2>@Model.Name</h2>
@@ -45,7 +52,7 @@ er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to 
                     <hr />
                     <div class="d-flex justify-content-between align-items-center">
                         <button id="@Model.ID-removingBtn" data-input="@Model.ID" class="btn text-xxl fw-bold remove-btn" style="font-size:30px">-</button>
-                        <span id="@Model.ID" class="btn btn-light rounded-pill mx-2" style="font-size:30px" 
+                        <span id="@Model.ID" class="btn btn-light rounded-pill mx-2" style="font-size:30px"
                         type="number" >1</span>
                         <buttonid id="@Model.ID-addingBtn" data-input="@Model.ID" class="btn text-xxl fw-bold add-btn" style="font-size:30px">+</button>
                     </div>
