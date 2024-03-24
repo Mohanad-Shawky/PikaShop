@@ -49,13 +49,12 @@ namespace PikaShop.Web.Controllers
 			return View(productViewModels);
 		}
 
-		[HttpGet]
+        public IActionResult ProductDetails(int id)
+        {
+            var product = productServices.UnitOfWork.Products.GetById(id);
+            return View(product);
+        }
 
-		public IActionResult ProductDetails(int id)
-		{
-			var product = productServices.UnitOfWork.Products.GetById(id);
-			return View(product);
-		}
 
 		[HttpGet]
 		public IActionResult NavigatePages(int pagenumber = 1)

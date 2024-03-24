@@ -12,7 +12,7 @@ namespace PikaShop.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+          return RedirectToAction("Index", "CustomerProducts");
         }
 
         public IActionResult Privacy()
