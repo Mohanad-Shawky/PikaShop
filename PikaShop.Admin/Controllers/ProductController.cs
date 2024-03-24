@@ -8,10 +8,12 @@ using PikaShop.Data.Entities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PikaShop.Admin.Controllers
 {
     [Route("dashboard/[controller]/[action]")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class ProductController : Controller
     {
         private IProductServices _productServices { get; }

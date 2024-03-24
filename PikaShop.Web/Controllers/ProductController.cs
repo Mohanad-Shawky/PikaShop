@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using PikaShop.Services.Contracts;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class ProductController(IProductServices _productService) : Controller
     {
         private readonly IProductServices productServices = _productService;

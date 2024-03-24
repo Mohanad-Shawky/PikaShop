@@ -5,10 +5,12 @@ using PikaShop.Common.Pagination;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PikaShop.Admin.Controllers
 {
     [Route("dashboard/[controller]/[action]")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class DepartmentController : Controller
     {
         private IDepartmentServices _departmentServices { get; }

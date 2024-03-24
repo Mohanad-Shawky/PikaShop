@@ -1,9 +1,11 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Admin.Models;
 
 namespace PikaShop.Admin.Controllers
 {
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()

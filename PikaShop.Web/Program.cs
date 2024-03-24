@@ -112,12 +112,6 @@ namespace PikaShop.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            #region Identity Seeding
-            // Identity Seeding
-            using (var scope = app.Services.CreateScope())
-                await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
-            #endregion
-
             app.Run();
         }
     }

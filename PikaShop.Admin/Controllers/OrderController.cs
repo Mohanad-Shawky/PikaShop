@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,8 @@ using PikaShop.Services.Contracts;
 namespace PikaShop.Admin.Controllers
 {
 	[Route("dashboard/[controller]/[action]")]
-	public class OrderController : Controller
+    [Authorize(Roles = "SuperAdmin,Admin")]
+    public class OrderController : Controller
 	{
 		IOrderServices OrderService { get; set; }
 		IMapper Mapper { get; set; }

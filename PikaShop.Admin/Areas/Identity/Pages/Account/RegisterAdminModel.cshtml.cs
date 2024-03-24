@@ -15,22 +15,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using PikaShop.Data.Context.ContextEntities.Identity;
 
-namespace PikaShop.Web.Areas.Identity.Pages.Account
+namespace PikaShop.Admin.Areas.Identity.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class RegisterAdminModel : PageModel
     {
         private readonly SignInManager<ApplicationUserEntity> _signInManager;
         private readonly UserManager<ApplicationUserEntity> _userManager;
         private readonly IUserStore<ApplicationUserEntity> _userStore;
         private readonly IUserEmailStore<ApplicationUserEntity> _emailStore;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<RegisterAdminModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
+        public RegisterAdminModel(
             UserManager<ApplicationUserEntity> userManager,
             IUserStore<ApplicationUserEntity> userStore,
             SignInManager<ApplicationUserEntity> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<RegisterAdminModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -118,29 +118,10 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Adding Role Customer after Successfully Registered
-                    await _userManager.AddToRoleAsync(user, "Customer");
+                    await _userManager.AddToRoleAsync(user, "Admin");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId, code, returnUrl },
-                        protocol: Request.Scheme);
-
-                    await SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (!_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {
@@ -166,53 +147,6 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             }
         }
 
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        {
-            /*
-             *  Provide Mail Address From Elasticmail
-             *
-             *  get Mail subject, email as an input, confirmlink which is encrypted
-             *
-             *  smtpPort 2525 , Host from ElasticEmail
-             *
-             *  Elastic Account
-             *  Email    : Pikashop8879@gmail.com   pikashop48@gmail.com
-             *  Password : PikaShop@2024ITI.com
-             *
-             *  Service Credentials
-             *  UserName : PikaShop8879@gmail.com
-             *  Password : 98345F46C390A3F184737C9F3C048420DB26
-             *
-             */
-            try
-            {
-                MailMessage message = new();
-                SmtpClient smtpClient = new();
-                message.From = new MailAddress("pikashop48@gmail.com");
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = confirmLink;
-
-                smtpClient.Port = 2525;
-                smtpClient.Host = "smtp.elasticemail.com";
-
-
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("pikashop48@gmail.com", "99CEC64ABEFB252C5D490320AD129120CDC1");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
 
         private IUserEmailStore<ApplicationUserEntity> GetEmailStore()
         {

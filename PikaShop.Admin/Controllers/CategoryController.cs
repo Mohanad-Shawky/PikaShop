@@ -5,10 +5,12 @@ using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PikaShop.Admin.Controllers
 {
     [Route("dashboard/[controller]/[action]")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     //Depatment/id/categories
     public class CategoryController : Controller
     {

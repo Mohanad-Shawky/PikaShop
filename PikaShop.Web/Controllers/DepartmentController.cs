@@ -1,11 +1,13 @@
 #nullable enable
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class DepartmentController(IDepartmentServices _depServ) : Controller
     {
         private IDepartmentServices DepartmentService { get; } = _depServ;

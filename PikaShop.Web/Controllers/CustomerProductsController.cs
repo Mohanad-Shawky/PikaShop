@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
@@ -6,6 +7,7 @@ using PikaShop.Web.ViewModels;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CustomerProductsController(IProductServices _prdService) : Controller
     {
         private IProductServices ProductService { get; } = _prdService;

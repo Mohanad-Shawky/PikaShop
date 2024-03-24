@@ -1,8 +1,11 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PikaShop.Admin.IdentityUnits;
 using PikaShop.Admin.MappingProfiles;
 using PikaShop.Common.Pagination;
 using PikaShop.Data.Context;
+using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
 using PikaShop.Services.Contracts;
@@ -32,15 +35,15 @@ namespace PikaShop.Admin
             #region Identity Configuration
 
             //// Identity Configuration
-            //builder.Services.AddIdentity<ApplicationUserEntity, ApplicationUserRoleEntity>(options => options.SignIn.RequireConfirmedAccount = false)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddUserManager<UserManager<ApplicationUserEntity>>()
-            //    .AddSignInManager<SignInManager<ApplicationUserEntity>>()
-            //    .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>()
-            //    .AddDefaultUI()
-            //    .AddDefaultTokenProviders();
+            builder.Services.AddIdentity<ApplicationUserEntity, ApplicationUserRoleEntity>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddUserManager<UserManager<ApplicationUserEntity>>()
+                .AddSignInManager<SignInManager<ApplicationUserEntity>>()
+                .AddRoleManager<RoleManager<ApplicationUserRoleEntity>>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
-            //builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
+            builder.Services.AddSession(options => options.IdleTimeout = TimeSpan.FromMinutes(30));
 
             #endregion
 
@@ -93,8 +96,8 @@ namespace PikaShop.Admin
 
             app.UseRouting();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
@@ -102,9 +105,9 @@ namespace PikaShop.Admin
             app.MapRazorPages();
 
             #region Identity Seeding
-            //// Identity Seeding
-            //using (var scope = app.Services.CreateScope())
-            //    await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+            // Identity Seeding
+            using (var scope = app.Services.CreateScope())
+                await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
             #endregion
 
             await app.RunAsync();

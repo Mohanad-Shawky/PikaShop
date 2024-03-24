@@ -16,18 +16,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PikaShop.Data.Context.ContextEntities.Identity;
 
-namespace PikaShop.Web.Areas.Identity.Pages.Account
+namespace PikaShop.Admin.Areas.Identity.Pages.Account
 {
-    public class LoginModel
+    public class LoginAdminModel
         (SignInManager<ApplicationUserEntity> signInManager,
-        ILogger<LoginModel> logger,
+        ILogger<LoginAdminModel> logger,
         UserManager<ApplicationUserEntity> userManager)
 
         : PageModel
     {
         private readonly SignInManager<ApplicationUserEntity> _signInManager = signInManager;
         private readonly UserManager<ApplicationUserEntity> _userManager = userManager;  // Added UserManager
-        private readonly ILogger<LoginModel> _logger = logger;
+        private readonly ILogger<LoginAdminModel> _logger = logger;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -113,9 +113,10 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                var userRole = await _userManager.IsInRoleAsync(user, "Customer");
+                var userRole = await _userManager.IsInRoleAsync(user, "Admin");
+                var userSecRole = await _userManager.IsInRoleAsync(user, "SuperAdmin");
 
-                if (user != null && !await _userManager.IsEmailConfirmedAsync(user) && (userRole != true))
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user) && (userRole != true && userSecRole != true ))
                 {
                     ModelState.AddModelError(string.Empty, "You must confirm your email before logging in.");
                     return Page();
