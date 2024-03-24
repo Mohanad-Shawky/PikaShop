@@ -33,15 +33,21 @@
                 <span id="@item.Id" class="btn btn-light rounded-pill mx-2" style="font-size:30px" min="1" type="number" max="@item.UnitsInStock">1</span>
                 <button id="@item.Id-addingBtn" data-input="@item.Id" class="btn text-xxl fw-bold add-btn" style="font-size:30px">+</button>
             </div>
-            <div class="card-footer d-flex justify-content-center text-center align-items-center">
+                @if (User.IsInRole("Customer"))
+                {
+                    
+                <div class="card-footer d-flex justify-content-center text-center align-items-center">
                 <button type="button"
-                        class="btn btn-sm btn-outline-secondary rounded col-9 p-2 w-75 text-xs md:text-sm"
+                            data-input="@item.Id"
+                        class="btn btn-sm btn-outline-secondary rounded  col-9 p-2 w-75 text-xs
+md:text-sm toCardBtn"
                         style="background-image: linear-gradient(to bottom, #ffeecc, #ffcc66);
                                border-color: #ffcc66;"
                         tabindex="0">
                     Add to Cart
                 </button>
             </div>
+                }
           
         </div>
     </section>

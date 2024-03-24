@@ -67,13 +67,24 @@
                     <li class="nav-item">
                         <a class="nav-link" style="color:#f7ab0a" href="/Home/Index">Home</a>
                     </li>
-               
+                    @if (User.IsInRole("Customer"))
+                    {
+                        
                     <li class="nav-item">
-                        <a class="nav-link" href="/Cart/Index">Cart</a>
+                        <a class="nav-link" href="/CartItem/Index">Cart</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Account/Identity/Login">Login</a>
-                    </li>
+                        <li class="nav-item">
+                          
+                            <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout"
+                               asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">Logout</a>
+                        </li>
+                    }else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Identity/Account/Login">Login</a>
+                        </li>
+                    }
+                   
                 </ul>
             </div>
         </nav>
@@ -88,11 +99,16 @@
                 <img src="path_to_hamburger_menu_image" alt="hamburger menu" class="h-8 w-8">
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" style="color:#f7ab0a" href="#">Home</a>
-                <a class="dropdown-item" href="#cars">Cars</a>
-                <a class="dropdown-item" href="#faq">FAQ</a>
-                <a class="dropdown-item" href="#reviews">Reviews</a>
-                <a class="dropdown-item" href="/join">Join Us</a>
+                <li class="nav-item">
+                    <a class="nav-link" style="color:#f7ab0a" href="/Home/Index">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/CartItem/Index">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Account/Identity/Login">Login</a>
+                </li>
             </div>
         </div>
 

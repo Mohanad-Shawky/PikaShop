@@ -51,7 +51,7 @@ namespace YourNamespace.Controllers
         public IActionResult CreateCheckoutSession()
         {
             StripeConfiguration.ApiKey = _stripeSecretKey;
-            var domain = "http://localhost:12879/";
+            var domain = "http://localhost:5015/";
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cartItems = _cartItemService.UnitOfWork.CartItems

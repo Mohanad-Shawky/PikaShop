@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CartItemController : Controller
     {
         private readonly ICartItemServices _cartItemServices;
@@ -54,7 +56,8 @@ namespace PikaShop.Web.Controllers
         }
 
         // GET: CartItem/AddToCart/5
-        public IActionResult AddToCart(int productId)
+        [HttpPost]
+        public IActionResult AddToCart(int productId,int productQuantity=1)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cartItem = _cartItemServices.UnitOfWork.CartItems.GetAll()
@@ -63,7 +66,7 @@ namespace PikaShop.Web.Controllers
             if (cartItem != null)
             {
                 // If the product already exists in the cart, increment its quantity
-                cartItem.Quantity++;
+                cartItem.Quantity+= productQuantity;
             }
             else
             {
@@ -72,7 +75,7 @@ namespace PikaShop.Web.Controllers
                 {
                     ProductID = productId,
                     CustomerID = int.Parse(userId),
-                    Quantity = 1
+                    Quantity = productQuantity
                 };
                 _cartItemServices.UnitOfWork.CartItems.Create(newCartItem);
             }

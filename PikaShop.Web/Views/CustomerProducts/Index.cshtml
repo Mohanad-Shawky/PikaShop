@@ -105,6 +105,30 @@
             input.text(newValue);
         });
 
+
+        
+        $(document).on('click', '.toCardBtn', function () {
+            const inputId = $(this).data('input');
+            const input = $('#' + inputId);
+            const productQuantity = parseInt(input.text());
+            
+            AddToCardHandler(inputId, productQuantity);
+            
+            const newValue = 1;
+            input.text(newValue);
+        });
+
+
+        function AddToCardHandler(productId, productQuantity) {
+            $.ajax({
+                url: "CartItem/AddToCart",
+                method: "post", // Change the method to 'get'
+                data: { productId: productId, productQuantity: productQuantity } // Ensure proper formatting of data object
+            });
+        }
+
+            
+
         // Add button click event
         $(document).on('click', '.add-btn', function () {
             const inputId = $(this).data('input');

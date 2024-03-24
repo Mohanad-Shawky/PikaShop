@@ -1,9 +1,7 @@
-﻿@model PikaShop.Data.Context.ContextEntities.Core.ProductEntity
-
+﻿
 @{
     ViewData["Title"] = "ProductDetails";
 }
-
 
 
 <div class="container-fluid ">
@@ -17,15 +15,14 @@
 er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to Products</a>
                     </div>
                 <div class="col-md-6">
-                    @if (Model.Img == null)
+                    @if (Model.Img != null)
                     {
-
-                        <img src="@Model.Img" class="img-fluid w-100 h-100" alt="@Model.Name"/>
+                        <img src="@Model.Img" class="img-fluid w-100 h-100" alt="@Model.Name" />
                     }
-                    else{
-
-                        <img src="" alt="@Model.Name"/>
-                        }
+                    else
+                    {
+                        <span>No image available</span>
+                    }
                     </div>
                 <div class="col-md-5">
                     <h2>@Model.Name</h2>
@@ -58,15 +55,18 @@ er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to 
                         type="number" >1</span>
                         <buttonid id="@Model.ID-addingBtn" data-input="@Model.ID" class="btn text-xxl fw-bold add-btn" style="font-size:30px">+</button>
                     </div>
-                    <div class="text-center mt-3">
-                        <button type="button" class="btn btn-outline-secondary btn-lg"
+                      @if (User.IsInRole("Customer"))
+                    {
+                        <div class="text-center mt-3">
+                            <button type="button" data-input="@Model.ID" class="btn btn-outline-secondary btn-lg toCardBtn"
                         style="background-image: linear-gradient(to bottom, #ffeecc, #ffcc66); border-color: #ffcc66;">Add to Cart</button>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -86,5 +86,22 @@ er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to 
             currentValue++;
             input.text(currentValue);
         });
+
+        $(document).on('click', '.toCardBtn', function () {
+            const inputId = $(this).data('input');
+            const input = $('#' + inputId);
+            const productQuantity = parseInt(input.text());
+            AddToCardHandler(inputId, productQuantity);
+            const newValue = 1;
+            input.text(newValue);
+        });
+
+        function AddToCardHandler(productId, productQuantity) {
+            $.ajax({
+                url: "/CartItem/AddToCart", // Corrected URL
+                method: "post",
+                data: { productId: productId, productQuantity: productQuantity }
+            });
+        }
     });
-        </script>
+</script>

@@ -17,6 +17,7 @@ using PikaShop.Services.Helpers;
 
 namespace PikaShop.Web.Controllers
 {
+
 	public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
 	{
 		private IProductServices productServices { get; set; } = _prdService;
