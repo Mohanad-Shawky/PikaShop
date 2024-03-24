@@ -111,7 +111,7 @@ namespace PikaShop.Admin.Controllers
                 {
                     ProductSpecsEntity other = _mapper.Map<ProductSpecsEntity>(productSpec);
                     other.Product = null;
-                    other.Value = "";
+                    //other.Value = "";
                     _productSpecsServices.UnitOfWork.ProductSpecs.Update(target, other);
                     _productSpecsServices.UnitOfWork.Save();
                     return RedirectToAction(nameof(Index));
