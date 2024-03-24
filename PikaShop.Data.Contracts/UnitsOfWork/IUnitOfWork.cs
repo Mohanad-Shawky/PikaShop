@@ -11,6 +11,7 @@ namespace PikaShop.Data.Contracts.UnitsOfWork
         IProductSpecsRepository ProductSpecs { get; }
         IOrderRepository Orders { get; }
 
+        ICartItemRepository CartItems { get; }
         int Save();
 
         Task<int> SaveAsync();

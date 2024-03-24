@@ -25,6 +25,9 @@ namespace PikaShop.Data.Contracts.Repositories
         IQueryable<TEntity> GetAll();
 
         TEntity? GetById(TKey id);
+        
+        TEntity? GetById(TKey id, string includeProperties);
+
 
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
@@ -35,6 +38,7 @@ namespace PikaShop.Data.Contracts.Repositories
         void Delete(TEntity entity);
 
         void DeleteById(TKey id);
+        void DeleteById(TKey id,TKey id2);
 
         void DeleteRange(IEnumerable<TEntity> entities);
     }

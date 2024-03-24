@@ -8,6 +8,7 @@ using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
 using PikaShop.Services.Cache;
+using Stripe;
 
 namespace PikaShop.Web
 {
@@ -66,6 +67,13 @@ namespace PikaShop.Web
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
+            builder.Services.AddScoped<ICartItemServices, CartItemServices>();
+            builder.Services.AddScoped<ICheckoutServices, CheckoutServices>();
+            builder.Services.AddScoped<IStripeService, StripeService>(provider =>
+            {
+                var stripeSecretKey = builder.Configuration["Stripe:SecretKey"]; // Read from configuration
+                return new StripeService(stripeSecretKey);
+            });
             #endregion
 
             #region MVC Configuration

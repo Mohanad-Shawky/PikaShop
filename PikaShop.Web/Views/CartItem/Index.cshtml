@@ -1,0 +1,46 @@
+﻿@using PikaShop.Web.ViewModels
+@model IEnumerable<CartItemViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Shopping Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Image</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductImage</td>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.TotalPrice.ToString("C")</td>
+                <td>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="productId" value="@item.ProductId" />
+                        <input type="hidden" name="customerId" value="@item.CustomerId" />
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+
+    <a href="/Home">Continue Shopping</a>
+    <a href="/Checkout" class="btn btn-primary">Proceed to Checkout</a>
+</div>

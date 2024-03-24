@@ -28,5 +28,10 @@ namespace PikaShop.Data.Persistence.Repositories
             UpdateById(entity.ID, other);
 
         }
+
+        public void Update(ProductEntity entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
