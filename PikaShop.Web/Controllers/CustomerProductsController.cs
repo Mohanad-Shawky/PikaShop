@@ -39,7 +39,6 @@ namespace PikaShop.Web.Controllers
             {
                 cacheHelper.SetProductsCache(products);
 
-
                 Debug.WriteLine("Here we are !!");
 
                 IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
@@ -47,6 +46,12 @@ namespace PikaShop.Web.Controllers
                 return View(productViewModels);
             }
             return View(productViewModels);
+        }
+
+        public IActionResult ProductDetails(int id)
+        {
+            var product = productServices.UnitOfWork.Products.GetById(id);
+            return View(product);
         }
 
 
