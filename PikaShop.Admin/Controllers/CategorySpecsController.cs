@@ -147,6 +147,8 @@ namespace PikaShop.Admin.Controllers
                 if (categorySpec != null && ModelState.IsValid)
                 {
                     CategorySpecsEntity target = _mapper.Map<CategorySpecsEntity>(categorySpec);
+                    target.Category = null;
+                    target.Value = "";
                     _categorySpecsServices.UnitOfWork.CategorySpecs.Delete(target);
                     _categorySpecsServices.UnitOfWork.Save();
                     return RedirectToAction(nameof(Index));

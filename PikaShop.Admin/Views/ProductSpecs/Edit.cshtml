@@ -1,22 +1,22 @@
-﻿@model PikaShop.Admin.ViewModels.CategorySpecsViewModel
+﻿@model PikaShop.Admin.ViewModels.ProductSpecsViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h4 class="page-title">Category Specifications</h4>
+<h4 class="page-title">Product Specifications</h4>
 <hr />
 
 <div class="card">
     <div class="card-header">
-        <div class="card-title">Edit Category Specification</div>
+        <div class="card-title">Edit Product Specification</div>
     </div>
     <div class="card-body">
 
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
-            <input type="hidden" asp-for="CategoryID" />
+            <input type="hidden" asp-for="ProductID" />
             <div class="form-group">
                 <label asp-for="Key" class="control-label"></label>
                 <input asp-for="Key" class="form-control" />
@@ -28,9 +28,9 @@
                 <span asp-validation-for="Key" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" disabled/>
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" disabled/>
+                <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="card-action">
                 <input type="submit" value="Save" class="btn btn-success" />
