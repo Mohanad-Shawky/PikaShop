@@ -1,4 +1,8 @@
 ﻿@model PikaShop.Common.Pagination.PaginatedList<PikaShop.Web.ViewModels.ProductViewModel>;
+@{
+    bool endPage = @Model.HasNext == false;
+    bool firstPage = @Model.HasPrevious == false;
+}
 
 @if(@Model.Any()){
 
@@ -41,19 +45,22 @@
           
         </div>
     </section>
+   
 }
+
 }else{
-
    <partial name="_partialNotFound"/>
-
+}
+<hr/>
+@if (Model.Any())
+{
+    <div class="d-flex justify-content-between align-items-center w-100">
+        <button disabled="@firstPage" id="prevpage" class="btn rounded-pill btn-warning">Previous</button>
+        <label id="pageNum"  style="text-decoration:underline;font-size:30px ">@Model.CurrentPage</label>
+        <button disabled="@endPage" id="nextpage" class="btn rounded-pill btn-warning">Next</button>
+    </div>
 }
 
 
-@{
-    bool endPage = @Model.HasNext == false;
-    bool firstPage = @Model.HasPrevious == false;
-}
-<button disabled="@endPage" id="nextpage">Next</button>
-<label id="pageNum">@Model.CurrentPage</label>
-<button disabled="@firstPage" id="prevpage">Previous</button>
+
 

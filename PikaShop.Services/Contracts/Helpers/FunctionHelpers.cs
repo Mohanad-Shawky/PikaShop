@@ -5,6 +5,7 @@ namespace PikaShop.Services.Helpers
     public class FunctionHelpers
     {
 
+        
         public static Dictionary<string, List<string>> GetSpecificationsByCategory(ICollection<CategorySpecsEntity> categorySpecifications, List<ProductEntity> products)
         {
 
@@ -33,6 +34,7 @@ namespace PikaShop.Services.Helpers
 
             return specificationsDict;
         }
+       
 
 
     }
