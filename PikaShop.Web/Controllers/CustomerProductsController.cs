@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
@@ -18,130 +17,129 @@ using PikaShop.Services.Helpers;
 
 namespace PikaShop.Web.Controllers
 {
-    [Authorize(Roles = "Customer")]
-    public class CustomerProductsController(IProductServices _prdService) : Controller
-    {
-        private IProductServices productServices { get; set; } = _prdService;
-        private CacheHelper cacheHelper { get; } = _cacheHelper;
+	public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
+	{
+		private IProductServices productServices { get; set; } = _prdService;
+		private CacheHelper cacheHelper { get; } = _cacheHelper;
 
 
-        [HttpGet]
-        public IActionResult Index(int? catId)
-        {
+		[HttpGet]
+		public IActionResult Index(int? catId)
+		{
 
-            List<ProductEntity> products = productServices.GetCategoryProducts(catId);
-            PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
-            GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice);
-            ViewBag.Departments = Departments;
-            ViewBag.MaxPrice = MaxPrice;
-            ViewBag.Specification = productServices.GetCategorySpecs(catId, products);
-
-
-            if (products.Count() > 0)
-            {
-                cacheHelper.SetProductsCache(products);
+			List<ProductEntity> products = productServices.GetCategoryProducts(catId);
+			PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
+			GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice);
+			ViewBag.Departments = Departments;
+			ViewBag.MaxPrice = MaxPrice;
+			ViewBag.Specification = productServices.GetCategorySpecs(catId, products);
 
 
-                Debug.WriteLine("Here we are !!");
-
-                IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-                productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
-                return View(productViewModels);
-            }
-            return View(productViewModels);
-        }
+			if (products.Count() > 0)
+			{
+				cacheHelper.SetProductsCache(products);
 
 
-        [HttpGet]
-        public IActionResult NavigatePages(int pagenumber = 1)
-        {
-            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
-            IQueryable<ProductViewModel> prdsModel = cachedProducts.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-            PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, pagenumber, 3);
-            Debug.WriteLine("Hello");
+				Debug.WriteLine("Here we are !!");
 
-            return PartialView("_partialProductItem", productViewModels);
-        }
+				IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
+				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+				return View(productViewModels);
+			}
+			return View(productViewModels);
+		}
 
 
-        [HttpGet]
-        public IActionResult SearchProducts(string searchKeyword)
-        {
-            List<ProductEntity> products = productServices.SearchByName(searchKeyword);
-            PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
+		[HttpGet]
+		public IActionResult NavigatePages(int pagenumber = 1)
+		{
+			cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+			IQueryable<ProductViewModel> prdsModel = cachedProducts.Select(IHelperMapper.ProductViewMapper).AsQueryable();
+			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, pagenumber, 3);
+			Debug.WriteLine("Hello");
 
-            if (products.Count > 0)
-            {
-                cacheHelper.SetProductsCache(products);
-
-
-                IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-                productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
-
-            }
-            return PartialView("_partialProductItem", productViewModels);
-
-        }
+			return PartialView("_partialProductItem", productViewModels);
+		}
 
 
-        [HttpGet]
-        public IActionResult FilterByPrice(double maxPrice)
-        {
+		[HttpGet]
+		public IActionResult SearchProducts(string searchKeyword)
+		{
+			List<ProductEntity> products = productServices.SearchByName(searchKeyword);
+			PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
 
-            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
-            PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
-
-            List<ProductEntity> Products = productServices.SearchByPriceRange(maxPrice, cachedProducts);
-
-            IQueryable<ProductViewModel> prdsModel = Products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-            productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
-
-            return PartialView("_partialProductItem", productViewModels);
-        }
+			if (products.Count > 0)
+			{
+				cacheHelper.SetProductsCache(products);
 
 
-        public IActionResult SortProductsBy(string orderBy)
-        {
-            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
-            List<ProductEntity> products = productServices.SortProducts(orderBy, cachedProducts);
-            PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
-            cacheHelper.SetProductsCache(products);
+				IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
+				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+
+			}
+			return PartialView("_partialProductItem", productViewModels);
+
+		}
 
 
-            IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-            productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+		[HttpGet]
+		public IActionResult FilterByPrice(double maxPrice)
+		{
 
-            return PartialView("_partialProductItem", productViewModels);
-        }
+			cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+			PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
 
+			List<ProductEntity> Products = productServices.SearchByPriceRange(maxPrice, cachedProducts);
 
-        [HttpGet]
-        public IActionResult FilterByFeatures(string specificationJson)
-        {
+			IQueryable<ProductViewModel> prdsModel = Products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
+			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
 
-            var SpecificationKeys = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(specificationJson);
-
-            cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
-
-            List<ProductEntity> products = productServices.FilterBySpecifications(SpecificationKeys, cachedProducts);
+			return PartialView("_partialProductItem", productViewModels);
+		}
 
 
-            IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable(); ;
-            PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+		public IActionResult SortProductsBy(string orderBy)
+		{
+			cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+			List<ProductEntity> products = productServices.SortProducts(orderBy, cachedProducts);
+			PaginatedList<ProductViewModel> productViewModels = new PaginatedList<ProductViewModel>();
+			cacheHelper.SetProductsCache(products);
 
 
-            return PartialView("_partialProductItem", productViewModels);
-        }
+			IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
+			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+
+			return PartialView("_partialProductItem", productViewModels);
+		}
 
 
-        private void GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice)
-        {
-            cacheHelper.GetDepartments(out List<DepartmentEntity> _Departments);
-            cacheHelper.GetMaximumPriceRange(out double _MaxPrice);
-            Departments = _Departments;
-            MaxPrice = _MaxPrice;
+		[HttpGet]
+		public IActionResult FilterByFeatures(string specificationJson)
+		{
 
-        }
+			var SpecificationKeys = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(specificationJson);
 
-    }
+			cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
+
+			List<ProductEntity> products = productServices.FilterBySpecifications(SpecificationKeys, cachedProducts);
+
+
+			IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable(); ;
+			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+
+
+			return PartialView("_partialProductItem", productViewModels);
+		}
+
+
+		private void GetCachedValues(out List<DepartmentEntity> Departments, out double MaxPrice)
+		{
+			cacheHelper.GetDepartments(out List<DepartmentEntity> _Departments);
+			cacheHelper.GetMaximumPriceRange(out double _MaxPrice);
+			Departments = _Departments;
+			MaxPrice = _MaxPrice;
+
+		}
+
+	}
 }
