@@ -12,13 +12,12 @@ namespace PikaShop.Data.Persistence.Repositories
 {
     public class CartItemRepository(ApplicationDbContext _context) : Repository<CartItemEntity, int>(_context), ICartItemRepository
     {
-
-        public void SoftDelete(CartItemEntity entity)
+        public void DeleteById(int id, int id2)
         {
             throw new NotImplementedException();
         }
 
-        public void SoftDeleteById(int id)
+        public CartItemEntity? GetById(int id, string includeProperties)
         {
             throw new NotImplementedException();
         }
@@ -28,7 +27,7 @@ namespace PikaShop.Data.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(CartItemEntity entity)
+        public void Update(CartItemEntity entity, CartItemEntity other, string username = "system")
         {
             throw new NotImplementedException();
         }
@@ -39,6 +38,11 @@ namespace PikaShop.Data.Persistence.Repositories
         }
 
         public void UpdateById(int key, int key1, CartItemEntity other)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateById(int key, CartItemEntity other, string username = "system")
         {
             throw new NotImplementedException();
         }

@@ -73,8 +73,30 @@ namespace PikaShop.Data.Persistence.Repositories
 		}
 		#endregion
 
+		#region Update
+		public virtual void Update(TEntity entity)
+		{
+			var entry = context.Entry(entity);
+			if (entry != null)
+			{
+				if(entry.State == EntityState.Detached || entry.State == EntityState.Added)
+				{
+					entities.Add(entity);
+				}
+				else if(entry.State == EntityState.Modified)
+				{
+					entities.Update(entity);
+				}
+				else if (entry.State == EntityState.Deleted)
+				{
+					 entities.Remove(entity);
+				}
+			}
+		}
+		#endregion
+
 		#region Update Audit
-		public void UpdateAudit(TEntity entity, string username = "system")
+		public virtual void UpdateAudit(TEntity entity, string username = "system")
 		{
 			if (typeof(TEntity).IsSubclassOf(typeof(AuditEntity)))
 			{
@@ -88,7 +110,7 @@ namespace PikaShop.Data.Persistence.Repositories
 			}
 		}
 
-		public void UpdateAuditById(TKey id, string username = "system")
+		public virtual void UpdateAuditById(TKey id, string username = "system")
 		{
 			var target = GetById(id);
 			if (target != null)
@@ -121,7 +143,7 @@ namespace PikaShop.Data.Persistence.Repositories
 		#endregion
 
 		#region Soft Delete
-		public void SoftDeleteById(TKey id, string username = "system")
+		public virtual void SoftDeleteById(TKey id, string username = "system")
 		{
 			if(typeof(IEntitySoftDelete).IsAssignableFrom(typeof(TEntity)))
 			{
@@ -138,7 +160,7 @@ namespace PikaShop.Data.Persistence.Repositories
 			}
 		}
 
-		public void SoftDelete(TEntity entity, string username = "system")
+		public virtual void SoftDelete(TEntity entity, string username = "system")
 		{
 			if (typeof(IEntitySoftDelete).IsAssignableFrom(typeof(TEntity)))
 			{
