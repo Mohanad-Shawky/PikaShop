@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PikaShop.Common\PikaShop.Common.csproj" />
     <ProjectReference Include="..\PikaShop.Data.Persistence\PikaShop.Data.Persistence.csproj" />
   </ItemGroup>
 

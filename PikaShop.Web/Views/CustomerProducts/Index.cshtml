@@ -1,4 +1,5 @@
-﻿@model List<PikaShop.Web.ViewModels.ProductViewModel>;
+﻿@model PikaShop.Common.Pagination.PaginatedList<PikaShop.Web.ViewModels.ProductViewModel>;
+
 
 
 @{
@@ -129,7 +130,7 @@
 
     function searchHandler(keyword) {
         $.ajax({
-            url: "CustomerProducts/Search?searchKeyword=" + keyword,
+            url: "CustomerProducts/SearchProducts?searchKeyword=" + keyword,
             method: "get",
             success: function (response) {
                 $("#ProductLst").html(response);
@@ -174,10 +175,11 @@
 
     function ChangeSortCriteria(orderBy){
         $.ajax({
-            url: "CustomerProducts/SortProducts?orderBy=" + orderBy,
+            url: "CustomerProducts/SortProductsBy?orderBy=" + orderBy,
             method: "get",
             success: function (response) {
                 $("#ProductLst").html(response);
+                attachClickHandlers();
             },
         })
 
@@ -186,10 +188,11 @@
     function ChangePriceRange(priceRange){
         console.log("price fun called!")
         $.ajax({
-            url: "CustomerProducts/MaxPriceRange?maxPrice="+priceRange,
+            url: "CustomerProducts/FilterByPrice?maxPrice=" + priceRange,
             method: "get",
             success: function (response) {
                 $("#ProductLst").html(response);
+                attachClickHandlers();
             },
         })
 
@@ -202,7 +205,7 @@
       
         const queryString = $.param({ specificationJson: JSON.stringify(checkedValues) });
         $.ajax({
-            url: 'CustomerProducts/FeaturesFilter?' + queryString,
+            url: 'CustomerProducts/FilterByFeatures?' + queryString,
             method:"get",
                 success: function (response) {
                     $("#ProductLst").html(response);
@@ -212,8 +215,34 @@
             }
         });
     }
-
     
+    let pageValue = Number(document.getElementById("pageNum").innerText);
+
+    function attachClickHandlers() {
+        $("#nextpage").click(function () {
+            navigationHandler(pageValue + 1);
+        });
+
+        $("#prevpage").click(function () {
+            navigationHandler(pageValue - 1);
+        });
+    }
+
+    attachClickHandlers();
+
+    function navigationHandler(currentPage) {
+        $.ajax({
+            url: "CustomerProducts/NavigatePages?pagenumber=" + String(currentPage),
+            method: "get",
+            success: function (response) {
+                $("#ProductLst").html(response);
+                // Update pageValue after loading the next page
+                pageValue = currentPage;
+                document.getElementById("pageNum").innerText = currentPage;
+                attachClickHandlers(); // Reattach click event handlers
+            },
+        });
+    }
 
 </script> 
 

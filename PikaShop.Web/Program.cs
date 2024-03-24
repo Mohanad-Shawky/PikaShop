@@ -121,8 +121,8 @@ namespace PikaShop.Web
 
             #region Identity Seeding
             // Identity Seeding
-            using (var scope = app.Services.CreateScope())
-                await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+            //using (var scope = app.Services.CreateScope())
+            //    await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
             #endregion
 
             app.Run();

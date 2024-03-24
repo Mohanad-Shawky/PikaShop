@@ -1,4 +1,5 @@
-﻿@model List<PikaShop.Web.ViewModels.ProductViewModel>
+﻿@model PikaShop.Common.Pagination.PaginatedList<PikaShop.Web.ViewModels.ProductViewModel>;
+
 @if(@Model.Any()){
 
 
@@ -47,4 +48,12 @@
 
 }
 
-                         
+
+@{
+    bool endPage = @Model.HasNext == false;
+    bool firstPage = @Model.HasPrevious == false;
+}
+<button disabled="@endPage" id="nextpage">Next</button>
+<label id="pageNum">@Model.CurrentPage</label>
+<button disabled="@firstPage" id="prevpage">Previous</button>
+
