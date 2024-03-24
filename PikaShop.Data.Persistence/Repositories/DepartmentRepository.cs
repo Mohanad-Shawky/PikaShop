@@ -11,32 +11,19 @@ namespace PikaShop.Data.Persistence.Repositories
             return context.Departments.Where(d=> !d.IsDeleted);
         }
 
-        public void UpdateById(int id, DepartmentEntity other)
+        public void UpdateById(int id, DepartmentEntity other, string username = "system")
         {
             DepartmentEntity? oldDep = GetById(id);
             if(oldDep != null)
             {
                oldDep.Description = other.Description;
                oldDep.Name = other.Name;
+                UpdateAudit(oldDep,username);
             }
         }
-        public void Update(DepartmentEntity entity, DepartmentEntity other)
+        public void Update(DepartmentEntity entity, DepartmentEntity other, string username = "system")
         {
             UpdateById(entity.ID, other);
-        }
-
-        public void SoftDeleteById(int id)
-        {
-            DepartmentEntity? oldDep = GetById(id);
-            if (oldDep?.IsDeleted == false)
-            {
-                oldDep.IsDeleted = true;
-                oldDep.DateModified = DateTime.Now;
-            }
-        }
-        public void SoftDelete(DepartmentEntity entity)
-        {
-            SoftDeleteById(entity.ID);
         }
     }
 }

@@ -5,6 +5,5 @@ namespace PikaShop.Data.Contracts.Repositories
 {
     public interface IProductRepository :
         IRepository<ProductEntity,int>,
-        IUpdate<ProductEntity, int>,
-        ISoftDelete<ProductEntity, int>;
+        IUpdate<ProductEntity, int>;
 }

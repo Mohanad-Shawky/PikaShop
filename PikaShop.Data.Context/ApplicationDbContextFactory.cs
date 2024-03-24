@@ -12,7 +12,7 @@ namespace PikaShop.Data.Context
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlServer("data source=.;initial catalog=PikaShop;integrated security=true;encrypt=false", b => b.MigrationsAssembly("PikaShop.Web"));
+            optionsBuilder.UseSqlServer("data source=.;initial catalog=PikaShop;integrated security=true;encrypt=false", b => b.MigrationsAssembly("PikaShop.Admin"));
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }

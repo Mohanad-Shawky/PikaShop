@@ -5,6 +5,5 @@ namespace PikaShop.Data.Contracts.Repositories
 {
     public interface IDepartmentRepository :
         IRepository<DepartmentEntity,int>,
-        IUpdate<DepartmentEntity, int>,
-        ISoftDelete<DepartmentEntity, int>;
+        IUpdate<DepartmentEntity, int>;
 }

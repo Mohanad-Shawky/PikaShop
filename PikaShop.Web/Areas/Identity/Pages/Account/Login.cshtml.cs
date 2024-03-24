@@ -113,8 +113,9 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var user = await _userManager.FindByEmailAsync(Input.Email);
+                var userRole = await _userManager.IsInRoleAsync(user, "Customer");
 
-                if (user != null && !await _userManager.IsEmailConfirmedAsync(user))
+                if (user != null && !await _userManager.IsEmailConfirmedAsync(user) && (userRole != true))
                 {
                     ModelState.AddModelError(string.Empty, "You must confirm your email before logging in.");
                     return Page();

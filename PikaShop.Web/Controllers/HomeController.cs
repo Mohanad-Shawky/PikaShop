@@ -1,11 +1,13 @@
 #nullable enable
 
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PikaShop.Web.Models;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class HomeController : Controller
     {
         public IActionResult Index()

@@ -1,4 +1,5 @@
-﻿using PikaShop.Data.Contracts.UnitsOfWork;
+﻿using PikaShop.Data.Context.ContextEntities.Core;
+using PikaShop.Data.Contracts.UnitsOfWork;
 
 namespace PikaShop.Data.Persistence.UnitsOfWork
 {
@@ -9,6 +10,19 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             if(!unitOfWork.Departments.GetAll().Any())
             {
                 // Add Departments Here
+                var departments = new List<DepartmentEntity>
+                {
+                    new() { Name="Electronics", Description="Every Home Device, Mobiles, tablets, and Computers" },
+                    new() { Name="Entertainment", Description="" },
+                    new() { Name="Books", Description="" },
+                    new() { Name="Cloths", Description="" },
+                    new() { Name="Tools", Description = "" },
+                    new() { Name="Toys", Description = "" },
+                    new() { Name = "Groceries", Description = "" },
+                    new() { Name="Heavy Machines", Description = "" }
+                };
+                unitOfWork.Departments.CreateRange(departments);
+                unitOfWork.Save();
             }
 
             if (!unitOfWork.Categories.GetAll().Any())

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PikaShop.Data.Context.ContextEntities.Core;
@@ -7,6 +8,7 @@ using PikaShop.Services.Contracts;
 
 namespace PikaShop.Web.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CategoryController(ICategoryServices _categoryService) : Controller
     {
         private readonly ICategoryServices categoryServices = _categoryService;

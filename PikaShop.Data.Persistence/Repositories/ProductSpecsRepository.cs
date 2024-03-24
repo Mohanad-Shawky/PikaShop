@@ -11,33 +11,23 @@ namespace PikaShop.Data.Persistence.Repositories
         {
             return context.ProductSpecs.Where(ps => !ps.IsDeleted).AsNoTracking();
         }
-
-        public void UpdateById(int id, ProductSpecsEntity other)
+        public IQueryable<ProductSpecsEntity> GetAllByProductID(int productID)
+        {
+            return context.ProductSpecs.Where(ps => ps.ProductID == productID).AsNoTracking();
+        }
+        public void UpdateById(int id, ProductSpecsEntity other, string username = "system")
         {
             ProductSpecsEntity? oldProductSpecs = GetById(id);
             if (oldProductSpecs != null)
             {
                 oldProductSpecs.Key = other.Key;
                 oldProductSpecs.Value = other.Value;
+                UpdateAudit(oldProductSpecs, username);
             }
         }
-        public void Update(ProductSpecsEntity entity, ProductSpecsEntity other)
+        public void Update(ProductSpecsEntity entity, ProductSpecsEntity other, string username = "system")
         {
             UpdateById(entity.ID, other);
-        }
-
-        public void SoftDeleteById(int id)
-        {
-            ProductSpecsEntity? oldProSpec = GetById(id);
-            if (oldProSpec?.IsDeleted == false)
-            {
-                oldProSpec.IsDeleted = true;
-                oldProSpec.DateModified = DateTime.Now;
-            }
-        }
-        public void SoftDelete(ProductSpecsEntity entity)
-        {
-            SoftDeleteById(entity.ID);
         }
     }
 }

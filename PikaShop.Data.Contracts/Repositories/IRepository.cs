@@ -16,15 +16,21 @@ namespace PikaShop.Data.Contracts.Repositories
         // Delete... => Delete...
         // DeleteRange
 
-        void Create(TEntity entity);
+        public IQueryable<TEntity> GetSet();
 
-        void CreateRange(IEnumerable<TEntity> entities);
+        void Create(TEntity entity, string username = "system");
+
+        void CreateRange(IEnumerable<TEntity> entities, string username = "system");
 
         IQueryable<TEntity> GetAll();
 
         TEntity? GetById(TKey id);
 
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+
+        void UpdateAudit(TEntity entity, string username = "system");
+
+        void UpdateAuditById(TKey id, string username = "system");
 
         void Delete(TEntity entity);
 

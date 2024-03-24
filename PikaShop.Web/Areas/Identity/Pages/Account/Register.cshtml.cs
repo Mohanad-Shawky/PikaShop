@@ -117,6 +117,9 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    // Adding Role Customer after Successfully Registered
+                    await _userManager.AddToRoleAsync(user, "Customer");
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -176,7 +179,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
              *  smtpPort 2525 , Host from ElasticEmail
              *
              *  Elastic Account
-             *  Email    : Pikashop8879@gmail.com
+             *  Email    : Pikashop8879@gmail.com   pikashop48@gmail.com
              *  Password : PikaShop@2024ITI.com
              *
              *  Service Credentials
@@ -188,7 +191,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
             {
                 MailMessage message = new();
                 SmtpClient smtpClient = new();
-                message.From = new MailAddress("PikaShop8879@gmail.com");
+                message.From = new MailAddress("pikashop48@gmail.com");
                 message.To.Add(email);
                 message.Subject = subject;
                 message.IsBodyHtml = true;
@@ -200,7 +203,7 @@ namespace PikaShop.Web.Areas.Identity.Pages.Account
 
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("PikaShop8879@gmail.com", "98345F46C390A3F184737C9F3C048420DB26");
+                smtpClient.Credentials = new NetworkCredential("pikashop48@gmail.com", "99CEC64ABEFB252C5D490320AD129120CDC1");
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.Send(message);
                 return true;

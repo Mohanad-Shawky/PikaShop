@@ -19,6 +19,8 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
 
         public IProductSpecsRepository ProductSpecs { get; }
 
+        public IOrderRepository Orders { get; }
+
         public UnitOfWork(ApplicationDbContext _context)
         {
             context = _context;
@@ -27,6 +29,7 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             Products = new ProductRepository(context);
             CategorySpecs = new CategorySpecsRepository(context);
             ProductSpecs = new ProductSpecsRepository(context);
+            Orders = new OrderRepository(context);
         }
 
         public int Save()

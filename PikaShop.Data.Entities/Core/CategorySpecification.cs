@@ -8,8 +8,6 @@ namespace PikaShop.Data.Entities.Core
     {
         public string Key {  get; set; }
 
-        public string Value {  get; set; }
-
-        public bool Searchable {  get; set; }
+        public string Value { get; set; } = "";
     }
 }

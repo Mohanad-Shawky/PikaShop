@@ -13,5 +13,6 @@ namespace PikaShop.Data.Context.ContextEntities.Core
         public virtual CategoryEntity? Category { get; set; }
 
         public bool IsDeleted { get; set; }
+        public bool Searchable { get; set; }
     }
 }
