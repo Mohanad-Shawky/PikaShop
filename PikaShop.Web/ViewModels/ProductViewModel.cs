@@ -7,5 +7,6 @@
         public string Img { get; set; }
         public int UnitsInStock {  get; set; }
         public int? CategoryID { get; set; }
+        public double UnitPrice { get; set; }
     }
 }

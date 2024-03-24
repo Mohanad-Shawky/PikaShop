@@ -7,6 +7,7 @@ using PikaShop.Services.Core;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
+using PikaShop.Services.Cache;
 
 namespace PikaShop.Web
 {
@@ -74,7 +75,13 @@ namespace PikaShop.Web
             builder.Services.AddRazorPages();
             #endregion
 
+            builder.Services.AddScoped<CacheHelper>();
+
             var app = builder.Build();
+
+
+            app.UseSession();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
