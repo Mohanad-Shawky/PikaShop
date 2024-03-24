@@ -8,14 +8,14 @@
 }
 
 <style>
-    h1 {
+   h1 {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         margin: 0;
     }
-
+ 
     .price-range-labels::before {
         content: "$";
         margin-right: 2px; /* Adjust as needed */
@@ -24,67 +24,16 @@
     .productUnitPrice::before{
         content:"$";
         margin-left:1px;
+        font-style:italic;
     }
 </style>
-@* <div class="container">
+
+
+
+<div class="container-fluid" >
+
     <div class="row">
-        <div class="col-lg-3">
-            <div>
-                <div class="container">
-                    <section>
-
-                   <partial name="_partialSortingMenu"/>
-                    </section>
-                    <section>
-                                <partial name="_partialDepartments" model="@Departments" />
-                    
-                    </section>
-                    <section class="p-3 border rounded">
-                        <partial name="_partialPriceRange" model="@maximumCurrentPrice" />
-                    </section>
-                    <section class="p-3 border rounded">
-                        @if (Specifications.Count > 0)
-                        {
-                            <partial name="_partialCategorySpecifications" model="@Specifications"/>
-                        }
-                        
-                    </section>
-                </div>
-                
-
-
-            </div>
-            
-        </div>
-
-
-
-            <div class="col-lg-9 ">
-            <div class="container my-5">
-                    <input id="SearchInput" class="form-control me-2" type="search" name="searchKeyword" placeholder="Search here" aria-label="Search">
-                    <button id="SearchBtn" class="btn btn-primary px-2" type="submit">
-                            Search
-                    </button>
-            </div>
-        @if (Model.Count > 0)
-        {
-                <div class="row" id="ProductLst">
-                  
-
-                      <partial name="_partialProductItem" model="@Model"/>
-
-            </div>
-        }else
-        {
-            <h1 style="">No Products Were Found!</h1>
-        }
-                </div>
-    </div>
-            </div>
- *@
-<div class="container">
-    <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3 px-4">
             <div class="container">
                 <section>
                     <section>   
@@ -95,7 +44,7 @@
                     <!-- Search area -->
                     <div class="input-group my-5">
                         <input id="SearchInput" class="form-control me-2" type="search" name="searchKeyword" placeholder="Search here" aria-label="Search">
-                        <button id="SearchBtn" class="btn btn-primary px-2" type="submit" disabled>
+                        <button id="SearchBtn" class="btn btn-success px-2" type="submit" disabled>
                             Search
                         </button>
                     </div>
@@ -123,25 +72,17 @@
             </div>
         </div>
 
-        <div class="col-lg-9">
-            <!-- Product list -->
-            <div class="container my-5">
-                @if (Model.Count > 0)
-                {
+        <div class="col-lg-8">
+            <div class=" my-5">
                     <div class="row" id="ProductLst">
                         <partial name="_partialProductItem" model="@Model" />
                     </div>
-                }
-                else
-                {
-                    <h1 style="">No Products Were Found!</h1>
-                }
             </div>
         </div>
     </div>
 </div>
 
-
+ 
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -151,7 +92,6 @@
 
         $('#SearchInput').on('input', function () {
             $('#SearchBtn').prop('disabled', $(this).val().trim() === '');
-
 
         });
 

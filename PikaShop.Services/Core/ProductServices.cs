@@ -80,8 +80,12 @@ namespace PikaShop.Services.Core
             };
             return products;
         }
+        //ProductEntity GetById(int id)
+        //{
+        //    UnitOfWork.Products.GetById(id).
+        //}
 
-      
+
 
     }
 }

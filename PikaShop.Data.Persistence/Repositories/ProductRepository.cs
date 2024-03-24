@@ -15,12 +15,14 @@ namespace PikaShop.Data.Persistence.Repositories
                 editedProduct.Description = other.Description;
                 editedProduct.Price = other.Price;
                 editedProduct.Name = other.Name;
-                //editedProduct.Specifications = other.Specifications;
+                //editedproduct.specifications = other.specifications;
                 editedProduct.UnitsInStock = other.UnitsInStock;
                 editedProduct.CategoryID = other.CategoryID;
                 editedProduct.Category = other.Category;
             }
         }
+
+       
         public void Update(ProductEntity entity, ProductEntity other)
         {
             UpdateById(entity.ID, other);

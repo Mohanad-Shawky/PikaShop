@@ -1,6 +1,6 @@
 ﻿@model List<PikaShop.Data.Context.ContextEntities.Core.DepartmentEntity>;
 
-<h2 class="text-lg fw-bold mb-4 p-2">Departments</h2>
+<h2 class="text-md fw-bold mb-4 p-2">Departments</h2>
 <div class="accordion" id="departmentsAccordion">
     @foreach (var dept in Model)
     {
@@ -16,7 +16,7 @@
                         @foreach (var category in dept.Categories)
                         {
                             <li class="list-group-item" aria-current="true">
-                                <a class="btn btn-outline-secondary" asp-controller="CustomerProducts" asp-action="Index"
+                                <a class="btn btn-outline-secondary" style="background-color:#f7ab0a color:white " asp-controller="CustomerProducts" asp-action="Index"
                                    asp-route-catId="@category.ID">@category.Name</a>
                             </li>
                         }
