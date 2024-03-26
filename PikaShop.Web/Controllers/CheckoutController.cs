@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PikaShop.Services.Contracts;
+using PikaShop.Web.ViewModels;
 using Stripe;
 using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
-using PikaShop.Web.ViewModels;
 
 namespace YourNamespace.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CheckoutController : Controller
     {
         private readonly string _stripeSecretKey = "sk_test_51Ou2OOGFkpxy9DHRADa2B3NpA00Jd65SAxn3uZfOSQL0sHcGERLn0XFZKkF6wzfm80HAO2CKu7pbIdDvvqUl60sO00YGRzG5Hk";
@@ -51,7 +54,7 @@ namespace YourNamespace.Controllers
         public IActionResult CreateCheckoutSession()
         {
             StripeConfiguration.ApiKey = _stripeSecretKey;
-            var domain = "http://localhost:5015/";
+            var domain = "http://localhost:12879/";
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cartItems = _cartItemService.UnitOfWork.CartItems
@@ -78,7 +81,7 @@ namespace YourNamespace.Controllers
                 PaymentMethodTypes = new List<string> { "card" },
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = domain + $"Checkout/Success",
+                SuccessUrl = domain + "Checkout/Success?session_id={CHECKOUT_SESSION_ID}",
                 CancelUrl = domain + "Checkout/Cancel",
             };
 
@@ -115,6 +118,33 @@ namespace YourNamespace.Controllers
             _cartItemService.UnitOfWork.Save();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult PayOnDelivery()
+        {
+            return RedirectToAction("ThankYou");
+        }
+        [HttpPost]
+        public IActionResult ProcessDeliveryInformation(DeliveryInformationViewModel deliveryInfo)
+        {
+            if (ModelState.IsValid)
+            {
+   
+                return RedirectToAction("ThankYou");
+            }
+            else
+            {
+    
+                return View();
+            }
+        }
+
+
+        public IActionResult ThankYou()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ClearCart();
+            return View();
         }
     }
 }
