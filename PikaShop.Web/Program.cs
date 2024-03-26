@@ -68,6 +68,7 @@ namespace PikaShop.Web
             builder.Services.AddScoped<ICategoryServices, CategoryServices>();
             builder.Services.AddScoped<IProductServices, ProductServices>();
             builder.Services.AddScoped<ICartItemServices, CartItemServices>();
+            builder.Services.AddScoped<IWishListServices, WishListServices>();
             builder.Services.AddScoped<ICheckoutServices, CheckoutServices>();
             builder.Services.AddScoped<IStripeService, StripeService>(provider =>
             {
