@@ -106,14 +106,14 @@
         });
 
 
-        
+
         $(document).on('click', '.toCardBtn', function () {
             const inputId = $(this).data('input');
             const input = $('#' + inputId);
             const productQuantity = parseInt(input.text());
-            
+
             AddToCardHandler(inputId, productQuantity);
-            
+
             const newValue = 1;
             input.text(newValue);
         });
@@ -127,26 +127,40 @@
             });
         }
 
-            
-
-        // Add button click event
-        $(document).on('click', '.add-btn', function () {
+        $(document).on('click', '.toWishListBtn', function () {
             const inputId = $(this).data('input');
             const input = $('#' + inputId);
-            const currentValue = parseInt(input.text());
-            const maxUnits = parseInt(input.attr('max'));
-            const newValue = Math.min(currentValue + 1, maxUnits);
+            const productQuantity = parseInt(input.text());
+            AddToWishListHandler(inputId, productQuantity);
+            const newValue = 1;
             input.text(newValue);
         });
 
-        // Range input change event
-        $('#priceRange').on('input', function () {
-            $('#rangeValue').text($(this).val());
-            ChangePriceRange($(this).val());
-
-        });
+        function AddToWishListHandler(productId, productQuantity) {
+            $.ajax({
+                url: "WishList/AddToWishList", // Corrected URL
+                method: "post",
+                data: { productId: productId, productQuantity: productQuantity }
+            });
+        }
     });
 
+    // Add button click event
+    $(document).on('click', '.add-btn', function () {
+        const inputId = $(this).data('input');
+        const input = $('#' + inputId);
+        const currentValue = parseInt(input.text());
+        const maxUnits = parseInt(input.attr('max'));
+        const newValue = Math.min(currentValue + 1, maxUnits);
+        input.text(newValue);
+    });
+
+    // Range input change event
+    $('#priceRange').on('input', function () {
+        $('#rangeValue').text($(this).val());
+        ChangePriceRange($(this).val());
+
+    });
 
     $("#SearchBtn").click(function () {
         searchHandler($("#SearchInput").val());
@@ -163,7 +177,7 @@
     }
 
 
-   
+
 
     var checkedValues = {};
 
@@ -188,7 +202,7 @@
                 }
             }
         }
-         makeAjaxCall(checkedValues);
+        makeAjaxCall(checkedValues);
     });
 
 
@@ -197,7 +211,7 @@
         ChangeSortCriteria(selectedValue);
     });
 
-    function ChangeSortCriteria(orderBy){
+    function ChangeSortCriteria(orderBy) {
         $.ajax({
             url: "CustomerProducts/SortProductsBy?orderBy=" + orderBy,
             method: "get",
@@ -209,7 +223,7 @@
 
     }
 
-    function ChangePriceRange(priceRange){
+    function ChangePriceRange(priceRange) {
         console.log("price fun called!")
         $.ajax({
             url: "CustomerProducts/FilterByPrice?maxPrice=" + priceRange,
@@ -224,22 +238,22 @@
     }
 
 
-    
+
     function makeAjaxCall(checkedValues) {
-      
+
         const queryString = $.param({ specificationJson: JSON.stringify(checkedValues) });
         $.ajax({
             url: 'CustomerProducts/FilterByFeatures?' + queryString,
-            method:"get",
-                success: function (response) {
-                    $("#ProductLst").html(response);
+            method: "get",
+            success: function (response) {
+                $("#ProductLst").html(response);
             },
             error: function (xhr, status, error) {
                 console.error('AJAX call error:', error);
             }
         });
     }
-    
+
     let pageValue = Number(document.getElementById("pageNum").innerText);
 
     function attachClickHandlers() {
@@ -268,6 +282,6 @@
         });
     }
 
-</script> 
+</script>
 
 
