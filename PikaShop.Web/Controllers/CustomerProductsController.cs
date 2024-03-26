@@ -3,8 +3,6 @@
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Web.ViewModels;
-
-using PikaShop.Services.Cache;
 using System.Diagnostics;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -17,7 +15,7 @@ using PikaShop.Services.Helpers;
 
 namespace PikaShop.Web.Controllers
 {
-	public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
+    public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
 	{
 		private IProductServices productServices { get; set; } = _prdService;
 		private CacheHelper cacheHelper { get; } = _cacheHelper;

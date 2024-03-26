@@ -2,37 +2,45 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PikaShop.Admin.Models;
 using PikaShop.Admin.ViewModels;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Services.Contracts;
+using PikaShop.Services.Contracts.Admin;
 
 namespace PikaShop.Admin.Controllers
 {
 	[Authorize(Roles = "SuperAdmin,Admin")]
 	public class HomeController
-		(UserManager<ApplicationUserEntity> userManager,
-		SignInManager<ApplicationUserEntity> signInManager, IDepartmentServices departmentServices)
+		(UserManager<ApplicationUserEntity> userManager, RoleManager<ApplicationUserEntity> roleManager, IReportGenerationServices reportGenerationServices)
 
 		: Controller
 	{
 		readonly UserManager<ApplicationUserEntity> _userManager = userManager;
-		readonly SignInManager<ApplicationUserEntity> _signInManager = signInManager;
-		readonly IDepartmentServices _departmentServices = departmentServices;
+		readonly RoleManager<ApplicationUserEntity> _roleManager = roleManager;
+		readonly IReportGenerationServices reportGenerationServices = reportGenerationServices;
 
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(DateOnly from = default)
 		{
 			DashboardViewModel dashboardModel = new();
 
-			dashboardModel.CustomersCount = userManager.Users.Count();
+			var customerRole = await _roleManager.FindByNameAsync("Customer");
 
-			dashboardModel.TotalSales = _departmentServices.UnitOfWork.Orders
-				.GetSet().Sum(o => o.Total);
+			dashboardModel.CustomersCount = await _userManager.Users
+				.CountAsync(u => _userManager.IsInRoleAsync(u, "Customer").Result);
 
-			dashboardModel.ProductsCount = _departmentServices.UnitOfWork.Products
-				.GetSet().Count();
+			dashboardModel.TotalSales = reportGenerationServices.TotalSales();
 
-			dashboardModel.OrdersCount = _departmentServices.UnitOfWork.Orders.GetSet().Count();
+			dashboardModel.ProductsCount = reportGenerationServices.ProductCount();
+
+			dashboardModel.OrdersCount = reportGenerationServices.OrdersCount();
+
+			dashboardModel.LatestOrders = reportGenerationServices.LatestOrders(10).ToList();
+
+			dashboardModel.MonthlySales = reportGenerationServices.YearMonthlySales(from).ToList();
+
+			dashboardModel.TopSellingProducts = reportGenerationServices.BestSellingProducts(10).ToList();
 
 			return View(dashboardModel);
 		}
