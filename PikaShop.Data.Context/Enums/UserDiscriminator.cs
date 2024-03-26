@@ -11,6 +11,6 @@ namespace PikaShop.Data.Context.Enums
         User = 0,
         Admin,
         Customer,
-        SuperAdmin
+        DeliveryPerson
     }
 }

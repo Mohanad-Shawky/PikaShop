@@ -7,7 +7,7 @@ using PikaShop.Services.Core;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
-using PikaShop.Services.Helpers;
+using PikaShop.Services.Cache;
 using Stripe;
 
 namespace PikaShop.Web

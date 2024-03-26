@@ -4,7 +4,7 @@ using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Web.ViewModels;
 
-using PikaShop.Services.Helpers;
+using PikaShop.Services.Cache;
 using System.Diagnostics;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Stripe;
 using PikaShop.Common.Pagination;
+using PikaShop.Services.Helpers;
 
 namespace PikaShop.Web.Controllers
 {
@@ -48,11 +49,11 @@ namespace PikaShop.Web.Controllers
 			return View(productViewModels);
 		}
 
-		public IActionResult ProductDetails(int id)
-		{
-			var product = productServices.UnitOfWork.Products.GetById(id);
-			return View(product);
-		}
+        public IActionResult ProductDetails(int id)
+        {
+            var product = productServices.UnitOfWork.Products.GetById(id);
+            return View(product);
+        }
 
 
 		[HttpGet]

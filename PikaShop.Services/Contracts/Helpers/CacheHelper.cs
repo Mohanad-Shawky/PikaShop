@@ -4,7 +4,7 @@ using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 
 
-namespace PikaShop.Services.Helpers
+namespace PikaShop.Services.Cache
 {
     public class CacheHelper
     {
