@@ -14,7 +14,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
                 .HasValue<ApplicationUserEntity>(UserDiscriminator.User)
                 .HasValue<AdminEntity>(UserDiscriminator.Admin)
                 .HasValue<CustomerEntity>(UserDiscriminator.Customer)
-                .HasValue<DeliveryPersonEntity>(UserDiscriminator.DeliveryPerson);
+                .HasValue<SuperAdminEntity>(UserDiscriminator.SuperAdmin);
 
             // Data
             builder.Property<string>(nameof(ApplicationUserEntity.FirstName)).HasMaxLength(20);
@@ -24,7 +24,7 @@ namespace PikaShop.Data.Context.EntityConfigurations.Identity
             // Other Configuration
             builder.ToTable(t => t.HasCheckConstraint("CH_UserType",
                 $"[UserType] >= {(int)UserDiscriminator.User} AND [UserType] <= " +
-                $"{(int)UserDiscriminator.DeliveryPerson}"));
+                $"{(int)UserDiscriminator.SuperAdmin}"));
         }
     }
 }

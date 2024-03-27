@@ -8,7 +8,7 @@ using PikaShop.Data.Context.ContextEntities.Core;
 
 namespace PikaShop.Admin.ViewModels
 {
-    public class CategoryViewModel:AuditViewModel
+    public class CategoryViewModel
     {
         [Key]
         [Required]

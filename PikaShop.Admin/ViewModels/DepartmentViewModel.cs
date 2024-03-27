@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PikaShop.Admin.ViewModels
 {
-    public class DepartmentViewModel: AuditViewModel
+    public class DepartmentViewModel
     {
         [Key]
         [Required]
@@ -16,6 +16,5 @@ namespace PikaShop.Admin.ViewModels
         public string Name { get; set; }
 
         public string Description { get; set; }
-
     }
 }

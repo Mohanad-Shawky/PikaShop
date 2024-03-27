@@ -8,9 +8,7 @@ using PikaShop.Data.Context;
 using PikaShop.Data.Context.ContextEntities.Identity;
 using PikaShop.Data.Contracts.UnitsOfWork;
 using PikaShop.Data.Persistence.UnitsOfWork;
-using PikaShop.Services.Admin;
 using PikaShop.Services.Contracts;
-using PikaShop.Services.Contracts.Admin;
 using PikaShop.Services.Core;
 
 namespace PikaShop.Admin
@@ -58,8 +56,6 @@ namespace PikaShop.Admin
             builder.Services.AddScoped<IProductServices, ProductServices>();
             builder.Services.AddScoped<ICategorySpecsServices, CategorySpecsServices>();
             builder.Services.AddScoped<IProductSpecsServices, ProductSpecsServices>();
-
-            builder.Services.AddScoped<IReportGenerationServices, ReportGenerationServices>();
 
             #endregion
 

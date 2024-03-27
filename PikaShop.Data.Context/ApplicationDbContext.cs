@@ -21,7 +21,7 @@ namespace PikaShop.Data.Context
             modelBuilder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AdminEntityConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new DeliveryPersonEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new SuperAdminEntityConfiguration());
 
             #endregion
 

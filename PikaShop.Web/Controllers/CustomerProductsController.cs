@@ -3,6 +3,8 @@
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Web.ViewModels;
+
+using PikaShop.Services.Helpers;
 using System.Diagnostics;
 using System.Text.Json;
 using Newtonsoft.Json;
@@ -11,11 +13,10 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Stripe;
 using PikaShop.Common.Pagination;
-using PikaShop.Services.Helpers;
 
 namespace PikaShop.Web.Controllers
 {
-    public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
+	public class CustomerProductsController(IProductServices _prdService, CacheHelper _cacheHelper) : Controller
 	{
 		private IProductServices productServices { get; set; } = _prdService;
 		private CacheHelper cacheHelper { get; } = _cacheHelper;
