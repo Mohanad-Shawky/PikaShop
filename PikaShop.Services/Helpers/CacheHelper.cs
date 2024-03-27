@@ -8,28 +8,28 @@ namespace PikaShop.Services.Helpers
 {
     public class CacheHelper
     {
-        private  IMemoryCache _cache;
-        private  IProductServices _productServices;
+        private IMemoryCache _cache;
+        private IProductServices _productServices;
 
-        private  string DepartmentCacheKey = "DepartmentKey";
-        private  string PriceRangeCacheKey = "PriceKey";
+        private string DepartmentCacheKey = "DepartmentKey";
+        private string PriceRangeCacheKey = "PriceKey";
         private string CategorySpecificationKey = "CategorySpecificationKey";
         private string ProductCachedKey = "ProductCached";
 
-        private  MemoryCacheEntryOptions cacheEntryOption = new MemoryCacheEntryOptions()
+        private MemoryCacheEntryOptions cacheEntryOption = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(60))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(60))
             .SetPriority(CacheItemPriority.Normal);
 
-        public CacheHelper(IMemoryCache cache,IProductServices productServices)
+        public CacheHelper(IMemoryCache cache, IProductServices productServices)
         {
             _cache = cache;
-             _productServices = productServices;
+            _productServices = productServices;
         }
 
 
 
-        public  void GetDepartments(out List<DepartmentEntity> departments)
+        public void GetDepartments(out List<DepartmentEntity> departments)
         {
             if (_cache.TryGetValue(DepartmentCacheKey, out departments))
             {
@@ -41,7 +41,7 @@ namespace PikaShop.Services.Helpers
             departments = depts;
         }
 
-        public  void GetMaximumPriceRange(out double maxPrice)
+        public void GetMaximumPriceRange(out double maxPrice)
         {
             if (_cache.TryGetValue(PriceRangeCacheKey, out maxPrice))
             {
@@ -52,7 +52,7 @@ namespace PikaShop.Services.Helpers
             _cache.Set(PriceRangeCacheKey, maxPrice, cacheEntryOption);
         }
 
-        public void SetProductsCache( List<ProductEntity> products)
+        public void SetProductsCache(List<ProductEntity> products)
         {
             _cache.Set(ProductCachedKey, products, cacheEntryOption);
         }
@@ -66,17 +66,17 @@ namespace PikaShop.Services.Helpers
             _cache.Set(ProductCachedKey, Products, cacheEntryOption);
         }
 
-        public void setCategorySpecification(Dictionary<string,List<string>> specification)
+        public void setCategorySpecification(Dictionary<string, List<string>> specification)
         {
             _cache.Set(CategorySpecificationKey, specification, cacheEntryOption);
 
         }
-        public void getCategorySpecification(out Dictionary<string,List<string>> specification)
+        public void getCategorySpecification(out Dictionary<string, List<string>> specification)
         {
-            if(_cache.TryGetValue(CategorySpecificationKey,out specification)) { }
+            if (_cache.TryGetValue(CategorySpecificationKey, out specification)) { }
             else
             {
-                specification= new Dictionary<string,List<string>>();
+                specification = new Dictionary<string, List<string>>();
             }
         }
 
