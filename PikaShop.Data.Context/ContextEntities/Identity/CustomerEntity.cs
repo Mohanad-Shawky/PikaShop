@@ -9,6 +9,8 @@ namespace PikaShop.Data.Context.ContextEntities.Identity
 
         public virtual ICollection<CartItemEntity>? Cart { get; set; }
 
+        public virtual ICollection<WishListEntity>? WishList { get; set; }
+
         public virtual ICollection<ReviewEntity>? Reviews { get; set; }
     }
 }

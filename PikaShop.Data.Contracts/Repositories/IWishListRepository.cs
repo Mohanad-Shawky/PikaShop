@@ -1,5 +1,4 @@
 ﻿using PikaShop.Data.Context.ContextEntities.Core;
-using PikaShop.Data.Contracts.Partial;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PikaShop.Data.Contracts.Repositories
 {
-    public interface ICartItemRepository :
-       IRepository<CartItemEntity, int>{
+    public interface IWishListRepository :
+   IRepository<WishListEntity, int>
+    {
         public void deletebyid(int id, int id2);
-          
     }
-
 }
