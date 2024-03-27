@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PikaShop.Admin.ViewModels
 {
-    public class CategorySpecsViewModel
+    public class CategorySpecsViewModel:AuditViewModel
     {
         [Key]
         [Required]

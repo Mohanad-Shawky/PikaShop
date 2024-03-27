@@ -36,12 +36,8 @@
                 <a asp-action="Index" class="btn btn-default">Back to List</a>
             </div>
         </form>
-        @* @{
-            if(Model.CategorySpecifications.Count == 0)
-            {
-                Model.CategorySpecifications.Add(new() { CategoryID = Model.ID });
-            }
-        } *@
+       <div></div>
+       <span></span>
         @await Html.PartialAsync("~/Views/CategorySpecs/Index.cshtml",
                        Model.CategorySpecifications)
     </div>

@@ -5,7 +5,7 @@ using PikaShop.Data.Context.ContextEntities.Core;
 
 namespace PikaShop.Admin.ViewModels
 {
-    public class ProductViewModel
+    public class ProductViewModel:AuditViewModel
     {
         [Key]
         [Required]
