@@ -24,6 +24,9 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
         public ICartItemRepository CartItems { get; }
 
         public IWishListRepository WishList { get; }
+        public IOrderItemRepository OrderItems { get; }
+
+         
 
         public UnitOfWork(ApplicationDbContext _context)
         {
@@ -36,6 +39,9 @@ namespace PikaShop.Data.Persistence.UnitsOfWork
             Orders = new OrderRepository(context);
             CartItems = new CartItemRepository(context);
             WishList = new WishListItemRepository(context);
+            OrderItems = new OrderItemRepository(context);
+          
+
         }
 
         public int Save()

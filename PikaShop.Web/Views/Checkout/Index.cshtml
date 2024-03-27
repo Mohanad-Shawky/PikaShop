@@ -41,8 +41,38 @@
                 <div class="card-body">
                     <h5 class="card-title">Total Price</h5>
                     <p class="card-text">@ViewBag.TotalPrice.ToString("C")</p>
+                    <h5 class="card-title">Payment Method</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethodCard" value="card" checked>
+                        <label class="form-check-label" for="paymentMethodCard">
+                            Pay with Card
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethodDelivery" value="delivery">
+                        <label class="form-check-label" for="paymentMethodDelivery">
+                            Pay on Delivery
+                        </label>
+                    </div>
                     <form id="payment-form" action="/Checkout/CreateCheckoutSession" method="post">
-                        <button type="submit" class="btn btn-primary btn-block">Proceed to Payment</button>
+                        <button type="submit" class="btn btn-success btn-block mt-3">Proceed to Payment</button>
+                    </form>
+                    <form id="pay-on-delivery-form" action="/Checkout/PayOnDelivery" method="post" style="display: none;">
+                        <h5 class="card-title">Delivery Information</h5>
+                        <div class="form-group">
+                            <label for="fullName">Full Name:</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Address:</label>
+                            <input type="text" class="form-control" id="Address" name="Address" required>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block mt-3">Confirm Order</button>
+
                     </form>
                 </div>
             </div>
@@ -51,37 +81,19 @@
 </div>
 
 @section Scripts {
-    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        var stripe = Stripe('@ViewBag.StripePublishableKey');
-
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            // Call your method to create checkout session here
-            createCheckoutSession();
+        // Toggle visibility of payment forms based on user selection
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(function (input) {
+            input.addEventListener('change', function () {
+                var paymentMethod = this.value;
+                if (paymentMethod === 'card') {
+                    document.getElementById('payment-form').style.display = 'block';
+                    document.getElementById('pay-on-delivery-form').style.display = 'none';
+                } else {
+                    document.getElementById('payment-form').style.display = 'none';
+                    document.getElementById('pay-on-delivery-form').style.display = 'block';
+                }
+            });
         });
-
-        function createCheckoutSession() {
-            fetch('/Checkout/CreateCheckoutSession', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function (session) {
-                    return stripe.redirectToCheckout({ sessionId: session.sessionId });
-                })
-                .then(function (result) {
-                    // Handle result
-                })
-                .catch(function (error) {
-                    console.error('Error:', error);
-                });
-        }
     </script>
 }
