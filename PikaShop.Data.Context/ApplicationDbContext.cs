@@ -44,8 +44,6 @@ namespace PikaShop.Data.Context
 
             modelBuilder.ApplyConfiguration(new ReviewEntityConfiguration());
 
-            modelBuilder.ApplyConfiguration(new WishListEntityConfiguration());
-
             #endregion
 
         }
@@ -66,7 +64,5 @@ namespace PikaShop.Data.Context
         public virtual DbSet<AddressEntity> Addresses { get; set; }
 
         public virtual DbSet<ReviewEntity> Reviews { get; set; }
-
-        public virtual DbSet<WishListEntity> WishList { get; set; }
     }
 }

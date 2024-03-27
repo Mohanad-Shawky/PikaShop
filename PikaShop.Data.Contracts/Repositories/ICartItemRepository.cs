@@ -11,7 +11,7 @@ namespace PikaShop.Data.Contracts.Repositories
     public interface ICartItemRepository :
        IRepository<CartItemEntity, int>{
         public void deletebyid(int id, int id2);
-          
+          //  void ClearCartItemsForUser(string userId);
     }
 
 }
