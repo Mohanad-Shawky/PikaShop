@@ -77,7 +77,7 @@ namespace PikaShop.Web
             });
             #endregion
 
-            #region MVC Configuration
+            #region MVC Configurations
             // MVC Configuration
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
