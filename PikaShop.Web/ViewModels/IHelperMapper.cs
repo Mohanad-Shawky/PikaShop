@@ -1,4 +1,5 @@
-﻿using PikaShop.Data.Context.ContextEntities.Core;
+﻿using Microsoft.AspNetCore.Http.Features;
+using PikaShop.Data.Context.ContextEntities.Core;
 
 namespace PikaShop.Web.ViewModels
 {
@@ -17,5 +18,13 @@ namespace PikaShop.Web.ViewModels
             };
             return ProductVM;
         }
+
+        //public static OrderViewModel OrderViewMapper(CartItemEntity entity)
+        //{
+        //    //OrderViewModel OrdersVM = new()
+        //    //{
+        //    //    //OrderID = entity.
+        //    //}
+        //}
     }
 }

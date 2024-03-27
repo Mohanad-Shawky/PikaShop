@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Services.Core;
@@ -11,18 +12,20 @@ using System.Security.Claims;
 
 namespace PikaShop.Web.Controllers
 {
-    //[Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]
     public class WishListController : Controller
     {
         private readonly IWishListServices _wishListServices;
         private readonly IProductServices _productServices;
         private readonly ICartItemServices _cartItemServices;
+        private readonly IToastNotification _toastNotification;
 
-        public WishListController(IWishListServices wishListServices, IProductServices productServices, ICartItemServices cartItemServices)
+        public WishListController(IWishListServices wishListServices, IProductServices productServices, ICartItemServices cartItemServices, IToastNotification toastNotification)
         {
             _wishListServices = wishListServices;
             _productServices = productServices;
             _cartItemServices = cartItemServices;
+            _toastNotification = toastNotification;
         }
 
 
@@ -81,10 +84,18 @@ namespace PikaShop.Web.Controllers
                 _wishListServices.UnitOfWork.WishList.Create(newWishList);
             }
 
-            _wishListServices.UnitOfWork.Save();
+            int Result = _wishListServices.UnitOfWork.Save();
 
-            // Redirect the user to Index Page
-            return RedirectToAction("Index");
+            if ( Result > 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Add to wish List successfully !");
+                return Ok();
+            }
+            else
+            {
+                _toastNotification.AddErrorToastMessage("Failed to add !");
+                return BadRequest();
+            }
         }
 
         // GET: WishList/MoveToCart/2

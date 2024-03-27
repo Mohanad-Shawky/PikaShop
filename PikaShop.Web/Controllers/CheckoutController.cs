@@ -6,17 +6,22 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using PikaShop.Web.ViewModels;
+using PikaShop.Data.Context.ContextEntities.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace YourNamespace.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CheckoutController : Controller
     {
         private readonly string _stripeSecretKey = "sk_test_51Ou2OOGFkpxy9DHRADa2B3NpA00Jd65SAxn3uZfOSQL0sHcGERLn0XFZKkF6wzfm80HAO2CKu7pbIdDvvqUl60sO00YGRzG5Hk";
         private readonly ICartItemServices _cartItemService;
+        private readonly IOrderServices _orderService;
 
-        public CheckoutController(ICartItemServices cartItemService)
+        public CheckoutController(ICartItemServices cartItemService, IOrderServices orderServices)
         {
             _cartItemService = cartItemService;
+            _orderService = orderServices;
         }
 
         public IActionResult Index()
@@ -92,6 +97,7 @@ namespace YourNamespace.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            OrderPlacing();
             ClearCart();
 
             return View();
@@ -102,6 +108,61 @@ namespace YourNamespace.Controllers
             return View();
         }
 
+        public IActionResult OrderPlacing()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cartItems = _cartItemService.UnitOfWork.CartItems
+                .GetAll()
+                .Where(ci => ci.CustomerID == int.Parse(userId))
+                .ToList();
+
+            double TotalPrice = 0;
+
+            foreach (var cartItem in cartItems)
+            {
+                TotalPrice += cartItem.Quantity * cartItem.Product.Price;
+            }
+
+            List<OrderItemEntity> orderItems = new List<OrderItemEntity>();
+
+            foreach (var cartItem in cartItems)
+            {
+                cartItem.Product.UnitsInStock -= cartItem.Quantity;
+                OrderItemEntity orderItem = new OrderItemEntity
+                {
+                    ProductID = cartItem.ProductID,
+                    Quantity = cartItem.Quantity,
+                    SellingPrice = cartItem.Product.Price,
+                    SubTotal = cartItem.Product.Price * cartItem.Quantity,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    CreatedBy = "system",
+                    ModifiedBy = "system"
+                };
+
+                orderItems.Add(orderItem);
+            }
+
+            OrderEntity orderPlaced = new OrderEntity()
+            {
+                CustomerID = int.Parse(userId),
+                Total = TotalPrice,
+                PaymentMethod = PikaShop.Data.Entities.Enums.PaymentMethods.Stripe,
+                Status = "Delivered",
+                TransactionID = "12032233434",
+                IsPaid = true,
+                PaymentAddedValue = TotalPrice,
+                OrderedAt = DateTime.Now
+            };
+
+            orderPlaced.Items = orderItems;
+
+            _orderService.UnitOfWork.Orders.Create(orderPlaced);
+            _orderService.UnitOfWork.Save();
+
+            return Ok();
+        }
         public IActionResult ClearCart()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

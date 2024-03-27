@@ -9,6 +9,7 @@ using PikaShop.Data.Context;
 using PikaShop.Web.IdentityUnits;
 using PikaShop.Services.Cache;
 using Stripe;
+using NToastNotify;
 
 namespace PikaShop.Web
 {
@@ -69,6 +70,7 @@ namespace PikaShop.Web
             builder.Services.AddScoped<IProductServices, ProductServices>();
             builder.Services.AddScoped<ICartItemServices, CartItemServices>();
             builder.Services.AddScoped<IWishListServices, WishListServices>();
+            builder.Services.AddScoped<IOrderServices, OrderServices>();
             builder.Services.AddScoped<ICheckoutServices, CheckoutServices>();
             builder.Services.AddScoped<IStripeService, StripeService>(provider =>
             {
@@ -84,10 +86,26 @@ namespace PikaShop.Web
             builder.Services.AddRazorPages();
             #endregion
 
+            #region Add Toasting
+            builder.Services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
+            {
+                CloseButton = true,
+                TimeOut = 1000,
+                ProgressBar = true,
+                PositionClass = ToastPositions.TopRight,
+                PreventDuplicates = true,
+
+            });
+
+
+            #endregion
+
+
+
             builder.Services.AddScoped<CacheHelper>();
 
             var app = builder.Build();
-
+            app.UseNToastNotify();
 
             app.UseSession();
 

@@ -122,7 +122,7 @@ er-color: #ffcc66;" href="/CustomerProducts/Index" class="btn btn-link">Back to 
 
             function AddToWishListHandler(productId, productQuantity) {
                 $.ajax({
-                url: "WishList/AddToWishList", // Corrected URL
+                url: "/WishList/AddToWishList", // Corrected URL
                     method: "post",
                     data: { productId: productId, productQuantity: productQuantity }
                 });

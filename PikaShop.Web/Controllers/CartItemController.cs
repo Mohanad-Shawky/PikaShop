@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using PikaShop.Data.Context.ContextEntities.Core;
 using PikaShop.Services.Contracts;
 using PikaShop.Web.ViewModels;
@@ -10,16 +11,17 @@ using System.Security.Claims;
 
 namespace PikaShop.Web.Controllers
 {
-    [Authorize(Roles = "Customer")]
     public class CartItemController : Controller
     {
         private readonly ICartItemServices _cartItemServices;
         private readonly IProductServices _productServices;
+        private readonly IToastNotification _toastNotification;
 
-        public CartItemController(ICartItemServices cartItemServices, IProductServices productServices)
+        public CartItemController(ICartItemServices cartItemServices, IProductServices productServices, IToastNotification toastNotification)
         {
             _cartItemServices = cartItemServices;
             _productServices = productServices;
+            _toastNotification = toastNotification;
         }
 
 
@@ -80,10 +82,17 @@ namespace PikaShop.Web.Controllers
                 _cartItemServices.UnitOfWork.CartItems.Create(newCartItem);
             }
 
-            _cartItemServices.UnitOfWork.Save();
-
-            // Redirect the user to a relevant page
-            return RedirectToAction("Index");
+            int Result = _cartItemServices.UnitOfWork.Save();
+            if (Result > 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Add to wish List successfully !");
+                return Ok();
+            }
+            else
+            {
+                _toastNotification.AddErrorToastMessage("Failed to add !");
+                return BadRequest();
+            }
         }
 
         // GET: CartItem/Delete/5

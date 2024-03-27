@@ -40,11 +40,8 @@ namespace PikaShop.Web.Controllers
 			{
 				cacheHelper.SetProductsCache(products);
 
-
-				Debug.WriteLine("Here we are !!");
-
 				IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 9);
 				return View(productViewModels);
 			}
 			return View(productViewModels);
@@ -62,8 +59,7 @@ namespace PikaShop.Web.Controllers
 		{
 			cacheHelper.getProductsCache(out List<ProductEntity> cachedProducts);
 			IQueryable<ProductViewModel> prdsModel = cachedProducts.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, pagenumber, 3);
-			Debug.WriteLine("Hello");
+			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, pagenumber, 9);
 
 			return PartialView("_partialProductItem", productViewModels);
 		}
@@ -81,7 +77,7 @@ namespace PikaShop.Web.Controllers
 
 
 				IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+				productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 9);
 
 			}
 			return PartialView("_partialProductItem", productViewModels);
@@ -99,7 +95,7 @@ namespace PikaShop.Web.Controllers
 			List<ProductEntity> Products = productServices.SearchByPriceRange(maxPrice, cachedProducts);
 
 			IQueryable<ProductViewModel> prdsModel = Products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 9);
 
 			return PartialView("_partialProductItem", productViewModels);
 		}
@@ -114,7 +110,7 @@ namespace PikaShop.Web.Controllers
 
 
 			IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable();
-			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+			productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 9);
 
 			return PartialView("_partialProductItem", productViewModels);
 		}
@@ -132,7 +128,7 @@ namespace PikaShop.Web.Controllers
 
 
 			IQueryable<ProductViewModel> prdsModel = products.Select(IHelperMapper.ProductViewMapper).AsQueryable(); ;
-			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 3);
+			PaginatedList<ProductViewModel> productViewModels = PaginatedList<ProductViewModel>.Create(prdsModel, 1, 9);
 
 
 			return PartialView("_partialProductItem", productViewModels);

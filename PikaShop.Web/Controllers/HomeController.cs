@@ -7,12 +7,11 @@ using PikaShop.Web.Models;
 
 namespace PikaShop.Web.Controllers
 {
-    [Authorize(Roles = "Customer")]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
-          return RedirectToAction("Index", "CustomerProducts");
+          return View();
         }
 
         public IActionResult Privacy()

@@ -8,11 +8,20 @@
 @{
     decimal TotalwishListPrice = 0;
 }
-<div class="container mt-10">
+<div class="container mt-12">
     <h1 class="text-center mb-4">Wish List</h1>
 
     <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" style="width: 100%;">
+            <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 20%;" />
+                <col style="width: 20%;" /> 
+                <col style="width: 15%;" />
+                <col style="width: 10%;" /> 
+                <col style="width: 10%;" /> 
+                <col style="width: 15%;" /> 
+            </colgroup>
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Product Image</th>
@@ -35,16 +44,16 @@
                         }
                         <td><img src="@item.ProductImage" alt="@item.ProductName" class="img-thumbnail" style="max-height: 100px;" /></td>
                         <td>@item.ProductName</td>
-                        <td>
-                            <button id="@item.ProductId-removingBtn" data-input="@item.ProductId" class="btn text-xxl fw-bold remove-btn" style="font-size:30px">-</button>
-                            <span id="@item.ProductId" class="btn btn-light rounded-pill mx-2" style="font-size:30px" min="1" type="number" max="@item.UnitsInStock">@item.Quantity</span>
-                            <button id="@item.ProductId-addingBtn" data-input="@item.ProductId" class="btn text-xxl fw-bold add-btn" style="font-size:30px">+</button>
+                        <td style="font-size: 16px;">
+                            <button id="@item.ProductId-removingBtn" data-input="@item.ProductId" class="btn text-xxl fw-bold remove-btn" style="font-size:16px">-</button>
+                            <span id="@item.ProductId" class="btn btn-light rounded-pill mx-1" style="font-size:16px" min="1" type="number" max="@item.UnitsInStock">@item.Quantity</span>
+                            <button id="@item.ProductId-addingBtn" data-input="@item.ProductId" class="btn text-xxl fw-bold add-btn" style="font-size:16px">+</button>
+                        </td>
+                        <td style="font-size: 16px;">
+                            <span id="totalPriceperProduct-@item.ProductId" class="btn btn-light rounded-pill mx-2" style="font-size:16px" min="1" type="number" max="@item.UnitsInStock">@item.Price<span>$</span></span>
                         </td>
                         <td>
-                            <span id="totalPriceperProduct-@item.ProductId" class="btn btn-light rounded-pill mx-2" style="font-size:30px" min="1" type="number" max="@item.UnitsInStock">@item.Price</span>
-                        </td>
-                        <td>
-                            @if ( item.UnitsInStock > 0 )
+                            @if (item.UnitsInStock > 0)
                             {
                                 <span style="color:green">In stock</span>
                             }
@@ -53,11 +62,11 @@
                                 <span style="color:red">Out of stock</span>
                             }
                         </td>
-                        <td>
-                            <span id="totalPrice-@item.ProductId" class="btn btn-light rounded-pill mx-2" style="font-size:30px" min="1" type="number" max="@item.UnitsInStock">@totalProductPrice.ToString("C")</span>
+                        <td style="font-size: 16px;">
+                            <span id="totalPrice-@item.ProductId" class="btn btn-light rounded-pill mx-2" style="font-size:16px" min="1" type="number" max="@item.UnitsInStock">@totalProductPrice<span>$</span></span>
                         </td>
                         <td>
-                            @if ( item.UnitsInStock > 0 )
+                            @if (item.UnitsInStock > 0)
                             {
                                 <form asp-action="MoveToCart" method="post">
                                     <input type="hidden" name="productId" value="@item.ProductId" />
@@ -78,18 +87,18 @@
                             <form asp-action="Delete" method="post">
                                 <input type="hidden" name="productId" value="@item.ProductId" />
                                 <input type="hidden" name="customerId" value="@item.CustomerId" />
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger">Delete Item</button>
                             </form>
                         </td>
                     </tr>
                 }
                 <tr>
-                    <td><a href="/Home" class="btn btn-secondary mr-3">Continue Shopping</a></td>
-                    <td><a href="/WishList/DeleteAll" class="btn btn-secondary mr-3">Clear Wish List</a></td>
+                    <td><a href="/Home" class="btn btn-warning mr-3">Continue   Shopping</a></td>
+                    <td><a href="/WishList/DeleteAll" class="btn btn-danger mr-3 ">Clear  Wish  List Items</a></td>
                     <td></td>
-                    <td><a href="/WishList/MoveAlltoCart" class="btn btn-secondary mr-3">Move All to Cart</a></td>
+                    <td><a href="/WishList/MoveAlltoCart" class="btn btn-success mr-3">Move All to Cart</a></td>
                     <td>Total Wish List Price</td>
-                    <td><span id="totalField" class="btn btn-light rounded-pill mx-2" style="font-size:30px" min="@TotalwishListPrice" type="number">@TotalwishListPrice</span></td>
+                    <td><span id="totalField" class="btn btn-light rounded-pill mx-2" style="font-size:16px" min="@TotalwishListPrice" type="number">@TotalwishListPrice<span>$</span></span></td>
                 </tr>
             </tbody>
         </table>
@@ -121,11 +130,11 @@
         const input3 = $("#totalField");
         const totalWishList = parseInt(input3.text());
         const newValue = Math.max(currentValue - 1, 1);
-        input.text(newValue);
+        input.text(newValue.toFixed(2));
         let totalProductPrice = newValue * productPrice;
         let totalWishListPrice = totalWishList - (productPrice * currentValue) + (productPrice * newValue);
         $("#totalPrice-" + inputId).text(totalProductPrice.toFixed(2));
-        $("#totalField").text(totalWishListPrice);
+        $("#totalField").text(totalWishListPrice.toFixed(2));
     
         DecreaseWishList(inputId);
     });
@@ -146,8 +155,8 @@
         let totalProductPrice = newValue * productPrice;
         let totalWishListPrice = totalWishList - (productPrice * currentValue) + (productPrice * newValue);
         $("#totalPrice-" + inputId).text(totalProductPrice.toFixed(2));
-        $("#totalField").text(totalWishListPrice);
-        input.text(newValue);
+        $("#totalField").text(totalWishListPrice.toFixed(2));
+        input.text(newValue.toFixed(2));
         IncreaseWishList(inputId);
     });
 

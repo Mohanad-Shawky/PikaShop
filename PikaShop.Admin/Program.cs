@@ -80,6 +80,12 @@ namespace PikaShop.Admin
                 app.UseMigrationsEndPoint();
                 app.UseDeveloperExceptionPage();
 
+                #region Identity Seeding
+                // Identity Seeding
+                using (var scope = app.Services.CreateScope())
+                    await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+                #endregion
+
                 #region Database Development Seeding
                 //DbRoleSeeder.SeedRolesAndAdminAsync();
                 // Seed Database for Development
@@ -103,12 +109,6 @@ namespace PikaShop.Admin
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
-            #region Identity Seeding
-            // Identity Seeding
-            using (var scope = app.Services.CreateScope())
-                await DbRoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
-            #endregion
 
             await app.RunAsync();
         }
